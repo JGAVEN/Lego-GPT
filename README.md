@@ -40,6 +40,14 @@ pnpm install
 pnpm dev  # http://localhost:5173
 ```
 
+## 🐳 Docker Dev
+
+To run the backend in a live-reloading container:
+
+```bash
+docker compose up
+
+
 ## License
 
 MIT. LEGO® is a trademark of the LEGO Group of companies which does not sponsor,
