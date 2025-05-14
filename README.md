@@ -1,46 +1,46 @@
 # Lego GPT
 
-Generate buildable LEGO® creations right from your phone.
+Generate buildable LEGO® creations directly from your phone’s browser.
 
-## Why?
+Lego GPT pairs the CMU **LegoGPT** Llama‑3 1B model with a thin FastAPI inference
+gateway and a React / Three.js Progressive‑Web‑App front‑end.  
+The model converts natural‑language prompts into **LDraw** brick assemblies,
+renders a PNG preview, and serves the `.ldr` file for 3‑D manipulation or real‑life
+building.
 
-**Lego GPT** wraps the CMU LegoGPT model (Llama‑3 1B, fine‑tuned to output LDraw brick assemblies) behind a FastAPI backend and a React (Three.js) front‑end. It lets you:
-
-* type or dictate a prompt (“red dragon with golden wings”),
-* receive a PNG preview in seconds,
-* orbit a full 3‑D model in your browser,
-* download the `.ldr` to build it in real life.
-
-## High‑level architecture
+## Repository layout
 
 ```
-┌──────────────┐   https POST /generate    ┌───────────────────────┐
-│  Phone (PWA) │◄──────────────────────────►│  FastAPI gateway      │
-│  React +     │                           │  • token auth         │
-│  Three.js    │     S3 / static URLs      │  • queue + GPU worker │
-└────▲─────────┘                           └──────────▲────────────┘
-     │  .ldr/.png (lazy‑load)                          │
-     │                                                 │
-     ▼                                                 │
-        Three.js LDrawViewer               LegoGPT inference (CUDA)
+.
+├── backend/          # FastAPI app + model wrapper
+├── frontend/         # React (Vite) PWA with Three.js viewer
+├── src/legogpt/      # LegoGPT git‑submodule (read‑only)
+├── docs/             # Project documentation
+└── Dockerfile*       # Dev & production images
 ```
+
+See **docs/ARCHITECTURE.md** for full details.
 
 ## Quick‑start (local dev)
 
 ```bash
-# 1. clone repo and submodule
-git clone git@github.com:JGAVEN/lego-gpt.git
-cd lego-gpt
-git submodule update --init
+# clone + init submodule
+git clone git@github.com:JGAVEN/Lego-GPT.git
+cd Lego-GPT && git submodule update --init
 
-# 2. backend (Python 3.10)
+# backend
 cd backend
 poetry install
 export HF_TOKEN=<your-huggingface-token>
-poetry run uvicorn api:app --reload  # http://localhost:8000/health
+poetry run uvicorn api:app --reload   # http://localhost:8000/health
 
-# 3. front‑end (Node 20)
+# frontend (in another terminal)
 cd ../frontend
 pnpm install
 pnpm dev  # http://localhost:5173
 ```
+
+## License
+
+MIT. LEGO® is a trademark of the LEGO Group of companies which does not sponsor,
+authorize or endorse this project.
