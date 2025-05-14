@@ -1,0 +1,35 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# VS Code
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+env/
+.venv/
+build/
+dist/
+*.egg-info/
+
+# Node / front-end
+node_modules/
+npm-debug.log*
+pnpm-debug.log*
+dist/
+coverage/
+
+# Docker
+*.tar
+*.img
+__docker_build*/
+
+# Misc
+.idea/
+*.swp
