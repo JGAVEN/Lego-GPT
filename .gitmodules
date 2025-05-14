@@ -1,0 +1,3 @@
+[submodule "src/legogpt"]
+	path = src/legogpt
+	url = https://github.com/AvaLovelace1/LegoGPT.git
