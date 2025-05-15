@@ -33,3 +33,4 @@ __docker_build*/
 # Misc
 .idea/
 *.swp
+backend/static/
