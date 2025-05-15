@@ -46,9 +46,35 @@ To run the backend in a live-reloading container:
 
 ```bash
 docker compose up
-
+```
 
 ## License
 
 MIT. LEGO® is a trademark of the LEGO Group of companies which does not sponsor,
 authorize or endorse this project.
+
+## Frontend Development
+
+The frontend is built with [Vite](https://vitejs.dev/) + React + TypeScript.
+
+### Getting Started
+
+```bash
+cd frontend
+pnpm install
+pnpm dev
+```
+
+Visit [http://localhost:5173](http://localhost:5173) to view the app.
+
+### Code Quality
+
+ESLint and Prettier are included:
+
+```bash
+pnpm exec eslint src --ext .ts,.tsx
+```
+
+```bash
+pnpm exec prettier --check .
+```
