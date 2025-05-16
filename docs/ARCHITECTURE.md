@@ -1,42 +1,37 @@
-# Architecture – Lego GPT (May 2025)
+# Architecture
 
 ```
-Browser (React)
-│
-│ 1. POST /generate {text, seed}
-▼
-FastAPI Gateway ─┬─> (future) enqueue job
-                 └─> LegoGPT inference (mocked)
-                     │
-                     ├── PNG preview
-                     ├── .ldr file
-                     └── brick_counts json
-                     │
-           saves files to backend/static/<uuid>/
-                 │
-2. JSON response ──> {png_url, ldr_url, brick_counts}
+┌──────────────┐   HTTPS POST /generate   ┌────────────────────────────┐
+│  PWA Client  │◄────────────────────────►│  FastAPI Gateway (API)     │
+│  React +     │                          │  • JWT auth (future)       │
+│  Three.js    │ PNG preview + .ldr file  │  • Task queue (Redis)      │
+└────▲─────────┘                          │  • Model worker (CUDA)     │
+     │                                    └──────────▲────────────────┘
+     │                                                   │
+     │  .ldr parsed & viewed                             │
+     ▼                                                   │
+Three.js LDrawViewer                        LegoGPT model (Llama‑3 1B)
 ```
 
-| Layer       | Implementation                     | Status |
-|-------------|------------------------------------|--------|
-| Front‑end   | React 18 + Vite + TS, fetch API    | scaffold only |
-| 3‑D Viewer  | Three.js `LDrawLoader`             | **TODO** Ticket 2.2 |
-| Gateway     | FastAPI, Pydantic                  | `/health`, `/generate` (mock model) |
-| Model       | CMU LegoGPT (Llama‑3 1B)           | git‑submodule, lazy‑load mocked in tests |
-| Worker      | (future) Celery/RQ GPU container   | **TODO** after real model weights |
-| Static      | Starlette `StaticFiles`            | serves `/static/...` |
+| Layer | Responsibility | Tech |
+|-------|----------------|------|
+|Front‑end | Prompt form, preview image, 3‑D viewer, PWA shell | React 18, Vite, Three.js (`LDrawLoader`) |
+|API | Auth, rate‑limit, task enqueue, static file links | FastAPI, Pydantic, Celery (alt. RQ) |
+|Worker | Lazy‑load model, run `generate()`, save PNG + LDR | Python 3.10, CUDA 12.2, HuggingFace `transformers` |
+|Storage | Serve artifacts, keep 7‑day TTL | Local `/static`, S3 in prod |
 
-## Testing
+## Data flow
 
-* **Unit & Integration**: pytest with `TestClient`.
-* **Model**: mocked via `unittest.mock` to avoid weight downloads in CI.
-* `pytest.ini` sets `pythonpath = .` so `import backend` works.
+1. **/generate** – client POSTs `{text, seed}`.  
+2. Gateway pushes job to queue, streams job‑id.  
+3. Worker loads LegoGPT, produces PNG + `.ldr`, uploads to `/static`.  
+4. Gateway returns `{png_url, ldr_url, brick_counts}`.  
+5. Client shows PNG immediately, lazy‑loads LDR into Three.js viewer.
 
-## Roadmap Highlights
+## Scaling notes
 
-| Milestone | Description |
-|-----------|-------------|
-| Replace mock with real LegoGPT weights | Publish config.json + weights to HF; update `inference.py`. |
-| Redis queue & worker | Enable multiple concurrent generations. |
-| Three‑js viewer | Interactive orbit/pinch of generated builds. |
-| Auth & rate‑limit | JWT + IP throttling to prevent abuse. |
+* Start with a single GPU container (A10G 24 GB) – <2 s/token, 3 requests/s.  
+* Upgrade to queue + N workers once concurrency >5.  
+* Serve static from CloudFront or Cloudflare R2 for global latency.  
+* Future: quantize model (INT4) for CPU‑only fallback.
+

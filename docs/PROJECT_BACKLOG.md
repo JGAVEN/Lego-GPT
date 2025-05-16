@@ -1,12 +1,11 @@
-# Project Backlog – MoSCoW
+# Project Backlog (MoSCoW)
 
-| ID   | Priority | Title                              | Status  | Notes                        |
-|------|----------|------------------------------------|---------|------------------------------|
-| B‑01 | **M**    | Backend scaffold (/health)         | Done    |                              |
-| B‑02 | **M**    | Dev Dockerfile + compose           | Done    |                              |
-| B‑03 | **M**    | `/generate` endpoint (mock)        | Done    |                              |
-| B‑04 | **S**    | React API hook + PNG preview       | Ready   | Ticket 2.1                   |
-| B‑05 | **S**    | Three.js LDraw viewer              | Blocked | depends on B‑04              |
-| B‑06 | **C**    | JWT auth & rate‑limit              | Planned |                              |
-| B‑07 | **C**    | Queue + GPU worker                 | Planned | Celery or RQ                 |
-| B‑08 | **C**    | CI: frontend lint & build          | Planned | ESLint + vite build          |
+| ID | Priority | Title | Notes |
+|----|----------|-------|-------|
+|B‑01| **M**ust | Dockerise backend & worker | GPU‑aware image, docker‑compose dev |
+|B‑02| **M**ust | React PWA scaffold | Vite + Tailwind, service‑worker cache |
+|B‑03| **M**ust | `/generate` endpoint | Async job queue, return URLs |
+|B‑04| **S**hould | JWT auth & rate‑limit | Prevent abuse |
+|B‑05| **S**hould | GitHub Actions CI | pytest + build images |
+|B‑06| **C**ould | AR Quick‑Look export | glTF pipeline |
+|B‑07| **C**ould | Brick inventory filter | Fine‑tune on owned parts |
