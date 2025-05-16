@@ -9,8 +9,6 @@
 # Python
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
 *.so
 env/
 .venv/
@@ -30,7 +28,9 @@ coverage/
 *.img
 __docker_build*/
 
-# Misc
+# IDEs / Misc
 .idea/
 *.swp
+
+# Generated artefacts
 backend/static/

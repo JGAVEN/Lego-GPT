@@ -1,80 +1,72 @@
 # Lego GPT
 
-Generate buildable LEGO® creations directly from your phone’s browser.
+Generate buildable LEGO® creations right from your browser.
 
-Lego GPT pairs the CMU **LegoGPT** Llama‑3 1B model with a thin FastAPI inference
-gateway and a React / Three.js Progressive‑Web‑App front‑end.  
-The model converts natural‑language prompts into **LDraw** brick assemblies,
-renders a PNG preview, and serves the `.ldr` file for 3‑D manipulation or real‑life
-building.
+| Component            | Status   | Notes                                                       |
+|----------------------|----------|-------------------------------------------------------------|
+| Backend `/health`    | ✅ Done  | FastAPI + Poetry                                            |
+| Backend `/generate`  | ✅ Mock  | Returns PNG/LDR/brick_counts with mocked LegoGPT wrapper    |
+| Integration Tests    | ✅ Done  | `backend/tests/test_generate.py` passes with mock model     |
+| Docker Dev Stack     | ✅ Done  | `docker compose up` runs backend                            |
+| Front‑end Scaffold   | ✅ Done  | React + Vite + TypeScript shows “Hello LegoGPT”             |
+| CI Stub              | ✅ Done  | GitHub Action prints “CI alive”                             |
+| 3‑D Viewer           | ⬜ TODO  | Three.js LDrawLoader (Ticket 2.2)                           |
+| Auth & Rate‑limit    | ⬜ TODO  | Planned after core flow is solid                            |
 
-## Repository layout
+---
+
+## Local Quick‑Start
+
+```bash
+git clone git@github.com:JGAVEN/Lego-GPT.git
+cd Lego-GPT
+git submodule update --init                        # pulls CMU LegoGPT code
+
+# ─── Backend ───
+cd backend
+poetry install --no-root                           # installs FastAPI, Torch, etc.
+poetry run uvicorn api:app --reload                # http://localhost:8000/health
+
+# ─── Front‑end ───
+cd ../frontend
+pnpm install
+pnpm dev                                           # http://localhost:5173
+```
+
+---
+
+## Docker Dev Stack
+
+```bash
+docker compose up --build                          # builds & runs backend
+curl -X POST http://localhost:8000/generate \
+     -H "Content-Type: application/json" \
+     -d '{"text":"blue cube","seed":42}'
+```
+
+---
+
+## Project Structure
 
 ```
 .
-├── backend/          # FastAPI app + model wrapper
-├── frontend/         # React (Vite) PWA with Three.js viewer
-├── src/legogpt/      # LegoGPT git‑submodule (read‑only)
-├── docs/             # Project documentation
-└── Dockerfile*       # Dev & production images
+├── backend/                 # FastAPI app, Poetry project
+│   ├── api.py               # routes (/health, /generate)
+│   ├── inference.py         # LegoGPT wrapper (mock)
+│   ├── tests/               # pytest suite
+│   └── static/              # generated PNG / LDR files (ignored)
+├── docs/                    # architecture & guidance
+├── frontend/                # React + Vite app
+├── src/legogpt/             # CMU LegoGPT as git-submodule
+└── docker-compose.yml       # dev stack
 ```
 
-See **docs/ARCHITECTURE.md** for full details.
+See **docs/ARCHITECTURE.md** for detailed diagrams and flow.
 
-## Quick‑start (local dev)
+---
 
-```bash
-# clone + init submodule
-git clone git@github.com:JGAVEN/Lego-GPT.git
-cd Lego-GPT && git submodule update --init
+## Contributing
 
-# backend
-cd backend
-poetry install
-export HF_TOKEN=<your-huggingface-token>
-poetry run uvicorn api:app --reload   # http://localhost:8000/health
-
-# frontend (in another terminal)
-cd ../frontend
-pnpm install
-pnpm dev  # http://localhost:5173
-```
-
-## 🐳 Docker Dev
-
-To run the backend in a live-reloading container:
-
-```bash
-docker compose up
-```
-
-## License
-
-MIT. LEGO® is a trademark of the LEGO Group of companies which does not sponsor,
-authorize or endorse this project.
-
-## Frontend Development
-
-The frontend is built with [Vite](https://vitejs.dev/) + React + TypeScript.
-
-### Getting Started
-
-```bash
-cd frontend
-pnpm install
-pnpm dev
-```
-
-Visit [http://localhost:5173](http://localhost:5173) to view the app.
-
-### Code Quality
-
-ESLint and Prettier are included:
-
-```bash
-pnpm exec eslint src --ext .ts,.tsx
-```
-
-```bash
-pnpm exec prettier --check .
-```
+* Follow the *one‑step‑at‑a‑time GPT‑4o* workflow in **docs/CONTRIBUTING.md**.  
+* After each merged ticket, update docs and **CHANGELOG.md**.  
+* Keep generated artefacts out of git (`backend/static/` is ignored).
