@@ -1,18 +1,41 @@
+"""
+Backend façade that wraps the LegoGPT model and handles disk output.
+
+`backend.solver.shim` is imported *solely* for its side-effect:
+it monkey-patches `legogpt.stability_analysis.stability_score`
+so the pipeline uses our open-source ILP backend instead of Gurobi.
+"""
+from __future__ import annotations
+
 import os
 import uuid
 from pathlib import Path
 
+import backend.solver.shim  # noqa: F401  (forces monkey-patch)
+
 MODEL = None
 
+
 def load_model():
+    """Lazily construct and cache the LegoGPT model."""
     global MODEL
     if MODEL is None:
         from legogpt.models.legogpt import LegoGPT, LegoGPTConfig
-        config = LegoGPTConfig()  # Customize here if needed
+
+        config = LegoGPTConfig()  # customise here if needed
         MODEL = LegoGPT(config)
     return MODEL
 
+
 def generate(prompt: str, seed: int):
+    """
+    Generate a new LEGO structure preview.
+
+    Returns
+    -------
+    tuple[str, str, dict]
+        PNG path, LDraw path, and brick-count dict.
+    """
     model = load_model()
     result = model.generate(prompt, seed=seed)
 
