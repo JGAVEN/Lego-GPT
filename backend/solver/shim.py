@@ -10,7 +10,7 @@ import importlib
 import sys
 from typing import Any, Tuple
 
-from legogpt.data import LegoStructure, LegoLibrary  # type: ignore
+from legogpt.data import LegoStructure  # type: ignore
 from backend.solver import get_solver
 
 _solver = get_solver()  # OrtoolsSolver
@@ -18,7 +18,7 @@ _solver = get_solver()  # OrtoolsSolver
 
 def stability_score(
     lego_structure: str | dict,
-    lego_library: LegoLibrary,
+    lego_library: Any,
     cfg: Any = None,
 ) -> Tuple[float, None, None, None, None]:
     # Convert JSON → object if needed
