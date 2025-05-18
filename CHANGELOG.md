@@ -1,4 +1,20 @@
+
 # Changelog
+
+## [0.3.0] – 2025-05-17
+### Added
+- **Open‑source solver scaffold** (`backend/solver/`) introducing:
+  - `base.py` abstract `ILPSolver`
+  - `ortools_solver.py` (OR‑Tools 9.10 + HiGHS backend)
+  - Auto‑loader selecting OR‑Tools → Gurobi (if licensed) → stub
+- **Solver shim** (`backend/solver/shim.py`) that monkey‑patches
+  `legogpt.stability_analysis.stability_score`.
+- **Dependency**: added `ortools ^9.10` in `pyproject.toml`.
+- Updated docs: README, ARCHITECTURE, BACKLOG to reflect solver swap.
+
+### Fixed
+- Removed missing `LegoLibrary` import in shim to restore passing tests.
+- Pinned `src/legogpt` sub‑module to vetted commit on main.
 
 ## [0.2.0] – 2025‑05‑16
 ### Added
