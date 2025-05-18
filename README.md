@@ -1,72 +1,83 @@
+
 # Lego GPT
 
-Generate buildable LEGO® creations right from your browser.
-
-| Component            | Status   | Notes                                                       |
-|----------------------|----------|-------------------------------------------------------------|
-| Backend `/health`    | ✅ Done  | FastAPI + Poetry                                            |
-| Backend `/generate`  | ✅ Mock  | Returns PNG/LDR/brick_counts with mocked LegoGPT wrapper    |
-| Integration Tests    | ✅ Done  | `backend/tests/test_generate.py` passes with mock model     |
-| Docker Dev Stack     | ✅ Done  | `docker compose up` runs backend                            |
-| Front‑end Scaffold   | ✅ Done  | React + Vite + TypeScript shows “Hello LegoGPT”             |
-| CI Stub              | ✅ Done  | GitHub Action prints “CI alive”                             |
-| 3‑D Viewer           | ⬜ TODO  | Three.js LDrawLoader (Ticket 2.2)                           |
-| Auth & Rate‑limit    | ⬜ TODO  | Planned after core flow is solid                            |
+Generate buildable **LEGO®** creations directly from your browser.
 
 ---
 
-## Local Quick‑Start
+## 1. Overview  
+Lego GPT pairs the CMU **LegoGPT** Llama-3 1B model with a **FastAPI** inference
+gateway and a **React + Three.js** progressive-web-app (PWA).  
+The model converts natural-language prompts into **LDraw** brick assemblies,
+renders a PNG preview, and serves the `.ldr` file for 3-D manipulation or
+real-life building.
+
+&nbsp;
+
+## 2. What’s New (2025-05-17)
+| Change | Impact |
+|--------|--------|
+| 🔄 **Open-source solver** – replaced proprietary Gurobi MIP with **OR-Tools 9.10 + HiGHS**. | Runs licence-free everywhere (local dev, CI, containers). |
+| 🔌 **Auto-loader** picks the first available backend (OR-Tools → Gurobi if licence exists). | Seamless fallback; no code changes needed. |
+| 🩹 **Solver shim** monkey-patches the CMU call-site (`stability_score`). | Upstream sub-module remains untouched. |
+
+&nbsp;
+
+## 3. Quick-Start (Dev)
 
 ```bash
-git clone git@github.com:JGAVEN/Lego-GPT.git
+# Clone and set up
+git clone https://github.com/JGAVEN/Lego-GPT.git
 cd Lego-GPT
-git submodule update --init                        # pulls CMU LegoGPT code
+poetry install          # installs backend deps inc. OR-Tools
 
-# ─── Backend ───
-cd backend
-poetry install --no-root                           # installs FastAPI, Torch, etc.
-poetry run uvicorn api:app --reload                # http://localhost:8000/health
+# Launch the backend (FastAPI + solver)
+docker compose up       # http://localhost:8000/health
 
-# ─── Front‑end ───
-cd ../frontend
+# Launch the front-end
+cd frontend
 pnpm install
-pnpm dev                                           # http://localhost:5173
+pnpm dev                # http://localhost:5173
 ```
 
----
+> **Prerequisites**
+> * Docker ≥ 24, Docker Compose v2  
+> * Python 3.12 (Poetry installs a venv)  
+> * Node 18 + PNPM 8 for the React app  
 
-## Docker Dev Stack
+&nbsp;
 
-```bash
-docker compose up --build                          # builds & runs backend
-curl -X POST http://localhost:8000/generate \
-     -H "Content-Type: application/json" \
-     -d '{"text":"blue cube","seed":42}'
+## 4. Repository Layout
+
+```text
+backend/            FastAPI API + solver shim
+└── solver/         ILP interface and OR-Tools backend
+docs/               Project docs  (ARCHITECTURE, BACKLOG, CHANGELOG…)
+frontend/           React + Vite PWA scaffold
+src/legogpt/        CMU LegoGPT model (git-submodule)
+docker-compose.yml  Dev stack (backend only for now)
 ```
 
----
+&nbsp;
 
-## Project Structure
+## 5. Contributing
 
-```
-.
-├── backend/                 # FastAPI app, Poetry project
-│   ├── api.py               # routes (/health, /generate)
-│   ├── inference.py         # LegoGPT wrapper (mock)
-│   ├── tests/               # pytest suite
-│   └── static/              # generated PNG / LDR files (ignored)
-├── docs/                    # architecture & guidance
-├── frontend/                # React + Vite app
-├── src/legogpt/             # CMU LegoGPT as git-submodule
-└── docker-compose.yml       # dev stack
-```
+1. **One atomic branch per ticket** (`feature/<ticket-slug>`).  
+2. Follow `docs/BACKLOG.md` for ticket IDs and size.  
+3. Run `poetry run pytest` before pushing (CI currently checks the backend test suite).  
+4. Update `docs/CHANGELOG.md` after each merge to `main`.  
 
-See **docs/ARCHITECTURE.md** for detailed diagrams and flow.
+See `docs/CONTRIBUTING.md` for full workflow, coding style, and commit-message
+conventions.
 
----
+&nbsp;
 
-## Contributing
+## 6. Licence
 
-* Follow the *one‑step‑at‑a‑time GPT‑4o* workflow in **docs/CONTRIBUTING.md**.  
-* After each merged ticket, update docs and **CHANGELOG.md**.  
-* Keep generated artefacts out of git (`backend/static/` is ignored).
+| Component | Licence |
+|-----------|---------|
+| CMU LegoGPT sub-module (`src/legogpt/…`) | CMU licence (see sub-module `LICENSE`) |
+| All new code in this repo (backend, solver, front-end) | **MIT** |
+
+Lego® is a trademark of the LEGO Group, which does not sponsor or endorse this
+project.
