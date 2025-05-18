@@ -2,13 +2,42 @@ name: CI
 
 on:
   push:
+    branches: [ main ]
   pull_request:
+    branches: [ main ]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
-    steps:
-      - name: Say hello
-        run: echo "CI alive"
 
-    
+    steps:
+      # 1. Checkout repo
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Set up Python
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "poetry"
+
+      # 3. Install Poetry
+      - name: Install Poetry
+        run: |
+          pip install --upgrade pip
+          pip install poetry
+
+      # 4. Install dependencies (includes OR-Tools)
+      - name: Install deps
+        run: |
+          poetry install --no-interaction --no-root
+
+      # 5. Run tests
+      - name: Run pytest
+        run: |
+          poetry run pytest -q
+
+      # 6. (Optional) Build dev Docker image
+      # - name: Build Docker image
+      #   run: docker build -f Dockerfile.dev -t lego-gpt-dev .
