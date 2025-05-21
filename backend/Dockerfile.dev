@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM python:3.11-slim                 # ← bumped from 3.10 to 3.11
+FROM python:3.11-slim
 
 # ───────────────────────────────────────────────────────────────────────────────
 # 1. OS deps + Poetry
@@ -29,11 +29,14 @@ RUN poetry install --no-root --no-interaction --no-ansi
 # 3. Copy application source
 # ───────────────────────────────────────────────────────────────────────────────
 COPY . .
-COPY vendor/legogpt /app/legogpt          # main package
-COPY vendor/legogpt/data /app/legogpt/data# ensure sub-package present
+COPY vendor/legogpt /app/legogpt
+COPY vendor/legogpt/data /app/legogpt/data
 
 # ───────────────────────────────────────────────────────────────────────────────
 # 4. Runtime
 # ───────────────────────────────────────────────────────────────────────────────
 EXPOSE 8000
 CMD ["poetry", "run", "uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+
+# stub gurobipy so LegoGPT runs without Gurobi
+COPY vendor/gurobipy /app/gurobipy

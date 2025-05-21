@@ -1,35 +1,84 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
+import { useState, FormEvent } from "react";
+import { generateLego } from "./api/lego";
 
-function App() {
-  const [count, setCount] = useState(0);
+export default function App() {
+  const [prompt, setPrompt] = useState("");
+  const [seed, setSeed] = useState("");
+  const [imgSrc, setImgSrc] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+    setImgSrc(null);
+
+    try {
+      const res = await generateLego({
+        prompt,
+        seed: seed ? Number(seed) : null,
+      });
+
+      // Prefer the static URL if present; fall back to base-64
+      if ("png_url" in res && res.png_url) {
+        setImgSrc(res.png_url);
+      } else if ("png" in res && res.png) {
+        setImgSrc(`data:image/png;base64,${res.png}`);
+      } else {
+        throw new Error("Backend response lacked png data");
+      }
+    } catch (err: any) {
+      setError(err.message ?? "Unknown error");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
-    <>
-      <div className="logo-container">
-        <a href="https://vite.dev" target="_blank" rel="noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Hello LegoGPT</h1>
-      <div className="card">
-        <button onClick={() => setCount((c) => c + 1)}>
-          count is {count}
+    <main className="p-6 max-w-xl mx-auto font-sans">
+      <h1 className="text-2xl font-bold mb-4">Lego GPT Demo</h1>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block font-semibold mb-1">Prompt</label>
+          <input
+            className="w-full border rounded px-2 py-1"
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block font-semibold mb-1">Seed (optional)</label>
+          <input
+            className="w-full border rounded px-2 py-1"
+            value={seed}
+            onChange={(e) => setSeed(e.target.value)}
+            type="number"
+            min="0"
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
+          disabled={loading}
+        >
+          {loading ? "Generating…" : "Generate"}
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      </form>
+
+      {error && <p className="mt-4 text-red-600">{error}</p>}
+
+      {imgSrc && !loading && (
+        <img
+          src={imgSrc}
+          alt="Lego preview"
+          className="mt-6 w-full h-auto border"
+        />
+      )}
+    </main>
   );
 }
-
-export default App;
