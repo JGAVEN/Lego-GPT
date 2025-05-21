@@ -29,7 +29,7 @@ real-life building.
 # Clone and set up
 git clone https://github.com/JGAVEN/Lego-GPT.git
 cd Lego-GPT
-poetry install          # installs backend deps inc. OR-Tools
+./.codex/setup.sh       # installs backend deps inc. OR-Tools
 
 # Launch the backend (FastAPI + solver)
 docker compose up       # http://localhost:8000/health
@@ -64,7 +64,7 @@ docker-compose.yml  Dev stack (backend only for now)
 
 1. **One atomic branch per ticket** (`feature/<ticket-slug>`).  
 2. Follow `docs/BACKLOG.md` for ticket IDs and size.  
-3. Run `poetry run pytest` before pushing (CI currently checks the backend test suite).  
+3. Run `./.codex/setup.sh` once, then `poetry run pytest` before pushing (CI currently checks the backend test suite).
 4. Update `docs/CHANGELOG.md` after each merge to `main`.  
 
 See `docs/CONTRIBUTING.md` for full workflow, coding style, and commit-message
