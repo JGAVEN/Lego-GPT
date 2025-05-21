@@ -13,7 +13,7 @@ from .base import ILPSolver, SupportsStability
 
 
 class OrtoolsSolver(ILPSolver):
-    def __init__(self, backend: str = "HIGHs"):
+    def __init__(self, backend: str = "HIGHS"):
         # Keep a reference for future model builds
         self.backend = backend
         # Quick self-test: create a dummy solver instance

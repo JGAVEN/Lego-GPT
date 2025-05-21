@@ -1,6 +1,10 @@
 
 # Changelog
 
+## [0.3.1] – 2025-05-21
+### Fixed
+- Corrected default OR-Tools backend name to `"HIGHS"` in `ortools_solver.py`.
+
 ## [0.3.0] – 2025-05-17
 ### Added
 - **Open‑source solver scaffold** (`backend/solver/`) introducing:
