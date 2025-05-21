@@ -1,42 +1,15 @@
-# syntax=docker/dockerfile:1
 FROM python:3.11-slim
 
-# ───────────────────────────────────────────────────────────────────────────────
-# 1. OS deps + Poetry
-# ───────────────────────────────────────────────────────────────────────────────
 WORKDIR /app/backend
 
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends curl build-essential \
-  && curl -sSL https://install.python-poetry.org | python3 - \
-  && ln -s ~/.local/bin/poetry /usr/local/bin/poetry \
-  && apt-get clean && rm -rf /var/lib/apt/lists/*
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/app
 
-# Disable Poetry virtualenvs; keep bytecode off; unbuffer stdout/stderr
-ENV POETRY_VIRTUALENVS_CREATE=false \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
-# Repo root is enough for imports
-ENV PYTHONPATH=/app
-
-# ───────────────────────────────────────────────────────────────────────────────
-# 2. Copy lock/config first for Docker-layer caching
-# ───────────────────────────────────────────────────────────────────────────────
-COPY pyproject.toml poetry.lock* ./
-RUN poetry install --no-root --no-interaction --no-ansi
-
-# ───────────────────────────────────────────────────────────────────────────────
-# 3. Copy application source
-# ───────────────────────────────────────────────────────────────────────────────
 COPY . .
 COPY vendor/legogpt /app/legogpt
 COPY vendor/legogpt/data /app/legogpt/data
-
-# ───────────────────────────────────────────────────────────────────────────────
-# 4. Runtime
-# ───────────────────────────────────────────────────────────────────────────────
-EXPOSE 8000
-CMD ["poetry", "run", "uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
-
-# stub gurobipy so LegoGPT runs without Gurobi
 COPY vendor/gurobipy /app/gurobipy
+
+EXPOSE 8000
+CMD ["python", "server.py"]

@@ -1,35 +1,20 @@
-from fastapi import FastAPI
-
-app = FastAPI()
-
-@app.get("/health")
-def health():
-    return {"ok": True}
-
-from fastapi import APIRouter, Body
-from fastapi.responses import JSONResponse
+"""Minimal API functions for offline use."""
+from pathlib import Path
 from backend.inference import generate
 
+STATIC_ROOT = Path(__file__).parent / "static"
 
-router = APIRouter()
 
-@router.post("/generate")
-async def generate_lego_model(
-    prompt: str = Body(...), seed: int = Body(42)
-):
+def health() -> dict:
+    return {"ok": True}
+
+
+def generate_lego_model(prompt: str, seed: int = 42) -> dict:
     png_path, ldr_path, brick_counts = generate(prompt, seed)
-
-    static_prefix = png_path.split("static/")[-1].rsplit("/", 1)[0]
-    return JSONResponse({
-        "png_url": f"/static/{static_prefix}/preview.png",
-        "ldr_url": f"/static/{static_prefix}/model.ldr",
-        "brick_counts": brick_counts
-    })
-
-from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
-
-app = FastAPI()
-app.include_router(router)
-
-app.mount("/static", StaticFiles(directory="backend/static"), name="static")
+    rel_png = Path(png_path).resolve().relative_to(STATIC_ROOT.parent)
+    png_url = f"/static/{rel_png.parent.name}/preview.png"
+    ldr_url = None
+    if ldr_path:
+        rel_ldr = Path(ldr_path).resolve().relative_to(STATIC_ROOT.parent)
+        ldr_url = f"/static/{rel_ldr.parent.name}/model.ldr"
+    return {"png_url": png_url, "ldr_url": ldr_url, "brick_counts": brick_counts}
