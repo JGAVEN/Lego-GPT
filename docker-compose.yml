@@ -1,8 +1,9 @@
 services:
   api:
     build:
-      context: ./backend
-      dockerfile: Dockerfile.dev
+      # Build from repo root so the vendored `legogpt/` package is included
+      context: .
+      dockerfile: backend/Dockerfile.dev
     working_dir: /app/backend
     environment:
       POETRY_VIRTUALENVS_CREATE: "false"

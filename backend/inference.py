@@ -7,7 +7,6 @@ so the pipeline uses our open-source ILP backend instead of Gurobi.
 """
 from __future__ import annotations
 
-import os
 import uuid
 from pathlib import Path
 
@@ -16,8 +15,11 @@ import backend.solver.shim  # noqa: F401  (forces monkey-patch)
 MODEL = None
 
 
+# --------------------------------------------------------------------------- #
+#                              Model loading                                  #
+# --------------------------------------------------------------------------- #
 def load_model():
-    """Lazily construct and cache the LegoGPT model."""
+    """Lazily construct and cache the LegoGPT model (or stub)."""
     global MODEL
     if MODEL is None:
         from legogpt.models.legogpt import LegoGPT, LegoGPTConfig
@@ -27,14 +29,24 @@ def load_model():
     return MODEL
 
 
-def generate(prompt: str, seed: int):
+# --------------------------------------------------------------------------- #
+#                               Entry point                                   #
+# --------------------------------------------------------------------------- #
+def generate(prompt: str, seed: int | None = None):
     """
     Generate a new LEGO structure preview.
 
+    Parameters
+    ----------
+    prompt : str
+        Natural-language prompt from the user.
+    seed : int | None
+        Optional RNG seed for reproducibility.
+
     Returns
     -------
-    tuple[str, str, dict]
-        PNG path, LDraw path, and brick-count dict.
+    tuple[str, str | None, dict]
+        PNG path, optional LDraw path, and brick-count dict.
     """
     model = load_model()
     result = model.generate(prompt, seed=seed)
@@ -46,9 +58,14 @@ def generate(prompt: str, seed: int):
     png_path = output_dir / "preview.png"
     ldr_path = output_dir / "model.ldr"
 
-    with open(png_path, "wb") as f:
-        f.write(result["png"])
-    with open(ldr_path, "w") as f:
-        f.write(result["ldr"])
+    # Always save PNG
+    png_path.write_bytes(result["png"])
 
-    return str(png_path), str(ldr_path), result["brick_counts"]
+    # Save .ldr only if present
+    if result.get("ldr"):
+        ldr_path.write_text(result["ldr"])
+        ldr_path_str: str | None = str(ldr_path)
+    else:
+        ldr_path_str = None
+
+    return str(png_path), ldr_path_str, result["brick_counts"]
