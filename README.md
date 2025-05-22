@@ -30,7 +30,13 @@ real-life building.
 git clone https://github.com/JGAVEN/Lego-GPT.git
 cd Lego-GPT
 
-# Launch the backend (simple HTTP server)
+# Start Redis (local or Docker)
+# docker run -p 6379:6379 -d redis:7
+
+# Launch the RQ worker in one terminal
+python backend/worker.py
+
+# Launch the API server in another
 python backend/server.py    # http://localhost:8000/health
 ```
 

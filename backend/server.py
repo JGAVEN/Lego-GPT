@@ -1,7 +1,15 @@
-"""Tiny HTTP server exposing the Lego GPT API offline."""
+"""Tiny HTTP server exposing the Lego GPT API via an RQ queue."""
 import json
 from http.server import HTTPServer, BaseHTTPRequestHandler
-from backend.api import health, generate_lego_model, STATIC_ROOT
+from redis import Redis
+from rq import Queue, Job
+from backend.api import health, STATIC_ROOT
+from backend.worker import QUEUE_NAME, generate_job
+
+
+REDIS_URL = "redis://localhost:6379/0"
+redis_conn = Redis.from_url(REDIS_URL)
+queue = Queue(QUEUE_NAME, connection=redis_conn)
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -16,6 +24,21 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/health":
             self._send_json(health())
+            return
+        if self.path.startswith("/generate/"):
+            job_id = self.path.rsplit("/", 1)[-1]
+            try:
+                job_obj = Job.fetch(job_id, connection=redis_conn)
+            except Exception:
+                self.send_error(404)
+                return
+            if job_obj.is_finished:
+                self._send_json(job_obj.result)
+            elif job_obj.is_failed:
+                self.send_error(500, "Job failed")
+            else:
+                self.send_response(202)
+                self.end_headers()
             return
         if self.path.startswith("/static/"):
             file_path = STATIC_ROOT.parent / self.path.lstrip("/")
@@ -45,8 +68,8 @@ class Handler(BaseHTTPRequestHandler):
                 return
             prompt = payload.get("prompt", "")
             seed = payload.get("seed", 42)
-            data = generate_lego_model(prompt, seed)
-            self._send_json(data)
+            job_obj = queue.enqueue(generate_job, prompt, seed)
+            self._send_json({"job_id": job_obj.id})
             return
         self.send_error(404)
 

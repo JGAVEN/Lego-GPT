@@ -40,7 +40,7 @@ The auto-loader picks the first backend available:
 |------------|-------------------------------------------------------------------------------------------------|--------------|
 | **Front-end** | Prompt form, spinner, preview image, 3-D viewer, offline PWA shell                            | React 18, Vite, Three.js (`LDrawLoader`) |
 | **API**       | Auth, rate-limit, enqueue job, expose static file links                                       | Python http.server stub |
-| **Worker**    | Lazy-load LegoGPT, invoke `generate()`, route bricks → solver, save PNG + LDR                | Python 3.12, CUDA 12.2, HF `transformers` |
+| **Worker**    | `backend/worker.py` runs `rq` jobs, lazy-loads LegoGPT, routes bricks → solver, saves PNG + LDR | Python 3.12, CUDA 12.2, HF `transformers` |
 | **Solver**    | Verify physical stability via MIP (connectivity, gravity, overhang)                           | OR-Tools / HiGHS (default), Gurobi optional |
 | **Storage**   | Serve artifacts, 7-day TTL, promote to S3 / Cloudflare R2 in prod                             | Local `/static` → CDN later |
 
@@ -49,10 +49,10 @@ The auto-loader picks the first backend available:
 ## Data Flow
 
 1. **POST /generate** — client sends `{text, seed}`.  
-2. API validates, enqueues job → ✅ returns `job_id`.  
+2. API validates, enqueues job on the Redis/RQ queue → ✅ returns `job_id`.
 3. Worker loads LegoGPT, **calls solver shim** ➜ bricks verified.  
 4. Worker writes `preview.png` + `model.ldr` to `/static/{uuid}/`.  
-5. API responds `{png_url, ldr_url, brick_counts}` (or client polls on `job_id`).  
+5. When finished, a GET on `/generate/{job_id}` returns `{png_url, ldr_url, brick_counts}`.
 6. Client shows PNG immediately; Three.js lazily loads LDR → interactive viewer.
 
 ---
