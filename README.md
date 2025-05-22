@@ -56,7 +56,8 @@ docker-compose.yml  Dev stack (backend only for now)
 
 1. **One atomic branch per ticket** (`feature/<ticket-slug>`).  
 2. Follow `docs/BACKLOG.md` for ticket IDs and size.  
-3. Run `python -m pytest` before pushing (CI currently checks the backend test suite).
+3. Run `python -m unittest discover -v` before pushing. The test suite uses
+   Python's built-in `unittest` module—`pytest` isn’t required.
 4. Update `docs/CHANGELOG.md` after each merge to `main`.  
 
 See `docs/CONTRIBUTING.md` for full workflow, coding style, and commit-message
