@@ -1,8 +1,8 @@
+import os
+import sys
 import unittest
 from pathlib import Path
-import sys
-import os
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 # Ensure project root is importable
 project_root = Path(__file__).resolve().parents[2]
@@ -12,7 +12,7 @@ for p in (project_root, vendor_root):
         sys.path.insert(0, str(p))
 os.environ["PYTHONPATH"] = str(project_root)
 
-from backend.api import generate_lego_model
+from backend.api import generate_lego_model  # noqa: E402
 
 
 class GenerateTests(unittest.TestCase):

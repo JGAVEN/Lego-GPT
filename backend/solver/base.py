@@ -6,25 +6,24 @@ that implement `ILPSolver.solve(bricks) -> bricks`.
 """
 from __future__ import annotations
 
+import sys
+from pathlib import Path
+from abc import ABC, abstractmethod
+from typing import List, Protocol, runtime_checkable
+
 # ------------------------------------------------------------------
 # Ensure the vendored LegoGPT library is importable.
 # Repo layout: repo_root/vendor/legogpt/…
 # We insert the vendor directory so `import legogpt` works
 # from anywhere (tests, backend, worker containers, etc.).
 # ------------------------------------------------------------------
-import sys
-from pathlib import Path
-
 vendor_root = Path(__file__).resolve().parents[2] / "vendor"
 if vendor_root.exists() and str(vendor_root) not in sys.path:
     sys.path.insert(0, str(vendor_root))
 # ------------------------------------------------------------------
 
-from abc import ABC, abstractmethod
-from typing import List, Protocol, runtime_checkable
-
 # Re-use Brick dataclass from the CMU sub-module
-from legogpt.data import LegoBrick
+from legogpt.data import LegoBrick  # noqa: E402
 
 
 @runtime_checkable
