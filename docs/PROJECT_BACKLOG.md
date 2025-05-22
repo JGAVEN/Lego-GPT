@@ -9,7 +9,7 @@
 | B-04 | **M** | React API hook + PNG preview         | **Open** | Front-end calls `/generate`, show spinner |
 | B-05 | **S** | Three.js LDraw viewer                | **Blocked** | Depends on B-04 |
 | B-06 | **S** | JWT auth & rate-limit                | **Open** | Prevent abuse |
-| B-07 | **S** | GitHub Actions CI                    | **Open** | pytest + build images |
+| B-07 | **S** | GitHub Actions CI                    | **Open** | unittest + build images |
 | B-08 | **C** | AR Quick-Look export                 | **Open** | glTF pipeline |
 | B-09 | **C** | Brick inventory filter               | **Open** | Fine-tune on owned parts |
 |------|-----|---------------------------------------|--------|-------|

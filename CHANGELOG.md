@@ -1,6 +1,11 @@
 
 # Changelog
 
+## [0.3.1] – 2025-05-21
+### Changed
+- Docs now instruct running tests with `python -m unittest discover -v` as the
+  project doesn’t rely on `pytest`.
+
 ## [0.3.0] – 2025-05-17
 ### Added
 - **Open‑source solver scaffold** (`backend/solver/`) introducing:
