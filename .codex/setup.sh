@@ -6,5 +6,5 @@ if [ -f .gitmodules ]; then
   git submodule update --init --recursive
 fi
 
-# Dependencies are assumed to be present in the Codex environment
-echo "Skipping dependency installation (offline mode)"
+# Install OR-Tools before network access is disabled
+python -m pip install --no-cache-dir ortools
