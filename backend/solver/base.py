@@ -1,7 +1,7 @@
 """
 Unified interface for any LEGO stability MIP backend.
 
-Add concrete back-ends (e.g. `ortools_solver.py`, `gurobi_solver.py`)
+Add concrete back-ends (e.g. `ortools_solver.py`)
 that implement `ILPSolver.solve(bricks) -> bricks`.
 """
 from __future__ import annotations

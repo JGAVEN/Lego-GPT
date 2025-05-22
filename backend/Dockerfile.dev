@@ -9,7 +9,6 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 COPY . .
 COPY vendor/legogpt /app/legogpt
 COPY vendor/legogpt/data /app/legogpt/data
-COPY vendor/gurobipy /app/gurobipy
 
 EXPOSE 8000
 CMD ["python", "server.py"]

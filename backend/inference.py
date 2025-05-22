@@ -3,7 +3,7 @@ Backend façade that wraps the LegoGPT model and handles disk output.
 
 `backend.solver.shim` is imported *solely* for its side-effect:
 it monkey-patches `legogpt.stability_analysis.stability_score`
-so the pipeline uses our open-source ILP backend instead of Gurobi.
+so the pipeline uses our open-source ILP backend.
 """
 from __future__ import annotations
 

@@ -1,8 +1,8 @@
 """
 Drop-in replacement for `legogpt.stability_analysis.stability_score`.
 
-For now it returns a perfect score so the pipeline keeps working
-without Gurobi.  In a later commit we’ll call the real OR-Tools MIP.
+For now it returns a perfect score so the pipeline keeps working.
+In a later commit we’ll call the real OR-Tools MIP.
 """
 from __future__ import annotations
 
