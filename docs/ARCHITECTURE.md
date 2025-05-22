@@ -3,7 +3,7 @@
 
 ```
 ┌──────────────┐   HTTPS POST /generate   ┌────────────────────────────────────────┐
-│  PWA Client  │◄────────────────────────►│   FastAPI Gateway (API)                │
+│  PWA Client  │◄────────────────────────►│   HTTP Gateway (API)                │
 │  React +     │                          │   • JWT auth (future)                 │
 │  Three.js    │ PNG preview + .ldr file  │   • Task queue (Redis / RQ)           │
 └────▲─────────┘                          │   • Solver shim import (side-effect)  │
@@ -39,7 +39,7 @@ The auto-loader picks the first backend available:
 | Layer      | Responsibility                                                                                 | Tech / Notes |
 |------------|-------------------------------------------------------------------------------------------------|--------------|
 | **Front-end** | Prompt form, spinner, preview image, 3-D viewer, offline PWA shell                            | React 18, Vite, Three.js (`LDrawLoader`) |
-| **API**       | Auth, rate-limit, enqueue job, expose static file links                                       | FastAPI, Pydantic, Redis-RQ (future Celery) |
+| **API**       | Auth, rate-limit, enqueue job, expose static file links                                       | Python http.server stub |
 | **Worker**    | Lazy-load LegoGPT, invoke `generate()`, route bricks → solver, save PNG + LDR                | Python 3.12, CUDA 12.2, HF `transformers` |
 | **Solver**    | Verify physical stability via MIP (connectivity, gravity, overhang)                           | OR-Tools / HiGHS (default), Gurobi optional |
 | **Storage**   | Serve artifacts, 7-day TTL, promote to S3 / Cloudflare R2 in prod                             | Local `/static` → CDN later |

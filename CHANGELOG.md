@@ -14,7 +14,7 @@
 
 ### Fixed
 - Removed missing `LegoLibrary` import in shim to restore passing tests.
-- Pinned `src/legogpt` sub‑module to vetted commit on main.
+ - Vendored `legogpt` library under `vendor/`.
 
 ## [0.2.0] – 2025‑05‑16
 ### Added

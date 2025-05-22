@@ -7,17 +7,17 @@ that implement `ILPSolver.solve(bricks) -> bricks`.
 from __future__ import annotations
 
 # ------------------------------------------------------------------
-# Ensure the CMU LegoGPT sub-module is importable
-# Repo layout: repo_root/src/legogpt/src/legogpt/…
-# We insert the inner "src" dir into sys.path so `import legogpt` works
+# Ensure the vendored LegoGPT library is importable.
+# Repo layout: repo_root/vendor/legogpt/…
+# We insert the vendor directory so `import legogpt` works
 # from anywhere (tests, backend, worker containers, etc.).
 # ------------------------------------------------------------------
 import sys
 from pathlib import Path
 
-submodule_root = Path(__file__).resolve().parents[2] / "src" / "legogpt" / "src"
-if submodule_root.exists() and str(submodule_root) not in sys.path:
-    sys.path.insert(0, str(submodule_root))
+vendor_root = Path(__file__).resolve().parents[2] / "vendor"
+if vendor_root.exists() and str(vendor_root) not in sys.path:
+    sys.path.insert(0, str(vendor_root))
 # ------------------------------------------------------------------
 
 from abc import ABC, abstractmethod
