@@ -1,6 +1,14 @@
 
 # Changelog
 
+## [0.3.2] – 2025-05-23
+### Added
+- Minimal OR-Tools solver implementing gravity and overhang constraints with
+  a pure-Python fallback when OR-Tools is unavailable.
+- Solver shim now loads the first available backend and returns a real
+  stability score.
+- New unit tests covering solver behaviour on simple structures.
+
 ## [0.3.1] – 2025-05-21
 ### Changed
 - Docs now instruct running tests with `python -m unittest discover -v` as the
