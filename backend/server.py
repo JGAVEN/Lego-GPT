@@ -1,7 +1,6 @@
 """Tiny HTTP server exposing the Lego GPT API offline."""
 import json
 from http.server import HTTPServer, BaseHTTPRequestHandler
-from pathlib import Path
 from backend.api import health, generate_lego_model, STATIC_ROOT
 
 
