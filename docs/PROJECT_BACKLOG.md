@@ -12,7 +12,7 @@
 | B-07 | **S** | GitHub Actions CI                    | **Open** | unittest + build images |
 | B-08 | **C** | AR Quick-Look export                 | **Open** | glTF pipeline |
 | B-09 | **C** | Brick inventory filter               | **Open** | Fine-tune on owned parts |
-| B-10 | **M** | Add MIT licence text                 | **Open** | Root `LICENSE` empty, vendor missing |
+| B-10 | **M** | Add MIT licence text                 | **Done** | Root and vendor licence files added |
 | B-11 | **M** | Align API contract                   | **Open** | Front-end expects `{png, ldr}`, backend returns `{png_url, ldr_url, brick_counts}` |
 |------|-----|---------------------------------------|--------|-------|
 | S-10 | **M** | Introduce `ILPSolver` interface & refactor | **Done** | Branch `feature/solver-refactor` |
@@ -24,4 +24,4 @@
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.
 
-_Last updated 2025-05-21_
+_Last updated 2025-05-22_
