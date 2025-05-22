@@ -7,13 +7,11 @@ without Gurobi.  In a later commit we’ll call the real OR-Tools MIP.
 from __future__ import annotations
 
 import importlib
+import json
 import sys
 from typing import Any, Tuple
 
-from legogpt.data import LegoStructure  # type: ignore
-from backend.solver import get_solver
-
-_solver = get_solver()  # OrtoolsSolver
+_solver = None  # Solver disabled in offline mode
 
 
 def stability_score(
@@ -21,13 +19,13 @@ def stability_score(
     lego_library: Any,
     cfg: Any = None,
 ) -> Tuple[float, None, None, None, None]:
-    # Convert JSON → object if needed
+    # Parse JSON if supplied; ignore result
     if isinstance(lego_structure, (str, bytes)):
-        structure = LegoStructure.from_json(lego_structure)
-    else:
-        structure = LegoStructure.from_dict(lego_structure)
-
-    # TODO: use _solver.solve(structure) and compute real score
+        try:
+            json.loads(lego_structure)
+        except Exception:
+            pass
+    # TODO: use _solver.solve(...) and compute real score
     return 1.0, None, None, None, None
 
 

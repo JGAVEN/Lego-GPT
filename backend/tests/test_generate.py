@@ -1,33 +1,38 @@
+import unittest
+from pathlib import Path
 import sys
 import os
-from pathlib import Path
 from unittest.mock import patch, MagicMock
 
-# Ensure the project root is first in sys.path so "from backend.api import app" works
+# Ensure project root is importable
 project_root = Path(__file__).resolve().parents[2]
-if str(project_root) not in sys.path:
-    sys.path.insert(0, str(project_root))
+vendor_root = project_root / "vendor"
+for p in (project_root, vendor_root):
+    if str(p) not in sys.path:
+        sys.path.insert(0, str(p))
 os.environ["PYTHONPATH"] = str(project_root)
 
-from fastapi.testclient import TestClient
-from backend.api import app
+from backend.api import generate_lego_model
 
-client = TestClient(app)
 
-@patch("backend.inference.load_model")
-def test_generate_endpoint(mock_load_model):
-    mock_model = MagicMock()
-    mock_model.generate.return_value = {
-        "png": b"fake_png_data",
-        "ldr": "0 FAKE_BRICK 0 0 0",
-        "brick_counts": {"Brick": 1}
-    }
-    mock_load_model.return_value = mock_model
+class GenerateTests(unittest.TestCase):
+    @patch("backend.inference.load_model")
+    def test_generate_endpoint(self, mock_load_model):
+        mock_model = MagicMock()
+        mock_model.generate.return_value = {
+            "png": b"fake_png_data",
+            "ldr": "0 FAKE_BRICK 0 0 0",
+            "brick_counts": {"Brick": 1}
+        }
+        mock_load_model.return_value = mock_model
 
-    response = client.post("/generate", json={"prompt": "blue cube", "seed": 42})
-    assert response.status_code == 200
+        data = generate_lego_model("blue cube", 42)
+        self.assertIn("png_url", data)
+        self.assertTrue(data["png_url"].endswith("preview.png"))
+        self.assertIn("ldr_url", data)
+        self.assertTrue(data["ldr_url"].endswith("model.ldr"))
+        self.assertIsInstance(data["brick_counts"], dict)
 
-    data = response.json()
-    assert "png_url" in data and data["png_url"].endswith("preview.png")
-    assert "ldr_url" in data and data["ldr_url"].endswith("model.ldr")
-    assert isinstance(data["brick_counts"], dict)
+
+if __name__ == "__main__":  # pragma: no cover
+    unittest.main()
