@@ -20,14 +20,7 @@ export default function App() {
         seed: seed ? Number(seed) : null,
       });
 
-      // Prefer the static URL if present; fall back to base-64
-      if ("png_url" in res && res.png_url) {
-        setImgSrc(res.png_url);
-      } else if ("png" in res && res.png) {
-        setImgSrc(`data:image/png;base64,${res.png}`);
-      } else {
-        throw new Error("Backend response lacked png data");
-      }
+      setImgSrc(res.png_url);
     } catch (err: any) {
       setError(err.message ?? "Unknown error");
     } finally {
