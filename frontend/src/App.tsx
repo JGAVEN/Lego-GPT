@@ -1,31 +1,21 @@
 import { useState, FormEvent } from "react";
-import { generateLego } from "./api/lego";
+import useGenerate from "./api/useGenerate";
 
 export default function App() {
   const [prompt, setPrompt] = useState("");
   const [seed, setSeed] = useState("");
-  const [imgSrc, setImgSrc] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [request, setRequest] = useState<{ p: string; s: number | null } | null>(
+    null
+  );
 
-  async function handleSubmit(e: FormEvent) {
+  const { data, loading, error } = useGenerate(
+    request?.p ?? null,
+    request?.s ?? null
+  );
+
+  function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    setError(null);
-    setLoading(true);
-    setImgSrc(null);
-
-    try {
-      const res = await generateLego({
-        prompt,
-        seed: seed ? Number(seed) : null,
-      });
-
-      setImgSrc(res.png_url);
-    } catch (err: any) {
-      setError(err.message ?? "Unknown error");
-    } finally {
-      setLoading(false);
-    }
+    setRequest({ p: prompt, s: seed ? Number(seed) : null });
   }
 
   return (
@@ -65,9 +55,9 @@ export default function App() {
 
       {error && <p className="mt-4 text-red-600">{error}</p>}
 
-      {imgSrc && !loading && (
+      {data?.png_url && !loading && (
         <img
-          src={imgSrc}
+          src={data.png_url}
           alt="Lego preview"
           className="mt-6 w-full h-auto border"
         />
