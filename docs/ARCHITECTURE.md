@@ -48,10 +48,10 @@ The auto-loader picks the first backend available:
 
 ## Data Flow
 
-1. **POST /generate** — client sends `{text, seed}`.  
+1. **POST /generate** — client sends `{prompt, seed}`.
 2. API validates, enqueues job on the Redis/RQ queue → ✅ returns `job_id`.
-3. Worker loads LegoGPT, **calls solver shim** ➜ bricks verified.  
-4. Worker writes `preview.png` + `model.ldr` to `/static/{uuid}/`.  
+3. Worker loads LegoGPT, **calls solver shim** ➜ bricks verified.
+4. Worker writes `preview.png` + `model.ldr` to `/static/{uuid}/`.
 5. When finished, a GET on `/generate/{job_id}` returns `{png_url, ldr_url, brick_counts}`.
 6. Client shows PNG immediately; Three.js lazily loads LDR → interactive viewer.
 

@@ -66,7 +66,13 @@ docker-compose.yml  Dev stack (backend only for now)
 { "prompt": "text description", "seed": 42 }
 ```
 
-It returns direct links to the generated assets:
+It returns a job handle:
+
+```json
+{ "job_id": "c0ffee" }
+```
+
+Poll the job via `GET /generate/{job_id}` to receive the asset links:
 
 ```json
 {
