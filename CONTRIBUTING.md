@@ -23,6 +23,8 @@ This project is developed by a **human owner (Jeff) plus ChatGPT‑4o “dev age
 brew install git gh docker --cask docker docker-compose node@20 pnpm
 git clone git@github.com:JGAVEN/Lego-GPT.git
 cd Lego-GPT && git submodule update --init
+pnpm install --dir frontend
+python -m pip install --editable ./backend
 ```
 
 See **docs/ARCHITECTURE.md** for more details.

@@ -89,11 +89,13 @@ The `png_url` can be shown directly in an `<img>` tag. The optional
 
 ## 6. Contributing
 
-1. **One atomic branch per ticket** (`feature/<ticket-slug>`).  
-2. Follow `docs/BACKLOG.md` for ticket IDs and size.  
-3. Run `python -m unittest discover -v` before pushing. The test suite uses
-   Python's built-in `unittest` module—`pytest` isn’t required.
-4. Update `docs/CHANGELOG.md` after each merge to `main`.  
+1. **One atomic branch per ticket** (`feature/<ticket-slug>`).
+2. Follow `docs/BACKLOG.md` for ticket IDs and size.
+3. Install front-end dependencies with `pnpm install` (run inside `frontend/`)
+   before running `npm run lint`.
+4. Run `python -m unittest discover -v` before pushing. The test suite uses
+   Python's built-in `unittest` module—no need for `pytest`.
+5. Update `docs/CHANGELOG.md` after each merge to `main`.
 
 See `docs/CONTRIBUTING.md` for full workflow, coding style, and commit-message
 conventions.
