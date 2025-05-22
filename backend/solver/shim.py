@@ -25,19 +25,24 @@ def stability_score(
     lego_library: Any,
     cfg: Any = None,
 ) -> Tuple[float, None, None, None, None]:
-    # Parse JSON if supplied and run solver if available
+    """Return a simple stability score using the OR-Tools solver if available."""
     try:
         if isinstance(lego_structure, (str, bytes)):
             lego_data = json.loads(lego_structure)
         else:
             lego_data = lego_structure
+
         if _solver is not None and isinstance(lego_data, dict):
             structure = LegoStructure.from_json(lego_data)
-            _solver.solve(structure)
+            stable = _solver.solve(structure)
+            if structure.bricks:
+                score = len(stable.bricks) / len(structure.bricks)
+            else:
+                score = 1.0
+            return float(score), None, None, None, stable
     except Exception:  # pragma: no cover - keep dummy behaviour on parse errors
         pass
 
-    # Still return a dummy perfect score for compatibility
     return 1.0, None, None, None, None
 
 

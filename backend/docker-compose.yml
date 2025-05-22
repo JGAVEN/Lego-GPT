@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile.dev
     working_dir: /app/backend
     volumes:
-      - ./backend:/app/backend
+      - .:/app/backend
     ports:
       - "8000:8000"
     command: python server.py

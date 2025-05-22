@@ -6,10 +6,12 @@ STATIC_ROOT = Path(__file__).parent / "static"
 
 
 def health() -> dict:
+    """Simple liveness check used by the HTTP server."""
     return {"ok": True}
 
 
 def generate_lego_model(prompt: str, seed: int = 42) -> dict:
+    """Run the model and return URLs for the generated preview and LDraw file."""
     png_path, ldr_path, brick_counts = generate(prompt, seed)
     rel_png = Path(png_path).resolve().relative_to(STATIC_ROOT.parent)
     png_url = f"/static/{rel_png.parent.name}/preview.png"

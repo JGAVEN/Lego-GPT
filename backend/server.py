@@ -1,13 +1,14 @@
 """Tiny HTTP server exposing the Lego GPT API via an RQ queue."""
 import json
 from http.server import HTTPServer, BaseHTTPRequestHandler
+import os
 from redis import Redis
 from rq import Queue, Job
 from backend.api import health, STATIC_ROOT
 from backend.worker import QUEUE_NAME, generate_job
 
 
-REDIS_URL = "redis://localhost:6379/0"
+REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
 redis_conn = Redis.from_url(REDIS_URL)
 queue = Queue(QUEUE_NAME, connection=redis_conn)
 
@@ -75,6 +76,7 @@ class Handler(BaseHTTPRequestHandler):
 
 
 def run(host: str = "0.0.0.0", port: int = 8000):
+    """Start the HTTP API server."""
     server = HTTPServer((host, port), Handler)
     print(f"Serving on http://{host}:{port}")
     server.serve_forever()
