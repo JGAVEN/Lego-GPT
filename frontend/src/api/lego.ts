@@ -4,8 +4,9 @@ export interface GenerateRequest {
 }
 
 export interface GenerateResponse {
-  png: string;          // base-64 PNG
-  ldr?: string;         // reserved for future use
+  png_url: string;
+  ldr_url: string | null;
+  brick_counts: Record<string, number>;
 }
 
 export async function generateLego(

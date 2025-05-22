@@ -52,7 +52,30 @@ docker-compose.yml  Dev stack (backend only for now)
 
 &nbsp;
 
-## 5. Contributing
+## 5. API Contract
+
+`POST /generate` accepts a JSON body:
+
+```json
+{ "prompt": "text description", "seed": 42 }
+```
+
+It returns direct links to the generated assets:
+
+```json
+{
+  "png_url": "/static/{uuid}/preview.png",
+  "ldr_url": "/static/{uuid}/model.ldr",  // may be null
+  "brick_counts": { "Brick 2 x 4": 12 }
+}
+```
+
+The `png_url` can be shown directly in an `<img>` tag. The optional
+`ldr_url` is for future Three.js viewing.
+
+&nbsp;
+
+## 6. Contributing
 
 1. **One atomic branch per ticket** (`feature/<ticket-slug>`).  
 2. Follow `docs/BACKLOG.md` for ticket IDs and size.  
@@ -65,7 +88,7 @@ conventions.
 
 &nbsp;
 
-## 6. Licence
+## 7. Licence
 
 | Component | Licence |
 |-----------|---------|
