@@ -1,6 +1,10 @@
 
 # Changelog
 
+## [0.3.2] – 2025-05-22
+### Added
+- Local `vendor/rq` and `vendor/redis` stubs allow tests to run offline.
+
 ## [0.3.1] – 2025-05-21
 ### Changed
 - Docs now instruct running tests with `python -m unittest discover -v` as the
