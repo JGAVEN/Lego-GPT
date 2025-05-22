@@ -8,7 +8,6 @@ Usage:
 
 The loader preference order is:
 1. OrtoolsSolver (HiGHS / CBC – MIT)
-2. GurobiSolver   (commercial, optional – not yet implemented here)
 
 If no backend is available, `RuntimeError` is raised.
 """
@@ -19,7 +18,6 @@ from .base import ILPSolver
 
 _CANDIDATES: list[tuple[str, str]] = [
     ("backend.solver.ortools_solver", "OrtoolsSolver"),
-    # ("backend.solver.gurobi_solver", "GurobiSolver"),  # future
 ]
 
 
