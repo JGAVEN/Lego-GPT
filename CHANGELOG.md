@@ -1,5 +1,10 @@
 ## Unreleased
 
+## [0.5.4] – 2025-05-31
+### Changed
+* `STATIC_ROOT` can now be set via environment variable to control where
+  generated assets are written.
+
 ## [0.5.3] – 2025-05-30
 ### Added
 * Dev container setup installs backend dependencies including fakeredis for tests.
