@@ -141,7 +141,8 @@ pass it to the `LDrawViewer` React component for interactive viewing.
 ### Detect Brick Inventory
 
 `POST /detect_inventory` expects `{ "image": "<base64>" }` with a **valid**
-base64 string and returns `{ "job_id": "xyz" }`. Poll
+base64 string and returns `{ "job_id": "xyz" }`. Invalid base64 yields
+`HTTP 400`. Poll
 `GET /detect_inventory/{job_id}` for the result:
 
 ```json

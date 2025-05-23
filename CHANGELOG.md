@@ -15,8 +15,8 @@
 
 ### Changed
 * Updated architecture and backlog documentation.
-* `/detect_inventory` now validates base64 input and returns HTTP 400 if
-  malformed.
+* `/detect_inventory` endpoint now validates base64 input server-side and
+  returns `HTTP 400` if malformed.
 * Pinned pnpm version to 10.5.2 for offline setup reliability.
 * Dev Docker images now install backend dependencies automatically.
 
