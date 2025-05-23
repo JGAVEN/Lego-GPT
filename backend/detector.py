@@ -10,6 +10,14 @@ import base64
 from typing import Dict
 
 
+def _validate_base64(data: str) -> None:
+    """Ensure *data* is valid base64 or raise ``ValueError``."""
+    try:
+        base64.b64decode(data, validate=True)
+    except Exception as exc:  # pragma: no cover - sanity check
+        raise ValueError("invalid base64 image data") from exc
+
+
 def detect_inventory(image_data: bytes | str) -> Dict[str, int]:
     """Return a fake brick inventory map from a photo.
 
@@ -21,9 +29,9 @@ def detect_inventory(image_data: bytes | str) -> Dict[str, int]:
         dictionary for tests.
     """
     if isinstance(image_data, str):
-        try:
-            base64.b64decode(image_data)
-        except Exception:
-            pass
+        _validate_base64(image_data)
+    else:
+        image_data = base64.b64encode(image_data).decode()
+        _validate_base64(image_data)
     # TODO: integrate real YOLOv8 detection here
     return {"3001.DAT": 1}

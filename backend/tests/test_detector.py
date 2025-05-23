@@ -16,12 +16,16 @@ from backend.worker import detect_job
 
 class DetectorTests(unittest.TestCase):
     def test_detect_inventory_stub(self):
-        counts = detect_inventory("abc")
+        counts = detect_inventory("YWJj")
         self.assertIsInstance(counts, dict)
         self.assertIn("3001.DAT", counts)
 
+    def test_invalid_base64_raises(self):
+        with self.assertRaises(ValueError):
+            detect_inventory("@@invalid@@")
+
     def test_detect_job(self):
-        result = detect_job("abc")
+        result = detect_job("YWJj")
         self.assertIn("brick_counts", result)
         self.assertIsInstance(result["brick_counts"], dict)
 

@@ -80,6 +80,9 @@ _Last updated 2025-05-26_
 
 Adds a YOLOv8‑based computer‑vision worker that converts user‑supplied photos into an inventory map `{ part_id: count }`. The gateway exposes `/detect_inventory`, and the PWA includes an `InventoryScanner` component (hook `useDetectInventory`) so users can upload a photo, review the detected parts list and generate a model constrained to their bricks.
 
+The API validates that the `image` field contains a valid base64 string and
+returns HTTP 400 for malformed data.
+
 The worker lives in the top-level `detector/` directory and can run as a standalone
 micro-service via `detector/Dockerfile.dev`.
 
