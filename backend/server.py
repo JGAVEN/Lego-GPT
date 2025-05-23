@@ -9,6 +9,7 @@ from rq import Queue, Job
 from backend.api import health, STATIC_ROOT
 from backend.worker import QUEUE_NAME, generate_job, detect_job
 from backend.auth import decode as decode_jwt
+from backend import __version__
 
 
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
@@ -197,7 +198,15 @@ def main() -> None:
         default=int(os.getenv("PORT", "8000")),
         help="Port number (default: 8000 or PORT env var)",
     )
+    parser.add_argument(
+        "--version",
+        action="store_true",
+        help="Print backend version and exit",
+    )
     args = parser.parse_args()
+    if args.version:
+        print(__version__)
+        return
     run(args.host, args.port)
 
 
