@@ -5,6 +5,7 @@
 * `/detect_inventory` endpoint implementation with stub worker and tests.
 * Declared `ortools` dependency in `backend/pyproject.toml`.
 * `inventory_filter` payload option for `/generate` to limit bricks per request.
+* React `InventoryScanner` component and `useDetectInventory` hook.
 
 ### Changed
 * Updated architecture and backlog documentation.

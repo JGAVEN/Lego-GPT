@@ -52,6 +52,9 @@ python - <<'EOF'
 from backend.auth import encode
 print(encode({"sub": "dev"}, "mysecret"))
 EOF
+
+# Start the front-end PWA
+pnpm --dir frontend run dev    # http://localhost:5173
 ```
 
 > **Prerequisites**
@@ -103,6 +106,17 @@ Poll the job via `GET /generate/{job_id}` to receive the asset links:
 
 The `png_url` can be shown directly in an `<img>` tag. If `ldr_url` is present,
 pass it to the `LDrawViewer` React component for interactive viewing.
+
+### Detect Brick Inventory
+
+`POST /detect_inventory` expects `{ "image": "<base64>" }` and returns
+`{ "job_id": "xyz" }`. Poll `GET /detect_inventory/{job_id}` for the result:
+
+```json
+{ "brick_counts": { "3001.DAT": 2 } }
+```
+
+Use the counts as the `inventory_filter` in `/generate` requests.
 
 Default rate limit is `5` generate requests per token per minute (configurable via `RATE_LIMIT`).
 
