@@ -14,12 +14,17 @@ if pnpm install --offline; then
   exit 0
 fi
 
-echo "Offline install failed – fetching packages from registry..."
+echo "Offline install failed – attempting to fetch packages from registry..."
 if curl -I --max-time 5 https://registry.npmjs.org >/dev/null 2>&1; then
   pnpm fetch --prod=false
   pnpm install --offline
   echo "Front-end dependencies installed."
-else
-  echo "Network unavailable. Connect to the internet and re-run this script." >&2
-  exit 1
+  exit 0
 fi
+
+cat >&2 <<'EOF'
+Network unavailable and the pnpm store is missing required packages.
+Run this script once with network access to populate the store.
+See README.md for details.
+EOF
+exit 1
