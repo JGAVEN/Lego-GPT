@@ -9,6 +9,14 @@ export default defineConfig({
         target: "http://localhost:8000",
         changeOrigin: true,
       },
+      "/detect_inventory": {
+        target: "http://localhost:8000",
+        changeOrigin: true,
+      },
+      "/static": {
+        target: "http://localhost:8000",
+        changeOrigin: true,
+      },
     },
   },
 });

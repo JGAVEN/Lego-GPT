@@ -70,6 +70,10 @@ python scripts/generate_jwt.py --secret mysecret --sub dev
 pnpm --dir frontend run dev    # http://localhost:5173
 ```
 
+The Vite dev server proxies `/generate`, `/detect_inventory`, and `/static`
+requests to `http://localhost:8000` so the PWA works against your local backend
+without CORS issues.
+
 ### Docker Compose
 
 Alternatively, start the API and detector workers in Docker containers. The
