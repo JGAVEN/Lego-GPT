@@ -6,10 +6,10 @@
 | B-01 | **M** | Dockerise backend & worker           | **Done** | GPU-aware image, `docker compose dev` |
 | B-02 | **M** | React PWA scaffold                   | **Done** | Vite + Tailwind, SW cache |
 | B-03 | **M** | `/generate` endpoint                 | **Done** | Async job queue, return URLs |
-| B-04 | **M** | React API hook + PNG preview         | **Open** | Front-end calls `/generate`, show spinner |
+| B-04 | **M** | React API hook + PNG preview         | **Done** | Front-end calls `/generate`, shows preview |
 | B-05 | **S** | Three.js LDraw viewer                | **Blocked** | Depends on B-04 |
 | B-06 | **S** | JWT auth & rate-limit                | **Open** | Prevent abuse |
-| B-07 | **S** | GitHub Actions CI                    | **Open** | unittest + build images |
+| B-07 | **S** | GitHub Actions CI                    | **Done** | unittest + build images |
 | B-08 | **C** | AR Quick-Look export                 | **Open** | glTF pipeline |
 | B-09 | **C** | Brick inventory filter               | **Open** | Fine-tune on owned parts |
 | B-10 | **M** | Add MIT licence text                 | **Done** | Root and vendor licence files added |
