@@ -177,7 +177,7 @@ Default rate limit is `5` generate requests per token per minute (configurable v
    explaining that the pnpm store is missing.
    Run `npm run lint` after editing UI code. CI also runs this lint step automatically.
 4. Run `python -m unittest discover -v` before pushing. The test suite uses
-   Python's built-in `unittest` module—no need for `pytest`.
+   Python's built-in `unittest` module. `pytest` is optional and works too.
 5. Update `docs/CHANGELOG.md` after each merge to `main`.
 
 See `docs/CONTRIBUTING.md` for full workflow, coding style, and commit-message
