@@ -181,5 +181,25 @@ def run(host: str = "0.0.0.0", port: int = 8000):
     server.serve_forever()
 
 
-if __name__ == "__main__":
-    run()
+def main() -> None:
+    """Parse CLI args and run the HTTP server."""
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Run Lego GPT API server")
+    parser.add_argument(
+        "--host",
+        default=os.getenv("HOST", "0.0.0.0"),
+        help="Host interface to bind (default: 0.0.0.0 or HOST env var)",
+    )
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=int(os.getenv("PORT", "8000")),
+        help="Port number (default: 8000 or PORT env var)",
+    )
+    args = parser.parse_args()
+    run(args.host, args.port)
+
+
+if __name__ == "__main__":  # pragma: no cover - CLI entry point
+    main()
