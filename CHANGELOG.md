@@ -1,6 +1,12 @@
 
 # Changelog
 
+## [0.3.7] – 2025-05-23
+### Added
+- Setup script now installs front-end packages via PNPM before network access is disabled.
+### Changed
+- Docs updated to note automatic PNPM install and offline setup.
+
 ## [0.3.6] – 2025-05-23
 ### Added
 - Three.js LDraw viewer component loads `.ldr` output when available.
