@@ -1,9 +1,7 @@
 """Minimal API functions for offline use."""
 from pathlib import Path
 from backend.inference import generate
-from backend import __version__
-
-STATIC_ROOT = Path(__file__).parent / "static"
+from backend import __version__, STATIC_ROOT
 
 
 def health() -> dict:
