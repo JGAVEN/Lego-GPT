@@ -87,6 +87,13 @@ standalone micro‑service via `detector/Dockerfile.dev`. Start it locally with 
 `lego-detect-worker` console script. The dev Dockerfiles install all backend
 dependencies so the container starts without extra setup.
 
+Use the companion `lego-detect-train` script to fine‑tune the YOLOv8
+model when a labelled dataset is available:
+
+```bash
+lego-detect-train data.yaml --epochs 100 --out detector/model.pt
+```
+
 Set the `DETECTOR_MODEL` environment variable to the path of the YOLOv8
 weights file.  If the variable is unset or the `ultralytics` package is
 missing the worker falls back to a small stub that returns a fixed

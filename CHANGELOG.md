@@ -1,5 +1,11 @@
 ## Unreleased
 
+## [0.5.4] – 2025-05-31
+### Added
+* `lego-detect-train` script to fine-tune the YOLOv8 brick detector.
+### Changed
+* Project version bumped to 0.5.4.
+
 ## [0.5.3] – 2025-05-30
 ### Added
 * Dev container setup installs backend dependencies including fakeredis for tests.
