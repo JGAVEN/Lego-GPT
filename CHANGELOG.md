@@ -9,6 +9,7 @@
 * Optional `fakeredis` dependency for running queue tests
 * `detector/` micro-service and Dockerfile for inventory detection
 * GitHub Actions CI lints front-end code with pnpm
+* `scripts/setup_frontend.sh` installs UI dependencies for offline use
 
 ### Changed
 * Updated architecture and backlog documentation.
