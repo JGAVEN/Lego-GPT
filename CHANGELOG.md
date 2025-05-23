@@ -83,7 +83,7 @@
 - **Open‑source solver scaffold** (`backend/solver/`) introducing:
   - `base.py` abstract `ILPSolver`
   - `ortools_solver.py` (OR‑Tools 9.10 + HiGHS backend)
-  - Auto‑loader selecting OR‑Tools → Gurobi (if licensed) → stub
+  - Auto‑loader selecting OR‑Tools → stub when unavailable
 - **Solver shim** (`backend/solver/shim.py`) that monkey‑patches
   `legogpt.stability_analysis.stability_score`.
 - **Dependency**: added `ortools ^9.10` in `pyproject.toml`.
