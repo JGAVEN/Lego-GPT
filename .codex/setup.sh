@@ -9,6 +9,10 @@ fi
 # Install Python dependencies before network access is disabled
 python -m pip install --no-cache-dir ortools redis rq
 
+# Install pnpm for front-end package management
+corepack enable
+corepack prepare pnpm@10.11.0 --activate
+
 # Pre-fetch front-end packages while network access is available
 pnpm fetch --prod=false --dir frontend
 # Install using the cached packages once network access is removed

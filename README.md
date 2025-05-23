@@ -36,6 +36,9 @@ real-life building via a built-in Three.js viewer.
 git clone https://github.com/JGAVEN/Lego-GPT.git
 cd Lego-GPT
 
+# Install pnpm (requires Node.js)
+npm install -g pnpm
+
 # Install backend dependencies (including optional test tools)
 python -m pip install --editable ./backend[test]
 
@@ -64,6 +67,8 @@ pnpm --dir frontend run dev    # http://localhost:5173
 
 > **Prerequisites**
 > * Python 3.11+
+> * Node.js 18+
+> * pnpm package manager
 
 &nbsp;
 
