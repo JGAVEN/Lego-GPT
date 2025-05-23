@@ -12,6 +12,7 @@
 * `scripts/setup_frontend.sh` installs UI dependencies for offline use
 * Setup script now retries offline install before fetching packages
 * Clearer message when the pnpm store lacks packages and no network is available
+* `scripts/generate_jwt.py` helper for creating auth tokens
 
 ### Changed
 * Updated architecture and backlog documentation.
