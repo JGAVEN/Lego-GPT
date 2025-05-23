@@ -50,6 +50,7 @@ npm install -g pnpm@10.5.2
 
 # Install backend dependencies (including optional test tools)
 python -m pip install --editable ./backend[test]
+# The dev container's setup script runs this automatically.
 
 # Start Redis (local or Docker)
 # docker run -p 6379:6379 -d redis:7

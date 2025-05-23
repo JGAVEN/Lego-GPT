@@ -6,8 +6,8 @@ if [ -f .gitmodules ]; then
   git submodule update --init --recursive
 fi
 
-# Install Python dependencies before network access is disabled
-python -m pip install --no-cache-dir ortools redis rq || \
+# Install backend dependencies (including fakeredis for tests)
+python -m pip install --no-cache-dir -e ./backend[test] || \
   echo "Warning: could not install Python packages"
 
 # Install pnpm for front-end package management

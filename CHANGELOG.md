@@ -1,4 +1,6 @@
 ## Unreleased
+### Added
+* Dev container setup installs backend dependencies including fakeredis for tests.
 ## [0.5.2] – 2025-05-29
 ### Added
 * `lint_frontend.js` skips UI lint when dependencies are missing offline.
