@@ -36,6 +36,9 @@ real-life building via a built-in Three.js viewer.
 git clone https://github.com/JGAVEN/Lego-GPT.git
 cd Lego-GPT
 
+# Install backend dependencies (including optional test tools)
+python -m pip install --editable ./backend[test]
+
 # Start Redis (local or Docker)
 # docker run -p 6379:6379 -d redis:7
 
