@@ -169,5 +169,5 @@ conventions.
 | CMU LegoGPT library (`vendor/legogpt/…`) | CMU licence (see `vendor/legogpt/LICENSE`) |
 | All new code in this repo (backend, solver, front-end) | **MIT** |
 
-Lego® is a trademark of the LEGO Group, which does not sponsor or endorse this
-project.
+Lego® is a trademark of the LEGO Group, which does not sponsor or endorse this project.
+
