@@ -59,8 +59,8 @@ Install dependencies once and start Vite:
 
 ```bash
 cd frontend
-npm install
-npm run dev
+pnpm install        # already run in the dev container's setup
+pnpm run dev
 ```
 
 The app will be available at <http://localhost:5173> by default.

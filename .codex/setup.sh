@@ -8,3 +8,6 @@ fi
 
 # Install OR-Tools before network access is disabled
 python -m pip install --no-cache-dir ortools
+
+# Install front-end packages while network access is available
+pnpm install --dir frontend
