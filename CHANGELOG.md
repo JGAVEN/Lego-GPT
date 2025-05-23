@@ -1,6 +1,10 @@
 
 # Changelog
 
+## [0.3.3] – 2025-05-23
+### Added
+- JWT authentication and per-token rate limiting on `/generate`.
+
 ## [0.3.2] – 2025-05-22
 ### Added
 - Local `vendor/rq` and `vendor/redis` stubs allow tests to run offline.

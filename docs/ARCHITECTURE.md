@@ -4,7 +4,7 @@
 ```
 ┌──────────────┐   HTTPS POST /generate   ┌────────────────────────────────────────┐
 │  PWA Client  │◄────────────────────────►│   HTTP Gateway (API)                │
-│  React +     │                          │   • JWT auth (future)                 │
+│  React +     │                          │   • JWT auth + rate limit                 │
 │  Three.js    │ PNG preview + .ldr file  │   • Task queue (Redis / RQ)           │
 └────▲─────────┘                          │   • Solver shim import (side-effect)  │
      │                                    └──────────▲────────────────────────────┘

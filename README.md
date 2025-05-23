@@ -20,6 +20,7 @@ real-life building.
 | 🔄 **Open-source solver** – replaced proprietary Gurobi MIP with **OR-Tools 9.10 + HiGHS**. | Runs licence-free everywhere (local dev, CI, containers). |
 | 🔌 **Auto-loader** picks the first available backend (OR-Tools → Gurobi if licence exists). | Seamless fallback; no code changes needed. |
 | 🩹 **Solver shim** monkey-patches the CMU call-site (`stability_score`). | Upstream sub-module remains untouched. |
+| 🔐 **JWT auth + rate limit** on `/generate` | Prevents abuse; set `JWT_SECRET` and `RATE_LIMIT` |
 
 &nbsp;
 
@@ -37,7 +38,14 @@ cd Lego-GPT
 python backend/worker.py
 
 # Launch the API server in another
+export JWT_SECRET=mysecret         # auth secret
 python backend/server.py    # http://localhost:8000/health
+
+# Generate a JWT for requests
+python - <<'EOF'
+from backend.auth import encode
+print(encode({"sub": "dev"}, "mysecret"))
+EOF
 ```
 
 > **Prerequisites**
@@ -60,7 +68,7 @@ docker-compose.yml  Dev stack (backend only for now)
 
 ## 5. API Contract
 
-`POST /generate` accepts a JSON body:
+`POST /generate` requires an `Authorization: Bearer <token>` header and accepts a JSON body:
 
 ```json
 { "prompt": "text description", "seed": 42 }
@@ -84,6 +92,8 @@ Poll the job via `GET /generate/{job_id}` to receive the asset links:
 
 The `png_url` can be shown directly in an `<img>` tag. The optional
 `ldr_url` is for future Three.js viewing.
+
+Default rate limit is `5` generate requests per token per minute (configurable via `RATE_LIMIT`).
 
 &nbsp;
 
