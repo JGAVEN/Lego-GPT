@@ -140,8 +140,9 @@ Default rate limit is `5` generate requests per token per minute (configurable v
 2. Follow `docs/PROJECT_BACKLOG.md` for ticket IDs and size.
 3. Front-end dependencies are installed automatically during setup via
    `pnpm fetch --prod=false --dir frontend && pnpm install --offline --dir frontend`.
-   Run `npm run lint` after editing UI code. CI also runs this lint step
-   automatically.
+   If you encounter missing packages (e.g. after a failed setup), run
+   `pnpm install --dir frontend` to restore them. Run `npm run lint` after editing
+   UI code. CI also runs this lint step automatically.
 4. Run `python -m unittest discover -v` before pushing. The test suite uses
    Python's built-in `unittest` module—no need for `pytest`.
 5. Update `docs/CHANGELOG.md` after each merge to `main`.

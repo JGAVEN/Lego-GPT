@@ -55,7 +55,7 @@ export default tseslint.config({
 
 ## Running the development server
 
-Install dependencies once and start Vite:
+Install dependencies once and start Vite. If the `node_modules` directory is not present, run `pnpm install` first:
 
 ```bash
 cd frontend
