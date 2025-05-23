@@ -126,8 +126,9 @@ Default rate limit is `5` generate requests per token per minute (configurable v
 
 1. **One atomic branch per ticket** (`feature/<ticket-slug>`).
 2. Follow `docs/PROJECT_BACKLOG.md` for ticket IDs and size.
-3. Front-end dependencies are installed automatically during setup
-   (`pnpm install --dir frontend`). Run `npm run lint` after editing UI code.
+3. Front-end dependencies are installed automatically during setup via
+   `pnpm fetch --dir frontend && pnpm install --offline --dir frontend`.
+   Run `npm run lint` after editing UI code.
 4. Run `python -m unittest discover -v` before pushing. The test suite uses
    Python's built-in `unittest` module—no need for `pytest`.
 5. Update `docs/CHANGELOG.md` after each merge to `main`.
