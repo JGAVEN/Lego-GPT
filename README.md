@@ -64,10 +64,7 @@ export BRICK_INVENTORY=backend/inventory.json  # optional inventory
 python backend/server.py    # http://localhost:8000/health
 
 # Generate a JWT for requests
-python - <<'EOF'
-from backend.auth import encode
-print(encode({"sub": "dev"}, "mysecret"))
-EOF
+python scripts/generate_jwt.py --secret mysecret --sub dev
 
 # Start the front-end PWA
 pnpm --dir frontend run dev    # http://localhost:5173
