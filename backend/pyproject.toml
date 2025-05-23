@@ -7,3 +7,8 @@ dependencies = [
     "rq>=1.16",
     "ortools>=9.10",
 ]
+
+[project.optional-dependencies]
+test = [
+    "fakeredis>=2.21",
+]

@@ -6,6 +6,7 @@
 * Declared `ortools` dependency in `backend/pyproject.toml`.
 * `inventory_filter` payload option for `/generate` to limit bricks per request.
 * React `InventoryScanner` component and `useDetectInventory` hook.
+* Optional `fakeredis` dependency for running queue tests
 
 ### Changed
 * Updated architecture and backlog documentation.
