@@ -14,7 +14,7 @@ real-life building via a built-in Three.js viewer.
 
 &nbsp;
 
-## 2. What’s New (2025-05-25)
+## 2. What’s New (2025-05-27)
 | Change | Impact |
 |--------|--------|
 | 🔄 **Open-source solver** – switched to **OR-Tools 9.10 + HiGHS**. | Runs licence-free everywhere (local dev, CI, containers). |
