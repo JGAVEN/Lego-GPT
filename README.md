@@ -134,11 +134,13 @@ Default rate limit is `5` generate requests per token per minute (configurable v
 1. **One atomic branch per ticket** (`feature/<ticket-slug>`).
 2. Follow `docs/PROJECT_BACKLOG.md` for ticket IDs and size.
 3. Front-end dependencies are installed automatically during setup via
-   `pnpm fetch --dir frontend && pnpm install --offline --dir frontend`.
+   `pnpm fetch --prod=false --dir frontend && pnpm install --offline --dir frontend`.
    Run `npm run lint` after editing UI code.
-4. Run `python -m unittest discover -v` before pushing. The test suite uses
+4. Front-end E2E tests live under `frontend/cypress/`. Run them with
+   `pnpm --dir frontend run test:e2e`.
+5. Run `python -m unittest discover -v` before pushing. The test suite uses
    Python's built-in `unittest` module—no need for `pytest`.
-5. Update `docs/CHANGELOG.md` after each merge to `main`.
+6. Update `docs/CHANGELOG.md` after each merge to `main`.
 
 See `docs/CONTRIBUTING.md` for full workflow, coding style, and commit-message
 conventions.
