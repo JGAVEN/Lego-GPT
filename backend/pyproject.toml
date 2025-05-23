@@ -5,4 +5,5 @@ requires-python = ">=3.11"
 dependencies = [
     "redis>=5",
     "rq>=1.16",
+    "ortools>=9.10",
 ]

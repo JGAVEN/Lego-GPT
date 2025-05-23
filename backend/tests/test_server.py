@@ -98,6 +98,22 @@ class ServerTests(unittest.TestCase):
         )
         self.assertEqual(status, 429)
 
+    @patch("backend.server.queue")
+    def test_detect_inventory_post(self, mock_queue):
+        mock_job = MagicMock(id="xyz")
+        mock_queue.enqueue.return_value = mock_job
+
+        status, data = self._request(
+            "POST",
+            "/detect_inventory",
+            body=b'{"image":"data"}',
+            token=self.token,
+        )
+        self.assertEqual(status, 200)
+        payload = json.loads(data)
+        self.assertEqual(payload["job_id"], "xyz")
+        mock_queue.enqueue.assert_called_once()
+
 
 if __name__ == "__main__":  # pragma: no cover
     unittest.main()
