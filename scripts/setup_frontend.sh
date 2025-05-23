@@ -2,6 +2,11 @@
 # Fetch and install front-end dependencies.
 # Run with network access during initial setup.
 set -euo pipefail
+
+if ! command -v pnpm >/dev/null 2>&1; then
+  echo "pnpm is required. Install it first (see README.md)." >&2
+  exit 1
+fi
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(dirname "$SCRIPT_DIR")"
 cd "$REPO_ROOT/frontend"
