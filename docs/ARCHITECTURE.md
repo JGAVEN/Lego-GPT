@@ -17,8 +17,7 @@ Three.js LDrawViewer                        LegoGPT model (Llama-3 1B)
                                                   ▼
                                    ┌─────────────────────────────────┐
                                    │  ILP Solver Layer               │
-                                   │  • OR-Tools 9.10 + HiGHS (default)│
-                                   │  • Gurobi (fallback if licenced)│
+                                   │  • OR-Tools 9.10 + HiGHS│
                                    └─────────────────────────────────┘
 ```
 
@@ -27,9 +26,8 @@ Three.js LDrawViewer                        LegoGPT model (Llama-3 1B)
 `legogpt.stability_analysis.stability_score` **before** the model loads.  
 The auto-loader picks the first backend available:
 
-1. **OR-Tools / HiGHS** – MIT, no licence.  
-2. **Gurobi** – used only if a licence file is present.
-3. If neither is found, shim returns a perfect score and tags previews
+1. **OR-Tools / HiGHS** – MIT, no licence required.
+2. If not available, the shim returns a perfect score and tags previews
    **UNVERIFIED** (dev mode).
 
 The OR-Tools backend checks each brick for support and filters out
@@ -44,7 +42,7 @@ clusters not connected to the ground.
 | **Front-end** | Prompt form, spinner, preview image, 3-D viewer, offline PWA shell                            | React 18, Vite, Three.js (`LDrawLoader` from CDN) |
 | **API**       | Auth, rate-limit, enqueue job, expose static file links                                       | Python http.server stub |
 | **Worker**    | `backend/worker.py` runs `rq` jobs, lazy-loads LegoGPT, routes bricks → solver, saves PNG + LDR | Python 3.12, CUDA 12.2, HF `transformers` |
-| **Solver**    | Verify physical stability via MIP (connectivity, gravity, overhang)                           | OR-Tools / HiGHS (default), Gurobi optional |
+| **Solver**    | Verify physical stability via MIP (connectivity, gravity, overhang)                           | OR-Tools / HiGHS |
 | **Storage**   | Serve artifacts, 7-day TTL, promote to S3 / Cloudflare R2 in prod                             | Local `/static` → CDN later |
 
 ---
@@ -68,7 +66,7 @@ clusters not connected to the ground.
 * **Horizontal**: add Redis-RQ queue + N workers when concurrency > 5.  
 * **Static assets**: move `/static` to R2 or S3 + CloudFront for global latency.  
 * **Model optimisations**: quantise to INT4 for CPU-only fallback; distil for mobile.  
-* **Solver speed**: HiGHS handles typical models < 5 ms; Gurobi ≈ 2 ms on licence-enabled nodes.
+* **Solver speed**: HiGHS handles typical models < 5 ms.
 
 ---
 
