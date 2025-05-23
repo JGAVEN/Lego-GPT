@@ -61,7 +61,9 @@ python detector/worker.py
 # Launch the API server in another
 export JWT_SECRET=mysecret         # auth secret
 export BRICK_INVENTORY=backend/inventory.json  # optional inventory
-python backend/server.py    # http://localhost:8000/health
+python backend/server.py --host 0.0.0.0 --port 8000    # http://localhost:8000/health
+# The `--host` and `--port` options override the defaults and can also be
+# provided via `HOST` and `PORT` environment variables.
 
 # Generate a JWT for requests
 python scripts/generate_jwt.py --secret mysecret --sub dev
