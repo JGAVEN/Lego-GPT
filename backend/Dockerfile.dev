@@ -1,14 +1,19 @@
 FROM python:3.11-slim
 
-WORKDIR /app/backend
+WORKDIR /app
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PYTHONPATH=/app
 
-COPY . .
-COPY vendor/legogpt /app/legogpt
-COPY vendor/legogpt/data /app/legogpt/data
+# Copy backend source and vendored LegoGPT library
+COPY backend ./backend
+COPY vendor/legogpt ./legogpt
+COPY vendor/legogpt/data ./legogpt/data
 
+# Install backend dependencies
+RUN pip install --no-cache-dir --editable ./backend
+
+WORKDIR /app/backend
 EXPOSE 8000
 CMD ["python", "server.py"]

@@ -73,6 +73,18 @@ EOF
 pnpm --dir frontend run dev    # http://localhost:5173
 ```
 
+### Docker Compose
+
+Alternatively, start the API and detector workers in Docker containers. The
+dev Dockerfiles install all backend dependencies so the stack works
+out‑of‑the‑box:
+
+```bash
+docker compose up --build
+```
+
+The API will be available at http://localhost:8000/health.
+
 > **Prerequisites**
 > * Python 3.11+
 > * Node.js 18+

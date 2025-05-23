@@ -84,7 +84,8 @@ The API validates that the `image` field contains a valid base64 string and
 returns HTTP 400 for malformed data.
 
 The worker lives in the top-level `detector/` directory and can run as a standalone
-micro-service via `detector/Dockerfile.dev`.
+micro-service via `detector/Dockerfile.dev`. The dev Dockerfiles now install all
+backend dependencies so the container starts without extra setup.
 
 ```
 [User Phone]
