@@ -8,6 +8,7 @@
 * React `InventoryScanner` component and `useDetectInventory` hook.
 * Optional `fakeredis` dependency for running queue tests
 * `detector/` micro-service and Dockerfile for inventory detection
+* Cypress E2E test for photo → constrained build workflow
 
 ### Changed
 * Updated architecture and backlog documentation.

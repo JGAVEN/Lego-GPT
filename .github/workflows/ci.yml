@@ -25,6 +25,17 @@ jobs:
         run: |
           python -m unittest discover -v
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install front-end deps
+        run: pnpm install --frozen-lockfile --dir frontend
+
+      - name: Run E2E tests
+        run: pnpm --dir frontend run test:e2e
+
       # 6. (Optional) Build dev Docker image
       # - name: Build Docker image
       #   run: docker build -f Dockerfile.dev -t lego-gpt-dev .
