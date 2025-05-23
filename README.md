@@ -44,6 +44,8 @@ python -m pip install --editable ./backend[test]
 
 # Launch the RQ worker in one terminal
 python backend/worker.py
+# Launch the detector worker in another
+python detector/worker.py
 
 # Launch the API server in another
 export JWT_SECRET=mysecret         # auth secret
@@ -73,7 +75,8 @@ backend/            Simple HTTP API + solver shim
 docs/               Project docs  (ARCHITECTURE, PROJECT_BACKLOG, CHANGELOG…)
 frontend/           React + Vite PWA scaffold
 vendor/legogpt/     Vendored CMU LegoGPT library
-docker-compose.yml  Dev stack (backend only for now)
+detector/           Brick-detector micro-service worker
+docker-compose.yml  Dev stack (backend + detector workers)
 ```
 
 &nbsp;

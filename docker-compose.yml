@@ -10,3 +10,12 @@ services:
     ports:
       - "8000:8000"
     command: python server.py
+  detector:
+    build:
+      context: .
+      dockerfile: detector/Dockerfile.dev
+    working_dir: /app
+    volumes:
+      - ./backend:/app/backend:delegated
+      - ./detector:/app/detector:delegated
+    command: python -m detector.worker
