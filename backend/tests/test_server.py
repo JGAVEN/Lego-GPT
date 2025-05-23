@@ -25,6 +25,7 @@ class ServerTests(unittest.TestCase):
         os.environ["JWT_SECRET"] = "testsecret"
         os.environ["RATE_LIMIT"] = "2"
         import backend.server as server_mod
+
         self.server = importlib.reload(server_mod)
         self.token = auth.encode({"sub": "t"}, "testsecret")
         self.httpd = self.server.HTTPServer(("127.0.0.1", 0), self.server.Handler)
@@ -38,7 +39,13 @@ class ServerTests(unittest.TestCase):
         # Ensure the server socket is fully closed to avoid resource warnings
         self.httpd.server_close()
 
-    def _request(self, method: str, path: str, body: bytes | None = None, token: str | None = None):
+    def _request(
+        self,
+        method: str,
+        path: str,
+        body: bytes | None = None,
+        token: str | None = None,
+    ):
         conn = http.client.HTTPConnection("127.0.0.1", self.port)
         headers = {}
         if token:
@@ -54,6 +61,10 @@ class ServerTests(unittest.TestCase):
         self.assertEqual(status, 200)
         payload = json.loads(data)
         self.assertTrue(payload.get("ok"))
+
+    def test_static_path_traversal_blocked(self):
+        status, _ = self._request("GET", "/static/../server.py")
+        self.assertEqual(status, 404)
 
     @patch("backend.server.queue")
     def test_generate_post(self, mock_queue):
