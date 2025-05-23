@@ -35,7 +35,7 @@ def load_model():
 # --------------------------------------------------------------------------- #
 #                               Entry point                                   #
 # --------------------------------------------------------------------------- #
-def generate(prompt: str, seed: int | None = None):
+def generate(prompt: str, seed: int | None = None, inventory_filter: dict[str, int] | None = None):
     """
     Generate a new LEGO structure preview.
 
@@ -45,6 +45,8 @@ def generate(prompt: str, seed: int | None = None):
         Natural-language prompt from the user.
     seed : int | None
         Optional RNG seed for reproducibility.
+    inventory_filter : dict[str, int] | None
+        Optional inventory map to limit brick counts.
 
     Returns
     -------
@@ -76,5 +78,5 @@ def generate(prompt: str, seed: int | None = None):
         gltf_path_str = None
 
     counts = result.get("brick_counts", {})
-    counts = filter_counts(counts)
+    counts = filter_counts(counts, inventory_filter)
     return str(png_path), ldr_path_str, gltf_path_str, counts

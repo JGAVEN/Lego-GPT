@@ -16,24 +16,23 @@ from backend.api import generate_lego_model  # noqa: E402
 
 
 class GenerateTests(unittest.TestCase):
-    @patch("backend.inference.ldr_to_gltf")
-    @patch("backend.inference.load_model")
-    def test_generate_endpoint(self, mock_load_model, mock_gltf):
-        mock_model = MagicMock()
-        mock_model.generate.return_value = {
-            "png": b"fake_png_data",
-            "ldr": "0 FAKE_BRICK 0 0 0",
-            "brick_counts": {"Brick": 1}
-        }
-        mock_load_model.return_value = mock_model
+    @patch("backend.api.generate")
+    def test_generate_endpoint(self, mock_generate):
+        mock_generate.return_value = (
+            "backend/static/x/preview.png",
+            "backend/static/x/model.ldr",
+            "backend/static/x/model.gltf",
+            {"Brick": 1},
+        )
 
-        data = generate_lego_model("blue cube", 42)
+        inv = {"Brick": 1}
+        data = generate_lego_model("blue cube", 42, inv)
         self.assertIn("png_url", data)
         self.assertTrue(data["png_url"].endswith("preview.png"))
         self.assertIn("ldr_url", data)
         self.assertTrue(data["ldr_url"].endswith("model.ldr"))
         self.assertTrue(data["gltf_url"].endswith("model.gltf"))
-        mock_gltf.assert_called_once()
+        mock_generate.assert_called_once_with("blue cube", 42, inv)
         self.assertIsInstance(data["brick_counts"], dict)
 
 

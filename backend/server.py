@@ -133,7 +133,11 @@ class Handler(BaseHTTPRequestHandler):
                 return
             prompt = payload.get("prompt", "")
             seed = payload.get("seed", 42)
-            job_obj = queue.enqueue(generate_job, prompt, seed)
+            inventory = payload.get("inventory_filter")
+            if inventory is not None and not isinstance(inventory, dict):
+                self.send_error(400, "Invalid inventory_filter")
+                return
+            job_obj = queue.enqueue(generate_job, prompt, seed, inventory)
             self._send_json({"job_id": job_obj.id})
             return
         if self.path == "/detect_inventory":
