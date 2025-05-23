@@ -53,7 +53,8 @@ clusters not connected to the ground.
 2. API validates, enqueues job on the Redis/RQ queue → ✅ returns `job_id`.
 3. Worker loads LegoGPT, **calls solver shim** ➜ bricks verified.
 4. Inventory filter trims the brick list using `BRICK_INVENTORY`.
-5. Worker writes `preview.png`, `model.ldr`, and `model.gltf` to `/static/{uuid}/`.
+5. Worker writes `preview.png`, `model.ldr`, and `model.gltf` to
+   `backend/static/{uuid}/` by default (`STATIC_ROOT` can override).
 6. When finished, a GET on `/generate/{job_id}` returns `{png_url, ldr_url, gltf_url, brick_counts}`.
 7. Client shows PNG immediately; Three.js lazily loads LDR → interactive viewer.
    The `LDrawLoader` module is fetched from a CDN at runtime.

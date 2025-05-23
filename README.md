@@ -68,6 +68,8 @@ lego-gpt-server --host 0.0.0.0 --port 8000    # http://localhost:8000/health
 # The `--host` and `--port` options override the defaults and can also be
 # provided via `HOST` and `PORT` environment variables. Use `--version` to
 # print the backend version and exit.
+# Generated assets are written to `backend/static/{uuid}/` by default. Set
+# `STATIC_ROOT` to override the directory.
 
 # Generate a JWT for requests
 python scripts/generate_jwt.py --secret mysecret --sub dev
@@ -98,7 +100,7 @@ can verify the backend version.
 
 > **Prerequisites**
 > * Python 3.11+
-> * Node.js 18+
+> * Node.js 20+
 > * pnpm package manager
 
 &nbsp;
