@@ -21,3 +21,7 @@ cv = [
 lego-gpt-server = "backend.server:main"
 lego-gpt-worker = "backend.worker:run_worker"
 lego-detect-worker = "detector.worker:run_detector"
+
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
