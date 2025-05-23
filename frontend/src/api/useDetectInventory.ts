@@ -1,27 +1,19 @@
 import { useEffect, useState } from "react";
-import type { GenerateRequest, GenerateResponse } from "./lego";
+import type { DetectRequest, DetectResponse } from "./lego";
 
-export interface UseGenerateResult {
-  data: GenerateResponse | null;
+export interface UseDetectResult {
+  data: DetectResponse | null;
   loading: boolean;
   error: string | null;
 }
 
-/**
- * Generate a Lego model based on the prompt and seed.
- * When `prompt` is falsy, the hook does nothing.
- */
-export default function useGenerate(
-  prompt: string | null,
-  seed: number | null | undefined,
-  inventoryFilter: Record<string, number> | null = null
-): UseGenerateResult {
-  const [data, setData] = useState<GenerateResponse | null>(null);
+export default function useDetectInventory(image: string | null): UseDetectResult {
+  const [data, setData] = useState<DetectResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!prompt) return;
+    if (!image) return;
 
     const ctrl = new AbortController();
     let cancelled = false;
@@ -31,30 +23,23 @@ export default function useGenerate(
       setError(null);
       setData(null);
       try {
-        const reqBody: GenerateRequest = { prompt };
-        if (seed !== undefined && seed !== null) {
-          reqBody.seed = seed;
-        }
-        if (inventoryFilter) {
-          reqBody.inventory_filter = inventoryFilter;
-        }
-        const res = await fetch("/generate", {
+        const body: DetectRequest = { image };
+        const res = await fetch("/detect_inventory", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(reqBody),
+          body: JSON.stringify(body),
           signal: ctrl.signal,
         });
         if (!res.ok) {
           throw new Error(`Request failed (${res.status})`);
         }
         const { job_id } = (await res.json()) as { job_id: string };
-
         while (!cancelled) {
-          const poll = await fetch(`/generate/${job_id}`, {
+          const poll = await fetch(`/detect_inventory/${job_id}`, {
             signal: ctrl.signal,
           });
           if (poll.status === 200) {
-            const result = (await poll.json()) as GenerateResponse;
+            const result = (await poll.json()) as DetectResponse;
             if (!cancelled) {
               setData(result);
             }
@@ -81,7 +66,7 @@ export default function useGenerate(
       cancelled = true;
       ctrl.abort();
     };
-  }, [prompt, seed, inventoryFilter]);
+  }, [image]);
 
   return { data, loading, error };
 }

@@ -1,22 +1,46 @@
-import { useState, FormEvent } from "react";
+import { useState, useEffect, FormEvent, ChangeEvent } from "react";
 import useGenerate from "./api/useGenerate";
+import useDetectInventory from "./api/useDetectInventory";
 import LDrawViewer from "./LDrawViewer";
 
 export default function App() {
   const [prompt, setPrompt] = useState("");
   const [seed, setSeed] = useState("");
+  const [photo, setPhoto] = useState<string | null>(null);
+  const [inventory, setInventory] = useState<Record<string, number> | null>(null);
   const [request, setRequest] = useState<{ p: string; s: number | null } | null>(
     null
   );
 
+  const detect = useDetectInventory(photo);
+
+  useEffect(() => {
+    if (detect.data) {
+      setInventory(detect.data.brick_counts);
+    }
+  }, [detect.data]);
+
   const { data, loading, error } = useGenerate(
     request?.p ?? null,
-    request?.s ?? null
+    request?.s ?? null,
+    inventory
   );
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setRequest({ p: prompt, s: seed ? Number(seed) : null });
+  }
+
+  function handleFile(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const result = reader.result as string;
+      const b64 = result.split(",", 2)[1] ?? result;
+      setPhoto(b64);
+    };
+    reader.readAsDataURL(file);
   }
 
   return (
@@ -44,6 +68,26 @@ export default function App() {
             min="0"
           />
         </div>
+
+        <div>
+          <label className="block font-semibold mb-1">Inventory Photo</label>
+          <input type="file" accept="image/*" onChange={handleFile} />
+          {detect.loading && <p className="text-sm">Detecting…</p>}
+          {detect.error && <p className="text-red-600 text-sm">{detect.error}</p>}
+        </div>
+
+        {inventory && (
+          <div className="mt-2 text-sm">
+            <p className="font-semibold">Detected Inventory:</p>
+            <ul className="list-disc list-inside">
+              {Object.entries(inventory).map(([part, qty]) => (
+                <li key={part}>
+                  {part}: {qty}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         <button
           type="submit"

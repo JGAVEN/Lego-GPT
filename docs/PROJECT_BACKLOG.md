@@ -6,7 +6,7 @@
 | B‑1 | **v0.5** Inventory Detection | Fine‑tune YOLOv8 on 3 k brick images | CV lead | ⬜ |
 | B‑2 | v0.5 | Build `detector/` micro‑service, Dockerfile, RQ worker | CV lead | ⬜ |
 | B‑3 | v0.5 | Add `/detect_inventory` endpoint in Gateway + tests | Backend | **Done** |
-| B‑4 | v0.5 | Front‑end camera / upload workflow + inventory table | FE | ⬜ |
+| B‑4 | v0.5 | Front‑end camera / upload workflow + inventory table | FE | **Done** |
 | B‑5 | v0.5 | Pass `inventory_filter` into `inference.generate()` | Backend | **Done** |
 | B‑6 | v0.5 | E2E Cypress test: photo fixture → constrained build | QA | ⬜ |
 | B-01 | **M** | Dockerise backend & worker           | **Done** | GPU-aware image, `docker compose dev` |
@@ -31,4 +31,4 @@
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.
 
-_Last updated 2025-05-25_
+_Last updated 2025-05-26_
