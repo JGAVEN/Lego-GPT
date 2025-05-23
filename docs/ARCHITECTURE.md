@@ -73,3 +73,16 @@ clusters not connected to the ground.
 ---
 
 _Last updated 2025-05-25_
+
+---
+
+## Brick‑Detector Micro‑service (new in v0.5)
+
+Adds a YOLOv8‑based computer‑vision worker that converts user‑supplied photos into an inventory map `{ part_id: count }`. The gateway exposes `/detect_inventory`, and the PWA front‑end lets users confirm or edit the detected parts list before generating a model constrained to their bricks.
+
+```
+[User Phone]
+     │  photos
+     ▼
+Gateway  ──►  Redis Job  ──►  Brick‑Detector Worker (YOLOv8)  ──►  inventory JSON
+```
