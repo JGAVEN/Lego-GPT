@@ -8,7 +8,7 @@
 | B-03 | **M** | `/generate` endpoint                 | **Done** | Async job queue, return URLs |
 | B-04 | **M** | React API hook + PNG preview         | **Done** | Front-end calls `/generate`, shows preview |
 | B-05 | **S** | Three.js LDraw viewer                | **Blocked** | Depends on B-04 |
-| B-06 | **S** | JWT auth & rate-limit                | **Open** | Prevent abuse |
+| B-06 | **S** | JWT auth & rate-limit                | **Done** | Simple HMAC tokens + per-minute limit |
 | B-07 | **S** | GitHub Actions CI                    | **Done** | unittest + build images |
 | B-08 | **C** | AR Quick-Look export                 | **Open** | glTF pipeline |
 | B-09 | **C** | Brick inventory filter               | **Open** | Fine-tune on owned parts |

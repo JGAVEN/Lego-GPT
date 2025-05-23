@@ -15,12 +15,18 @@ for p in (project_root, vendor_root):
         sys.path.insert(0, str(p))
 os.environ["PYTHONPATH"] = str(project_root)
 
-from backend import server  # noqa: E402
+import importlib
+from backend import auth
 
 
 class ServerTests(unittest.TestCase):
     def setUp(self):
-        self.httpd = server.HTTPServer(("127.0.0.1", 0), server.Handler)
+        os.environ["JWT_SECRET"] = "testsecret"
+        os.environ["RATE_LIMIT"] = "2"
+        import backend.server as server_mod
+        self.server = importlib.reload(server_mod)
+        self.token = auth.encode({"sub": "t"}, "testsecret")
+        self.httpd = self.server.HTTPServer(("127.0.0.1", 0), self.server.Handler)
         self.port = self.httpd.server_address[1]
         self.thread = threading.Thread(target=self.httpd.serve_forever)
         self.thread.start()
@@ -31,9 +37,12 @@ class ServerTests(unittest.TestCase):
         # Ensure the server socket is fully closed to avoid resource warnings
         self.httpd.server_close()
 
-    def _request(self, method: str, path: str, body: bytes | None = None):
+    def _request(self, method: str, path: str, body: bytes | None = None, token: str | None = None):
         conn = http.client.HTTPConnection("127.0.0.1", self.port)
-        conn.request(method, path, body)
+        headers = {}
+        if token:
+            headers["Authorization"] = f"Bearer {token}"
+        conn.request(method, path, body, headers)
         resp = conn.getresponse()
         data = resp.read()
         conn.close()
@@ -53,12 +62,41 @@ class ServerTests(unittest.TestCase):
         status, data = self._request(
             "POST",
             "/generate",
-            body=b'{"prompt":"cube","seed":1}'
+            body=b'{"prompt":"cube","seed":1}',
+            token=self.token,
         )
         self.assertEqual(status, 200)
         payload = json.loads(data)
         self.assertEqual(payload["job_id"], "abc")
         mock_queue.enqueue.assert_called_once()
+
+    def test_generate_requires_auth(self):
+        status, _ = self._request(
+            "POST",
+            "/generate",
+            body=b"{}",
+        )
+        self.assertEqual(status, 401)
+
+    @patch("backend.server.queue")
+    def test_generate_rate_limit(self, mock_queue):
+        mock_job = MagicMock(id="abc")
+        mock_queue.enqueue.return_value = mock_job
+        for _ in range(2):
+            status, _ = self._request(
+                "POST",
+                "/generate",
+                body=b"{}",
+                token=self.token,
+            )
+            self.assertEqual(status, 200)
+        status, _ = self._request(
+            "POST",
+            "/generate",
+            body=b"{}",
+            token=self.token,
+        )
+        self.assertEqual(status, 429)
 
 
 if __name__ == "__main__":  # pragma: no cover

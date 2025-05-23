@@ -1,16 +1,41 @@
 """Tiny HTTP server exposing the Lego GPT API via an RQ queue."""
 import json
-from http.server import HTTPServer, BaseHTTPRequestHandler
 import os
+import time
+from http.server import HTTPServer, BaseHTTPRequestHandler
 from redis import Redis
 from rq import Queue, Job
 from backend.api import health, STATIC_ROOT
 from backend.worker import QUEUE_NAME, generate_job
+from backend.auth import decode as decode_jwt
 
 
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
 redis_conn = Redis.from_url(REDIS_URL)
 queue = Queue(QUEUE_NAME, connection=redis_conn)
+
+JWT_SECRET = os.getenv("JWT_SECRET", "secret")
+RATE_LIMIT = int(os.getenv("RATE_LIMIT", "5"))
+# token -> (count, window_epoch_minute)
+_TOKEN_USAGE: dict[str, tuple[int, int]] = {}
+
+
+def _check_auth(headers) -> None:
+    auth = headers.get("Authorization", "")
+    if not auth.startswith("Bearer "):
+        raise PermissionError
+    token = auth.split(" ", 1)[1]
+    decode_jwt(token, JWT_SECRET)
+
+    now = int(time.time())
+    window = now // 60
+    count, win = _TOKEN_USAGE.get(token, (0, window))
+    if win != window:
+        count = 0
+        win = window
+    if count >= RATE_LIMIT:
+        raise RuntimeError("rate_limit")
+    _TOKEN_USAGE[token] = (count + 1, win)
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -27,6 +52,14 @@ class Handler(BaseHTTPRequestHandler):
             self._send_json(health())
             return
         if self.path.startswith("/generate/"):
+            try:
+                _check_auth(self.headers)
+            except PermissionError:
+                self.send_error(401)
+                return
+            except RuntimeError:
+                self.send_error(429, "Rate limit exceeded")
+                return
             job_id = self.path.rsplit("/", 1)[-1]
             try:
                 job_obj = Job.fetch(job_id, connection=redis_conn)
@@ -60,6 +93,14 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         if self.path == "/generate":
+            try:
+                _check_auth(self.headers)
+            except PermissionError:
+                self.send_error(401)
+                return
+            except RuntimeError:
+                self.send_error(429, "Rate limit exceeded")
+                return
             length = int(self.headers.get("Content-Length", 0))
             body = self.rfile.read(length)
             try:
