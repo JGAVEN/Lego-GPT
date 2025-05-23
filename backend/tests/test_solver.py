@@ -54,6 +54,16 @@ class SolverBehaviourTests(unittest.TestCase):
         # Top brick should be removed due to overhang
         self.assertEqual(len(result.bricks), 1)
 
+    def test_disconnected_stack_removed(self):
+        bricks = [
+            LegoBrick(h=1, w=1, x=0, y=0, z=1),
+            LegoBrick(h=1, w=1, x=0, y=0, z=2),
+        ]
+        structure = SimpleStructure(bricks)
+        result = self.solver.solve(structure)
+        # Entire stack floats in the air; should be removed
+        self.assertEqual(len(result.bricks), 0)
+
 
 if __name__ == "__main__":  # pragma: no cover
     unittest.main()

@@ -1,8 +1,8 @@
-"""
-HiGHS / CBC implementation of ILPSolver.
+"""OR-Tools implementation of :class:`ILPSolver`.
 
-Initial stub: simply returns the input unchanged so the import path works.
-We'll replace `.solve()` with full stability constraints in the next steps.
+The solver keeps a stable subset of bricks using a small MIP model.
+If OR-Tools is unavailable (e.g. offline tests), a simple Python
+fallback performs the same checks.
 """
 from __future__ import annotations
 from typing import List, cast
@@ -44,6 +44,35 @@ class OrtoolsSolver(ILPSolver):
             a.x + a.h <= b.x or b.x + b.h <= a.x or a.y + a.w <= b.y or b.y + b.w <= a.y
         )
 
+    def _connected(self, a: LegoBrick, b: LegoBrick) -> bool:
+        """Return True if ``b`` sits directly on top of ``a``."""
+        if a.z > b.z:
+            a, b = b, a
+        return a.z == b.z - 1 and self._overlap(a, b)
+
+    def _filter_connected(self, bricks: List[LegoBrick]) -> List[LegoBrick]:
+        """Return bricks connected to the ground via stack connections."""
+        graph: list[list[int]] = [[] for _ in bricks]
+        ground = []
+        for i, bi in enumerate(bricks):
+            if bi.z == 0:
+                ground.append(i)
+        for i, bi in enumerate(bricks):
+            for j in range(i + 1, len(bricks)):
+                bj = bricks[j]
+                if self._connected(bi, bj):
+                    graph[i].append(j)
+                    graph[j].append(i)
+        visited = set(ground)
+        stack = list(ground)
+        while stack:
+            idx = stack.pop()
+            for j in graph[idx]:
+                if j not in visited:
+                    visited.add(j)
+                    stack.append(j)
+        return [b for i, b in enumerate(bricks) if i in visited]
+
     def solve(self, structure: SupportsStability) -> SupportsStability:  # noqa: D401
         """Return a stable subset of ``structure`` using a small MIP model."""
 
@@ -69,6 +98,7 @@ class OrtoolsSolver(ILPSolver):
                     if not valid:
                         continue
                 kept.append(b)
+            kept = self._filter_connected(kept)
             world_dim = getattr(structure, "world_dim", 20)
             return cast(SupportsStability, _Structure(kept, world_dim=world_dim))
 
@@ -101,6 +131,6 @@ class OrtoolsSolver(ILPSolver):
             kept = bricks
         else:
             kept = [b for b, var in zip(bricks, keep_vars) if var.solution_value() > 0.5]
-
+        kept = self._filter_connected(kept)
         world_dim = getattr(structure, "world_dim", 20)
         return cast(SupportsStability, _Structure(kept, world_dim=world_dim))

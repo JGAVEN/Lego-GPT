@@ -28,9 +28,12 @@ Three.js LDrawViewer                        LegoGPT model (Llama-3 1B)
 The auto-loader picks the first backend available:
 
 1. **OR-Tools / HiGHS** – MIT, no licence.  
-2. **Gurobi** – used only if a licence file is present.  
+2. **Gurobi** – used only if a licence file is present.
 3. If neither is found, shim returns a perfect score and tags previews
    **UNVERIFIED** (dev mode).
+
+The OR-Tools backend checks each brick for support and filters out
+clusters not connected to the ground.
 
 ---
 

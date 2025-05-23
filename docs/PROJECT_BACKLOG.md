@@ -16,7 +16,7 @@
 | B-11 | **M** | Align API contract                   | **Done** | POST returns `job_id`; GET `/generate/{job_id}` yields `{png_url, ldr_url, brick_counts}` |
 |------|-----|---------------------------------------|--------|-------|
 | S-10 | **M** | Introduce `ILPSolver` interface & refactor | **Done** | Branch `feature/solver-refactor` |
-| S-11 | **M** | Implement OR-Tools MIP constraints   | **WIP** | Connectivity, gravity, overhang; solver shim returns dummy score |
+| S-11 | **M** | Implement OR-Tools MIP constraints   | **Done** | Connectivity filter added; solver computes stable subset |
 | S-12 | **S** | Solver auto-loader + unit tests      | **Done** | Part of solver refactor |
 | S-13 | **XS**| Update docs for solver swap          | **Done** | README & ARCHITECTURE |
 

@@ -1,6 +1,10 @@
 
 # Changelog
 
+## [0.3.4] – 2025-05-23
+### Added
+- Solver now removes brick clusters not connected to the ground.
+
 ## [0.3.3] – 2025-05-23
 ### Added
 - JWT authentication and per-token rate limiting on `/generate`.
