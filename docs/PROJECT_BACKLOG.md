@@ -3,6 +3,12 @@
 
 | ID   | Pri | Title                               | Status | Notes |
 |------|-----|-------------------------------------|--------|-------|
+| B‑1 | **v0.5** Inventory Detection | Fine‑tune YOLOv8 on 3 k brick images | CV lead | ⬜ |
+| B‑2 | v0.5 | Build `detector/` micro‑service, Dockerfile, RQ worker | CV lead | ⬜ |
+| B‑3 | v0.5 | Add `/detect_inventory` endpoint in Gateway + tests | Backend | ⬜ |
+| B‑4 | v0.5 | Front‑end camera / upload workflow + inventory table | FE | ⬜ |
+| B‑5 | v0.5 | Pass `inventory_filter` into `inference.generate()` | Backend | ⬜ |
+| B‑6 | v0.5 | E2E Cypress test: photo fixture → constrained build | QA | ⬜ |
 | B-01 | **M** | Dockerise backend & worker           | **Done** | GPU-aware image, `docker compose dev` |
 | B-02 | **M** | React PWA scaffold                   | **Done** | Vite + Tailwind, SW cache |
 | B-03 | **M** | `/generate` endpoint                 | **Done** | Async job queue, return URLs |
