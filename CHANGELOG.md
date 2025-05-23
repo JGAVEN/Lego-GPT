@@ -20,6 +20,8 @@
   returns `HTTP 400` if malformed.
 * Pinned pnpm version to 10.5.2 for offline setup reliability.
 * Dev Docker images now install backend dependencies automatically.
+* `setup_frontend.sh` now exits if `pnpm` is missing and README quick-start
+  installs pnpm before running the script.
 
 ### Fixed
 * CI installs pnpm before running front-end tests.

@@ -37,15 +37,15 @@ real-life building via a built-in Three.js viewer.
 git clone https://github.com/JGAVEN/Lego-GPT.git
 cd Lego-GPT
 
+# Install pnpm (requires Node.js)
+npm install -g pnpm@10.5.2
+
 # Install front-end dependencies.
 # The script installs from the local pnpm store if possible and fetches from
 # the registry when online. Run it once with network access.
 # Running it offline before the store is populated will print instructions
-# to retry with network access.
+# to retry with network access. The script requires `pnpm` to be installed.
 ./scripts/setup_frontend.sh
-
-# Install pnpm (requires Node.js)
-npm install -g pnpm@10.5.2
 
 # Install backend dependencies (including optional test tools)
 python -m pip install --editable ./backend[test]
