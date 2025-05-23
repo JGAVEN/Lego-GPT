@@ -87,6 +87,11 @@ The worker lives in the top-level `detector/` directory and can run as a standal
 micro-service via `detector/Dockerfile.dev`. The dev Dockerfiles now install all
 backend dependencies so the container starts without extra setup.
 
+Set the `DETECTOR_MODEL` environment variable to the path of the YOLOv8
+weights file.  If the variable is unset or the `ultralytics` package is
+missing the worker falls back to a small stub that returns a fixed
+inventory map for testing.
+
 ```
 [User Phone]
      │  photos

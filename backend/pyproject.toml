@@ -12,3 +12,7 @@ dependencies = [
 test = [
     "fakeredis>=2.21",
 ]
+cv = [
+    "ultralytics>=8",
+    "pillow>=10",
+]
