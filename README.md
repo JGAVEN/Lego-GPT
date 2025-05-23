@@ -64,7 +64,8 @@ export BRICK_INVENTORY=backend/inventory.json  # optional inventory
 export DETECTOR_MODEL=detector/model.pt       # optional YOLOv8 weights
 python backend/server.py --host 0.0.0.0 --port 8000    # http://localhost:8000/health
 # The `--host` and `--port` options override the defaults and can also be
-# provided via `HOST` and `PORT` environment variables.
+# provided via `HOST` and `PORT` environment variables. Use `--version` to
+# print the backend version and exit.
 
 # Generate a JWT for requests
 python scripts/generate_jwt.py --secret mysecret --sub dev
