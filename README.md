@@ -36,6 +36,9 @@ real-life building via a built-in Three.js viewer.
 git clone https://github.com/JGAVEN/Lego-GPT.git
 cd Lego-GPT
 
+# Install front-end dependencies (requires network access once)
+./scripts/setup_frontend.sh
+
 # Install pnpm (requires Node.js)
 npm install -g pnpm@10.5.2
 
@@ -138,11 +141,9 @@ Default rate limit is `5` generate requests per token per minute (configurable v
 
 1. **One atomic branch per ticket** (`feature/<ticket-slug>`).
 2. Follow `docs/PROJECT_BACKLOG.md` for ticket IDs and size.
-3. Front-end dependencies are installed automatically during setup via
-   `pnpm fetch --prod=false --dir frontend && pnpm install --offline --dir frontend`.
-   If you encounter missing packages (e.g. after a failed setup), run
-   `pnpm install --dir frontend` to restore them. Run `npm run lint` after editing
-   UI code. CI also runs this lint step automatically.
+3. Front-end dependencies are installed via `scripts/setup_frontend.sh`.
+   If packages are missing, re-run the script or `pnpm install --dir frontend`.
+   Run `npm run lint` after editing UI code. CI also runs this lint step automatically.
 4. Run `python -m unittest discover -v` before pushing. The test suite uses
    Python's built-in `unittest` module—no need for `pytest`.
 5. Update `docs/CHANGELOG.md` after each merge to `main`.
