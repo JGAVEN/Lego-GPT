@@ -14,7 +14,7 @@ real-life building via a built-in Three.js viewer.
 
 &nbsp;
 
-## 2. What’s New (2025-05-28)
+## 2. What’s New (2025-05-29)
 | Change | Impact |
 |--------|--------|
 | 🔄 **Open-source solver** – switched to **OR-Tools 9.10 + HiGHS**. | Runs licence-free everywhere (local dev, CI, containers). |
@@ -73,6 +73,8 @@ python scripts/generate_jwt.py --secret mysecret --sub dev
 
 # Start the front-end PWA
 pnpm --dir frontend run dev    # http://localhost:5173
+# Lint UI code (skips if dependencies are missing)
+pnpm --dir frontend run lint
 ```
 
 The Vite dev server proxies `/generate`, `/detect_inventory`, and `/static`
@@ -176,7 +178,8 @@ Default rate limit is `5` generate requests per token per minute (configurable v
    future lints and dev builds work offline.
    Running it before this first networked install will show a message
    explaining that the pnpm store is missing.
-   Run `npm run lint` after editing UI code. CI also runs this lint step automatically.
+   Run `pnpm --dir frontend run lint` after editing UI code. The command skips if
+   dependencies are missing.
 4. Run `python -m unittest discover -v` before pushing. The test suite uses
    Python's built-in `unittest` module. `pytest` is optional and works too.
 5. Update `docs/CHANGELOG.md` after each merge to `main`.
