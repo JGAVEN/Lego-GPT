@@ -70,11 +70,11 @@ clusters not connected to the ground.
 
 ---
 
-_Last updated 2025-05-26_
+_Last updated 2025-05-27_
 
 ---
 
-## Brick‑Detector Micro‑service (new in v0.5)
+## Brick‑Detector Micro‑service (new in v0.5.0)
 
 Adds a YOLOv8‑based computer‑vision worker that converts user‑supplied photos into an inventory map `{ part_id: count }`. The gateway exposes `/detect_inventory`, and the PWA includes an `InventoryScanner` component (hook `useDetectInventory`) so users can upload a photo, review the detected parts list and generate a model constrained to their bricks.
 

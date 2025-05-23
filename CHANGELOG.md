@@ -1,5 +1,6 @@
-
 ## Unreleased
+
+## [0.5.0] – 2025-05-27
 ### Added
 * **Photo‑based brick inventory detection** feature (YOLOv8 detector, `/detect_inventory` API, front‑end scan workflow).
 * `/detect_inventory` endpoint implementation with stub worker and tests.
