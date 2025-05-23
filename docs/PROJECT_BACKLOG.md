@@ -14,6 +14,7 @@
 | B-09 | **C** | Brick inventory filter               | **Open** | Fine-tune on owned parts |
 | B-10 | **M** | Add MIT licence text                 | **Done** | Root and vendor licence files added |
 | B-11 | **M** | Align API contract                   | **Done** | POST returns `job_id`; GET `/generate/{job_id}` yields `{png_url, ldr_url, brick_counts}` |
+| B-12 | **XS** | JWT auth unit tests                  | **Done** | encode/decode helpers |
 |------|-----|---------------------------------------|--------|-------|
 | S-10 | **M** | Introduce `ILPSolver` interface & refactor | **Done** | Branch `feature/solver-refactor` |
 | S-11 | **M** | Implement OR-Tools MIP constraints   | **Done** | Connectivity filter added; solver computes stable subset |
