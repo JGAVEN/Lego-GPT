@@ -41,7 +41,7 @@ clusters not connected to the ground.
 
 | Layer      | Responsibility                                                                                 | Tech / Notes |
 |------------|-------------------------------------------------------------------------------------------------|--------------|
-| **Front-end** | Prompt form, spinner, preview image, 3-D viewer, offline PWA shell                            | React 18, Vite, Three.js (`LDrawLoader`) |
+| **Front-end** | Prompt form, spinner, preview image, 3-D viewer, offline PWA shell                            | React 18, Vite, Three.js (`LDrawLoader` from CDN) |
 | **API**       | Auth, rate-limit, enqueue job, expose static file links                                       | Python http.server stub |
 | **Worker**    | `backend/worker.py` runs `rq` jobs, lazy-loads LegoGPT, routes bricks → solver, saves PNG + LDR | Python 3.12, CUDA 12.2, HF `transformers` |
 | **Solver**    | Verify physical stability via MIP (connectivity, gravity, overhang)                           | OR-Tools / HiGHS (default), Gurobi optional |
@@ -57,6 +57,7 @@ clusters not connected to the ground.
 4. Worker writes `preview.png` + `model.ldr` to `/static/{uuid}/`.
 5. When finished, a GET on `/generate/{job_id}` returns `{png_url, ldr_url, brick_counts}`.
 6. Client shows PNG immediately; Three.js lazily loads LDR → interactive viewer.
+   The `LDrawLoader` module is fetched from a CDN at runtime.
 
 ---
 

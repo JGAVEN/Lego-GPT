@@ -1,5 +1,6 @@
 import { useState, FormEvent } from "react";
 import useGenerate from "./api/useGenerate";
+import LDrawViewer from "./LDrawViewer";
 
 export default function App() {
   const [prompt, setPrompt] = useState("");
@@ -56,11 +57,18 @@ export default function App() {
       {error && <p className="mt-4 text-red-600">{error}</p>}
 
       {data?.png_url && !loading && (
-        <img
-          src={data.png_url}
-          alt="Lego preview"
-          className="mt-6 w-full h-auto border"
-        />
+        <>
+          <img
+            src={data.png_url}
+            alt="Lego preview"
+            className="mt-6 w-full h-auto border"
+          />
+          {data.ldr_url && (
+            <div className="mt-6">
+              <LDrawViewer url={data.ldr_url} />
+            </div>
+          )}
+        </>
       )}
     </main>
   );

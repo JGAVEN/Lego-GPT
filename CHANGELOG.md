@@ -1,6 +1,10 @@
 
 # Changelog
 
+## [0.3.6] – 2025-05-23
+### Added
+- Three.js LDraw viewer component loads `.ldr` output when available.
+
 ## [0.3.5] – 2025-05-23
 ### Added
 - Unit tests for JWT encode/decode helpers.

@@ -10,7 +10,7 @@ Lego GPT pairs the CMU **LegoGPT** Llama-3 1B model with a small **HTTP** server
 and a **React + Three.js** progressive-web-app (PWA).
 The model converts natural-language prompts into **LDraw** brick assemblies,
 renders a PNG preview, and serves the `.ldr` file for 3-D manipulation or
-real-life building.
+real-life building via a built-in Three.js viewer.
 
 &nbsp;
 
@@ -22,6 +22,7 @@ real-life building.
 | 🩹 **Solver shim** monkey-patches the CMU call-site (`stability_score`). | Upstream sub-module remains untouched. |
 | 🔐 **JWT auth + rate limit** on `/generate` | Prevents abuse; set `JWT_SECRET` and `RATE_LIMIT` |
 | 🧩 **Connectivity filter** in solver | Removes brick clusters not connected to the ground |
+| 🖼️ **Three.js LDraw viewer** | Interactive 3-D view if `.ldr` output is available |
 
 &nbsp;
 
@@ -91,8 +92,8 @@ Poll the job via `GET /generate/{job_id}` to receive the asset links:
 }
 ```
 
-The `png_url` can be shown directly in an `<img>` tag. The optional
-`ldr_url` is for future Three.js viewing.
+The `png_url` can be shown directly in an `<img>` tag. If `ldr_url` is present,
+pass it to the `LDrawViewer` React component for interactive viewing.
 
 Default rate limit is `5` generate requests per token per minute (configurable via `RATE_LIMIT`).
 
