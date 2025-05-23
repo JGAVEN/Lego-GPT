@@ -6,7 +6,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from redis import Redis
 from rq import Queue, Job
 from backend.api import health, STATIC_ROOT
-from backend.worker import QUEUE_NAME, generate_job
+from backend.worker import QUEUE_NAME, generate_job, detect_job
 from backend.auth import decode as decode_jwt
 
 
@@ -50,6 +50,29 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/health":
             self._send_json(health())
+            return
+        if self.path.startswith("/detect_inventory/"):
+            try:
+                _check_auth(self.headers)
+            except PermissionError:
+                self.send_error(401)
+                return
+            except RuntimeError:
+                self.send_error(429, "Rate limit exceeded")
+                return
+            job_id = self.path.rsplit("/", 1)[-1]
+            try:
+                job_obj = Job.fetch(job_id, connection=redis_conn)
+            except Exception:
+                self.send_error(404)
+                return
+            if job_obj.is_finished:
+                self._send_json(job_obj.result)
+            elif job_obj.is_failed:
+                self.send_error(500, "Job failed")
+            else:
+                self.send_response(202)
+                self.end_headers()
             return
         if self.path.startswith("/generate/"):
             try:
@@ -111,6 +134,26 @@ class Handler(BaseHTTPRequestHandler):
             prompt = payload.get("prompt", "")
             seed = payload.get("seed", 42)
             job_obj = queue.enqueue(generate_job, prompt, seed)
+            self._send_json({"job_id": job_obj.id})
+            return
+        if self.path == "/detect_inventory":
+            try:
+                _check_auth(self.headers)
+            except PermissionError:
+                self.send_error(401)
+                return
+            except RuntimeError:
+                self.send_error(429, "Rate limit exceeded")
+                return
+            length = int(self.headers.get("Content-Length", 0))
+            body = self.rfile.read(length)
+            try:
+                payload = json.loads(body.decode() or "{}")
+            except json.JSONDecodeError:
+                self.send_error(400, "Invalid JSON")
+                return
+            image_b64 = payload.get("image", "")
+            job_obj = queue.enqueue(detect_job, image_b64)
             self._send_json({"job_id": job_obj.id})
             return
         self.send_error(404)

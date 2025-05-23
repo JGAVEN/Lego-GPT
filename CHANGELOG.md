@@ -2,6 +2,8 @@
 ## Unreleased
 ### Added
 * **Photo‑based brick inventory detection** feature (YOLOv8 detector, `/detect_inventory` API, front‑end scan workflow).
+* `/detect_inventory` endpoint implementation with stub worker and tests.
+* Declared `ortools` dependency in `backend/pyproject.toml`.
 
 ### Changed
 * Updated architecture and backlog documentation.
