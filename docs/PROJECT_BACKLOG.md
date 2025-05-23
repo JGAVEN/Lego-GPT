@@ -11,7 +11,7 @@
 | B-06 | **S** | JWT auth & rate-limit                | **Done** | Simple HMAC tokens + per-minute limit |
 | B-07 | **S** | GitHub Actions CI                    | **Done** | unittest + build images |
 | B-08 | **C** | AR Quick-Look export                 | **Done** | glTF pipeline |
-| B-09 | **C** | Brick inventory filter               | **Open** | Fine-tune on owned parts |
+| B-09 | **C** | Brick inventory filter               | **Done** | Fine-tune on owned parts |
 | B-10 | **M** | Add MIT licence text                 | **Done** | Root and vendor licence files added |
 | B-11 | **M** | Align API contract                   | **Done** | POST returns `job_id`; GET `/generate/{job_id}` yields `{png_url, ldr_url, brick_counts}` |
 | B-12 | **XS** | JWT auth unit tests                  | **Done** | encode/decode helpers |
@@ -25,4 +25,4 @@
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.
 
-_Last updated 2025-05-24_
+_Last updated 2025-05-25_

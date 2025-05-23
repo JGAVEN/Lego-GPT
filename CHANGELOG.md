@@ -1,6 +1,10 @@
 
 # Changelog
 
+## [0.3.9] – 2025-05-25
+### Added
+- Inventory filter trims brick counts using `BRICK_INVENTORY`.
+
 ## [0.3.8] – 2025-05-24
 ### Added
 - AR Quick-Look export writes `model.gltf` alongside `.ldr` for iOS AR.
