@@ -16,8 +16,9 @@ from backend.api import generate_lego_model  # noqa: E402
 
 
 class GenerateTests(unittest.TestCase):
+    @patch("backend.inference.ldr_to_gltf")
     @patch("backend.inference.load_model")
-    def test_generate_endpoint(self, mock_load_model):
+    def test_generate_endpoint(self, mock_load_model, mock_gltf):
         mock_model = MagicMock()
         mock_model.generate.return_value = {
             "png": b"fake_png_data",
@@ -31,6 +32,8 @@ class GenerateTests(unittest.TestCase):
         self.assertTrue(data["png_url"].endswith("preview.png"))
         self.assertIn("ldr_url", data)
         self.assertTrue(data["ldr_url"].endswith("model.ldr"))
+        self.assertTrue(data["gltf_url"].endswith("model.gltf"))
+        mock_gltf.assert_called_once()
         self.assertIsInstance(data["brick_counts"], dict)
 
 

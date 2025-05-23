@@ -68,6 +68,17 @@ export default function App() {
               <LDrawViewer url={data.ldr_url} />
             </div>
           )}
+          {data.gltf_url && (
+            <div className="mt-4">
+              <a
+                href={data.gltf_url}
+                rel="ar"
+                className="text-blue-600 underline"
+              >
+                View in AR
+              </a>
+            </div>
+          )}
         </>
       )}
     </main>

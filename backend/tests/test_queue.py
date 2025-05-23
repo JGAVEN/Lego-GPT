@@ -30,6 +30,7 @@ class QueueTests(unittest.TestCase):
             mock_gen.return_value = {
                 "png_url": "/static/x/preview.png",
                 "ldr_url": None,
+                "gltf_url": None,
                 "brick_counts": {},
             }
             job = q.enqueue(worker.generate_job, "cube", 1)

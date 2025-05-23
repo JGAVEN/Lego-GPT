@@ -1,6 +1,10 @@
 
 # Changelog
 
+## [0.3.8] – 2025-05-24
+### Added
+- AR Quick-Look export writes `model.gltf` alongside `.ldr` for iOS AR.
+
 ## [0.3.7] – 2025-05-23
 ### Added
 - Setup script now installs front-end packages via PNPM before network access is disabled.

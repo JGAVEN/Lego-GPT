@@ -14,7 +14,7 @@ real-life building via a built-in Three.js viewer.
 
 &nbsp;
 
-## 2. What’s New (2025-05-23)
+## 2. What’s New (2025-05-24)
 | Change | Impact |
 |--------|--------|
 | 🔄 **Open-source solver** – replaced proprietary Gurobi MIP with **OR-Tools 9.10 + HiGHS**. | Runs licence-free everywhere (local dev, CI, containers). |
@@ -23,6 +23,7 @@ real-life building via a built-in Three.js viewer.
 | 🔐 **JWT auth + rate limit** on `/generate` | Prevents abuse; set `JWT_SECRET` and `RATE_LIMIT` |
 | 🧩 **Connectivity filter** in solver | Removes brick clusters not connected to the ground |
 | 🖼️ **Three.js LDraw viewer** | Interactive 3-D view if `.ldr` output is available |
+| 🌐 **AR Quick-Look export** | `.gltf` file for iOS AR viewer |
 
 &nbsp;
 
@@ -88,6 +89,7 @@ Poll the job via `GET /generate/{job_id}` to receive the asset links:
 {
   "png_url": "/static/{uuid}/preview.png",
   "ldr_url": "/static/{uuid}/model.ldr",  // may be null
+  "gltf_url": "/static/{uuid}/model.gltf", // AR Quick-Look
   "brick_counts": { "Brick 2 x 4": 12 }
 }
 ```
