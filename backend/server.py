@@ -160,6 +160,14 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_error(400, "Invalid JSON")
                 return
             image_b64 = payload.get("image", "")
+            try:
+                # Validate base64 before queuing the job
+                from backend.detector import _validate_base64
+
+                _validate_base64(image_b64)
+            except Exception:
+                self.send_error(400, "Invalid image data")
+                return
             job_obj = queue.enqueue(detect_job, image_b64)
             self._send_json({"job_id": job_obj.id})
             return
