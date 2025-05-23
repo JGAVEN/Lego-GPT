@@ -41,7 +41,7 @@ clusters not connected to the ground.
 |------------|-------------------------------------------------------------------------------------------------|--------------|
 | **Front-end** | Prompt form, spinner, preview image, 3-D viewer, offline PWA shell                            | React 18, Vite, Three.js (`LDrawLoader` from CDN) |
 | **API**       | Auth, rate-limit, enqueue job, expose static file links                                       | Python http.server stub |
-| **Worker**    | `backend/worker.py` runs `rq` jobs, lazy-loads LegoGPT, routes bricks → solver, saves PNG + LDR | Python 3.12, CUDA 12.2, HF `transformers` |
+| **Worker**    | `lego-gpt-worker` runs `rq` jobs, lazy-loads LegoGPT, routes bricks → solver, saves PNG + LDR | Python 3.12, CUDA 12.2, HF `transformers` |
 | **Solver**    | Verify physical stability via MIP (connectivity, gravity, overhang)                           | OR-Tools / HiGHS |
 | **Storage**   | Serve artifacts, 7-day TTL, promote to S3 / Cloudflare R2 in prod                             | Local `/static` → CDN later |
 
@@ -81,9 +81,10 @@ Adds a YOLOv8‑based computer‑vision worker that converts user‑supplied pho
 The API validates that the `image` field contains a valid base64 string and
 returns HTTP 400 for malformed data.
 
-The worker lives in the top-level `detector/` directory and can run as a standalone
-micro-service via `detector/Dockerfile.dev`. The dev Dockerfiles now install all
-backend dependencies so the container starts without extra setup.
+The worker lives in the top-level `detector/` directory and can run as a
+standalone micro‑service via `detector/Dockerfile.dev`. Start it locally with the
+`lego-detect-worker` console script. The dev Dockerfiles install all backend
+dependencies so the container starts without extra setup.
 
 Set the `DETECTOR_MODEL` environment variable to the path of the YOLOv8
 weights file.  If the variable is unset or the `ultralytics` package is

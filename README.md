@@ -54,15 +54,15 @@ python -m pip install --editable ./backend[test]
 # docker run -p 6379:6379 -d redis:7
 
 # Launch the RQ worker in one terminal
-python backend/worker.py
+lego-gpt-worker
 # Launch the detector worker in another
-python detector/worker.py
+lego-detect-worker
 
 # Launch the API server in another
 export JWT_SECRET=mysecret         # auth secret
 export BRICK_INVENTORY=backend/inventory.json  # optional inventory
 export DETECTOR_MODEL=detector/model.pt       # optional YOLOv8 weights
-python backend/server.py --host 0.0.0.0 --port 8000    # http://localhost:8000/health
+lego-gpt-server --host 0.0.0.0 --port 8000    # http://localhost:8000/health
 # The `--host` and `--port` options override the defaults and can also be
 # provided via `HOST` and `PORT` environment variables. Use `--version` to
 # print the backend version and exit.
