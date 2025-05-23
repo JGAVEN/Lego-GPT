@@ -17,6 +17,7 @@
 * `/health` endpoint now returns backend `version`
 * `backend/server.py` accepts `--host` and `--port` CLI options (or `HOST`/`PORT` env vars)
 * `backend/server.py` now supports `--version` to print the backend version
+* `pytest` now works via `backend/tests/conftest.py` (optional)
 
 ### Changed
 * Updated architecture and backlog documentation.

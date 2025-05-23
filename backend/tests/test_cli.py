@@ -5,8 +5,10 @@ from pathlib import Path
 from unittest.mock import patch
 
 project_root = Path(__file__).resolve().parents[2]
-if str(project_root) not in sys.path:
-    sys.path.insert(0, str(project_root))
+vendor_root = project_root / "vendor"
+for p in (project_root, vendor_root):
+    if str(p) not in sys.path:
+        sys.path.insert(0, str(p))
 
 import backend
 import backend.server as server
