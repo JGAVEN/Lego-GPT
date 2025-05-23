@@ -14,7 +14,7 @@ real-life building via a built-in Three.js viewer.
 
 &nbsp;
 
-## 2. What’s New (2025-05-24)
+## 2. What’s New (2025-05-25)
 | Change | Impact |
 |--------|--------|
 | 🔄 **Open-source solver** – replaced proprietary Gurobi MIP with **OR-Tools 9.10 + HiGHS**. | Runs licence-free everywhere (local dev, CI, containers). |
@@ -24,6 +24,7 @@ real-life building via a built-in Three.js viewer.
 | 🧩 **Connectivity filter** in solver | Removes brick clusters not connected to the ground |
 | 🖼️ **Three.js LDraw viewer** | Interactive 3-D view if `.ldr` output is available |
 | 🌐 **AR Quick-Look export** | `.gltf` file for iOS AR viewer |
+| 📦 **Inventory filter** | Limits brick counts using `BRICK_INVENTORY` JSON |
 
 &nbsp;
 
@@ -42,6 +43,7 @@ python backend/worker.py
 
 # Launch the API server in another
 export JWT_SECRET=mysecret         # auth secret
+export BRICK_INVENTORY=backend/inventory.json  # optional inventory
 python backend/server.py    # http://localhost:8000/health
 
 # Generate a JWT for requests

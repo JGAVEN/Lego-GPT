@@ -11,6 +11,7 @@ import uuid
 from pathlib import Path
 
 from backend.export import ldr_to_gltf
+from backend.inventory import filter_counts
 
 import backend.solver.shim  # noqa: F401  (forces monkey-patch)
 
@@ -74,4 +75,6 @@ def generate(prompt: str, seed: int | None = None):
         ldr_path_str = None
         gltf_path_str = None
 
-    return str(png_path), ldr_path_str, gltf_path_str, result["brick_counts"]
+    counts = result.get("brick_counts", {})
+    counts = filter_counts(counts)
+    return str(png_path), ldr_path_str, gltf_path_str, counts
