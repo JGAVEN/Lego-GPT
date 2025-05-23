@@ -23,6 +23,8 @@
 * Dev Docker images now install backend dependencies automatically.
 * `setup_frontend.sh` now exits if `pnpm` is missing and README quick-start
   installs pnpm before running the script.
+* Vite dev server proxies `/detect_inventory` and `/static` to the backend for
+  seamless development.
 
 ### Fixed
 * CI installs pnpm before running front-end tests.
