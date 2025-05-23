@@ -54,7 +54,8 @@ clusters not connected to the ground.
 3. Worker loads LegoGPT, **calls solver shim** ➜ bricks verified.
 4. Inventory filter trims the brick list using `BRICK_INVENTORY`.
 5. Worker writes `preview.png`, `model.ldr`, and `model.gltf` to
-   `backend/static/{uuid}/` by default (`STATIC_ROOT` can override).
+   `backend/static/{uuid}/` by default. Set the `STATIC_ROOT` environment
+   variable before launch to change this location.
 6. When finished, a GET on `/generate/{job_id}` returns `{png_url, ldr_url, gltf_url, brick_counts}`.
 7. Client shows PNG immediately; Three.js lazily loads LDR → interactive viewer.
    The `LDrawLoader` module is fetched from a CDN at runtime.
@@ -71,7 +72,7 @@ clusters not connected to the ground.
 
 ---
 
-_Last updated 2025-05-29_
+_Last updated 2025-05-31_
 
 ---
 
@@ -86,6 +87,13 @@ The worker lives in the top-level `detector/` directory and can run as a
 standalone micro‑service via `detector/Dockerfile.dev`. Start it locally with the
 `lego-detect-worker` console script. The dev Dockerfiles install all backend
 dependencies so the container starts without extra setup.
+
+Use the companion `lego-detect-train` script to fine‑tune the YOLOv8
+model when a labelled dataset is available:
+
+```bash
+lego-detect-train data.yaml --epochs 100 --out detector/model.pt
+```
 
 Set the `DETECTOR_MODEL` environment variable to the path of the YOLOv8
 weights file.  If the variable is unset or the `ultralytics` package is

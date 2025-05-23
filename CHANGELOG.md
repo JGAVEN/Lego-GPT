@@ -1,5 +1,13 @@
 ## Unreleased
 
+## [0.5.4] – 2025-05-31
+### Added
+* `lego-detect-train` script to fine-tune the YOLOv8 brick detector.
+### Changed
+* `STATIC_ROOT` can now be set via environment variable to control where
+  generated assets are written.
+* Project version bumped to 0.5.4.
+
 ## [0.5.3] – 2025-05-30
 ### Added
 * Dev container setup installs backend dependencies including fakeredis for tests.
