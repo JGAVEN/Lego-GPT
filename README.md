@@ -1,83 +1,72 @@
+<!-- Trigger CI: TEMP -->
 
-# Lego GPT
+# HIPAA-AI-Assistant Backend
 
-Generate buildable **LEGO®** creations directly from your browser.
+A FastAPI-based backend for HIPAA-compliant user management with email verification and TOTP-based MFA.
 
 ---
 
-## 1. Overview  
-Lego GPT pairs the CMU **LegoGPT** Llama-3 1B model with a **FastAPI** inference
-gateway and a **React + Three.js** progressive-web-app (PWA).  
-The model converts natural-language prompts into **LDraw** brick assemblies,
-renders a PNG preview, and serves the `.ldr` file for 3-D manipulation or
-real-life building.
+## Environment Variables
 
-&nbsp;
+### Database
+- `DATABASE_URL` — SQLAlchemy database URL (e.g., `postgresql+psycopg2://hipaa_user:your_password_here@db:5432/hipaa_ai`)
 
-## 2. What’s New (2025-05-17)
-| Change | Impact |
-|--------|--------|
-| 🔄 **Open-source solver** – replaced proprietary Gurobi MIP with **OR-Tools 9.10 + HiGHS**. | Runs licence-free everywhere (local dev, CI, containers). |
-| 🔌 **Auto-loader** picks the first available backend (OR-Tools → Gurobi if licence exists). | Seamless fallback; no code changes needed. |
-| 🩹 **Solver shim** monkey-patches the CMU call-site (`stability_score`). | Upstream sub-module remains untouched. |
+### Email Verification
+- `SMTP_HOST` — your SMTP server host (e.g. `smtp.sendgrid.net`)
+- `SMTP_PORT` — your SMTP port (e.g. `587`)
+- `SMTP_USER` — SMTP username
+- `SMTP_PASSWORD` — SMTP password
+- `EMAIL_FROM` — “from” address for verification emails
+- `EMAIL_VERIFY_TOKEN_EXPIRE_SECONDS` — how long the email-verification link is valid (in seconds; default `3600`)
 
-&nbsp;
+### Multi-Factor Authentication (MFA)
+- `MFA_ISSUER` — the issuer name shown in the user’s Authenticator app (default `hipaa-ai-assistant`)
 
-## 3. Quick-Start (Dev)
+---
+
+## ⚙️ Makefile Commands
+
+| Command         | Description                                 |
+|-----------------|---------------------------------------------|
+| `make build`    | Build Docker images                         |
+| `make dev`      | Run app with hot-reload (local dev)         |
+| `make shell`    | Open a bash shell in the backend container  |
+| `make test`     | Run all tests via pytest                    |
+| `make lint`     | Format code with `black` and check with `flake8` |
+| `make check`    | Run Bandit security scan                    |
+| `make migrate`  | Apply Alembic DB migrations                 |
+| `make down`     | Stop and remove Docker containers/volumes   |
+
+---
+
+## Quick-Start Auth Flow (dev)
+
+1. **Register**
+
+   ```bash
+   curl -X POST http://127.0.0.1:8000/auth/register \
+     -H 'Content-Type: application/x-www-form-urlencoded' \
+     -d 'username=<USER>&password=<PASS>'
+   ```
+
+---
+
+## 🛡️ Managing `.env.example`
+
+To keep `.env.example` accurate:
+
+- Always update it when you add a new environment variable to `.env`
+- Never include actual secrets — leave values blank or use dummy placeholders
+- Keep it in sync with your FastAPI config or `getenv()` usage
+
+### Recommended workflow:
 
 ```bash
-# Clone and set up
-git clone https://github.com/JGAVEN/Lego-GPT.git
-cd Lego-GPT
-poetry install          # installs backend deps inc. OR-Tools
-
-# Launch the backend (FastAPI + solver)
-docker compose up       # http://localhost:8000/health
-
-# Launch the front-end
-cd frontend
-pnpm install
-pnpm dev                # http://localhost:5173
+# After adding new variables to .env:
+code .env.example
+# Manually copy keys with blank or safe values
 ```
 
-> **Prerequisites**
-> * Docker ≥ 24, Docker Compose v2  
-> * Python 3.12 (Poetry installs a venv)  
-> * Node 18 + PNPM 8 for the React app  
-
-&nbsp;
-
-## 4. Repository Layout
-
-```text
-backend/            FastAPI API + solver shim
-└── solver/         ILP interface and OR-Tools backend
-docs/               Project docs  (ARCHITECTURE, BACKLOG, CHANGELOG…)
-frontend/           React + Vite PWA scaffold
-src/legogpt/        CMU LegoGPT model (git-submodule)
-docker-compose.yml  Dev stack (backend only for now)
-```
-
-&nbsp;
-
-## 5. Contributing
-
-1. **One atomic branch per ticket** (`feature/<ticket-slug>`).  
-2. Follow `docs/BACKLOG.md` for ticket IDs and size.  
-3. Run `poetry run pytest` before pushing (CI currently checks the backend test suite).  
-4. Update `docs/CHANGELOG.md` after each merge to `main`.  
-
-See `docs/CONTRIBUTING.md` for full workflow, coding style, and commit-message
-conventions.
-
-&nbsp;
-
-## 6. Licence
-
-| Component | Licence |
-|-----------|---------|
-| CMU LegoGPT sub-module (`src/legogpt/…`) | CMU licence (see sub-module `LICENSE`) |
-| All new code in this repo (backend, solver, front-end) | **MIT** |
-
-Lego® is a trademark of the LEGO Group, which does not sponsor or endorse this
-project.
+<!-- CI trigger - safe to remove -->
+<!-- test ruleset trigger -->
+<!-- final ruleset test -->
