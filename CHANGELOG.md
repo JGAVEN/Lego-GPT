@@ -1,4 +1,6 @@
 ## Unreleased
+
+## [0.5.3] – 2025-05-30
 ### Added
 * Dev container setup installs backend dependencies including fakeredis for tests.
 ### Changed
