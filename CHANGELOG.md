@@ -1,6 +1,12 @@
 
 # Changelog
 
+## [0.3.5] – 2025-05-23
+### Added
+- Unit tests for JWT encode/decode helpers.
+### Changed
+- Solver shim documentation now reflects actual OR-Tools usage.
+
 ## [0.3.4] – 2025-05-23
 ### Added
 - Solver now removes brick clusters not connected to the ground.

@@ -1,8 +1,9 @@
 """
-Drop-in replacement for `legogpt.stability_analysis.stability_score`.
+Drop-in replacement for ``legogpt.stability_analysis.stability_score``.
 
-For now it returns a perfect score so the pipeline keeps working.
-In a later commit we’ll call the real OR-Tools MIP.
+Uses the open-source OR-Tools solver when available and falls back to
+a dummy score otherwise.  This keeps the pipeline functional even on
+systems without OR-Tools installed.
 """
 from __future__ import annotations
 
