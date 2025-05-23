@@ -61,6 +61,7 @@ python detector/worker.py
 # Launch the API server in another
 export JWT_SECRET=mysecret         # auth secret
 export BRICK_INVENTORY=backend/inventory.json  # optional inventory
+export DETECTOR_MODEL=detector/model.pt       # optional YOLOv8 weights
 python backend/server.py --host 0.0.0.0 --port 8000    # http://localhost:8000/health
 # The `--host` and `--port` options override the defaults and can also be
 # provided via `HOST` and `PORT` environment variables.
