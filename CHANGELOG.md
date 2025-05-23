@@ -96,3 +96,4 @@
 ## [0.1.0] – 2025‑05‑14
 ### Added
 - Initial repository setup with docs, `.gitignore`, and backend `/health`.
+
