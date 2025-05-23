@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import uuid
 from pathlib import Path
+from backend import STATIC_ROOT
 
 from backend.export import ldr_to_gltf
 from backend.inventory import filter_counts
@@ -57,7 +58,7 @@ def generate(prompt: str, seed: int | None = None, inventory_filter: dict[str, i
     result = model.generate(prompt, seed=seed)
 
     run_id = str(uuid.uuid4())
-    output_dir = Path("backend/static") / run_id
+    output_dir = STATIC_ROOT / run_id
     output_dir.mkdir(parents=True, exist_ok=True)
 
     png_path = output_dir / "preview.png"

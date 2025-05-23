@@ -6,7 +6,8 @@ import time
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from redis import Redis
 from rq import Queue, Job
-from backend.api import health, STATIC_ROOT
+from backend.api import health
+from backend import STATIC_ROOT
 from backend.worker import QUEUE_NAME, generate_job, detect_job
 from backend.auth import decode as decode_jwt
 from backend import __version__
