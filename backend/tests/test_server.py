@@ -28,6 +28,8 @@ class ServerTests(unittest.TestCase):
     def tearDown(self):
         self.httpd.shutdown()
         self.thread.join()
+        # Ensure the server socket is fully closed to avoid resource warnings
+        self.httpd.server_close()
 
     def _request(self, method: str, path: str, body: bytes | None = None):
         conn = http.client.HTTPConnection("127.0.0.1", self.port)

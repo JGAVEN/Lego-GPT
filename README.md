@@ -50,7 +50,7 @@ python backend/server.py    # http://localhost:8000/health
 ```text
 backend/            Simple HTTP API + solver shim
 └── solver/         ILP interface and OR-Tools backend
-docs/               Project docs  (ARCHITECTURE, BACKLOG, CHANGELOG…)
+docs/               Project docs  (ARCHITECTURE, PROJECT_BACKLOG, CHANGELOG…)
 frontend/           React + Vite PWA scaffold
 vendor/legogpt/     Vendored CMU LegoGPT library
 docker-compose.yml  Dev stack (backend only for now)
@@ -90,7 +90,7 @@ The `png_url` can be shown directly in an `<img>` tag. The optional
 ## 6. Contributing
 
 1. **One atomic branch per ticket** (`feature/<ticket-slug>`).
-2. Follow `docs/BACKLOG.md` for ticket IDs and size.
+2. Follow `docs/PROJECT_BACKLOG.md` for ticket IDs and size.
 3. Install front-end dependencies with `pnpm install` (run inside `frontend/`)
    before running `npm run lint`.
 4. Run `python -m unittest discover -v` before pushing. The test suite uses
