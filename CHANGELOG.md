@@ -7,6 +7,7 @@
 * `inventory_filter` payload option for `/generate` to limit bricks per request.
 * React `InventoryScanner` component and `useDetectInventory` hook.
 * Optional `fakeredis` dependency for running queue tests
+* `detector/` micro-service and Dockerfile for inventory detection
 
 ### Changed
 * Updated architecture and backlog documentation.
