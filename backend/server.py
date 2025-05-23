@@ -1,4 +1,5 @@
 """Tiny HTTP server exposing the Lego GPT API via an RQ queue."""
+
 import json
 import os
 import time
@@ -98,19 +99,21 @@ class Handler(BaseHTTPRequestHandler):
                 self.end_headers()
             return
         if self.path.startswith("/static/"):
-            file_path = STATIC_ROOT.parent / self.path.lstrip("/")
-            if file_path.exists():
-                self.send_response(200)
-                if file_path.suffix == ".png":
-                    self.send_header("Content-Type", "image/png")
-                else:
-                    self.send_header("Content-Type", "text/plain")
-                data = file_path.read_bytes()
-                self.send_header("Content-Length", str(len(data)))
-                self.end_headers()
-                self.wfile.write(data)
-            else:
+            base = STATIC_ROOT.resolve()
+            rel = self.path[len("/static/") :]
+            file_path = (base / rel).resolve()
+            if not str(file_path).startswith(str(base)) or not file_path.is_file():
                 self.send_error(404)
+                return
+            self.send_response(200)
+            if file_path.suffix == ".png":
+                self.send_header("Content-Type", "image/png")
+            else:
+                self.send_header("Content-Type", "text/plain")
+            data = file_path.read_bytes()
+            self.send_header("Content-Length", str(len(data)))
+            self.end_headers()
+            self.wfile.write(data)
             return
         self.send_error(404)
 

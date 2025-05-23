@@ -21,6 +21,8 @@
 
 ### Fixed
 * CI installs pnpm before running front-end tests.
+* Static file handler now blocks path traversal outside the `backend/static`
+  directory.
 
 # Changelog
 
