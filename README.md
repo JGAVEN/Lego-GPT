@@ -37,7 +37,7 @@ git clone https://github.com/JGAVEN/Lego-GPT.git
 cd Lego-GPT
 
 # Install pnpm (requires Node.js)
-npm install -g pnpm
+npm install -g pnpm@10.5.2
 
 # Install backend dependencies (including optional test tools)
 python -m pip install --editable ./backend[test]
