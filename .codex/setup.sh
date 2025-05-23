@@ -7,7 +7,8 @@ if [ -f .gitmodules ]; then
 fi
 
 # Install Python dependencies before network access is disabled
-python -m pip install --no-cache-dir ortools redis rq
+python -m pip install --no-cache-dir ortools redis rq || \
+  echo "Warning: could not install Python packages"
 
 # Install pnpm for front-end package management
 corepack enable

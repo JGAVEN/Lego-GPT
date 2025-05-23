@@ -10,7 +10,16 @@ export default function LDrawViewer({ url }: Props) {
   useEffect(() => {
     if (!mountRef.current) return;
 
-    let renderer: any;
+    const mount = mountRef.current;
+
+    interface SimpleRenderer {
+      domElement: HTMLElement;
+      setSize: (width: number, height: number) => void;
+      render: (scene: unknown, camera: unknown) => void;
+      dispose: () => void;
+    }
+
+    let renderer: SimpleRenderer | null = null;
     let animationId: number;
 
     async function init() {
@@ -38,8 +47,9 @@ export default function LDrawViewer({ url }: Props) {
       mountRef.current!.appendChild(renderer.domElement);
 
       const loader = new LDrawLoader();
-      loader.load(url, (group: any) => {
-        scene.add(group);
+      loader.load(url, (group: unknown) => {
+        // The loaded object is compatible with THREE.Object3D
+        (scene as { add: (obj: unknown) => void }).add(group);
         animate();
       });
 
@@ -49,18 +59,18 @@ export default function LDrawViewer({ url }: Props) {
       }
     }
 
-    init();
-    return () => {
-      if (renderer) {
-        renderer.dispose();
-      }
-      if (animationId) {
-        cancelAnimationFrame(animationId);
-      }
-      if (mountRef.current && renderer) {
-        mountRef.current.removeChild(renderer.domElement);
-      }
-    };
+      init();
+      return () => {
+        if (renderer) {
+          renderer.dispose();
+        }
+        if (animationId) {
+          cancelAnimationFrame(animationId);
+        }
+        if (renderer) {
+          mount.removeChild(renderer.domElement);
+        }
+      };
   }, [url]);
 
   return <div ref={mountRef} style={{ width: "100%", height: 400 }} />;

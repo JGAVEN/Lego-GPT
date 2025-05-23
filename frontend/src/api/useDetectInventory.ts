@@ -50,9 +50,13 @@ export default function useDetectInventory(image: string | null): UseDetectResul
           }
           await new Promise((r) => setTimeout(r, 1000));
         }
-      } catch (err: any) {
-        if (!cancelled && err.name !== "AbortError") {
-          setError(err.message ?? "Unknown error");
+      } catch (err: unknown) {
+        if (!cancelled) {
+          if (err instanceof Error && err.name !== "AbortError") {
+            setError(err.message);
+          } else {
+            setError("Unknown error");
+          }
         }
       } finally {
         if (!cancelled) {
