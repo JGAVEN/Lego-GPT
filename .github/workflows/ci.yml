@@ -24,6 +24,22 @@ jobs:
       - name: Run tests
         run: |
           python -m unittest discover -v
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10.5.2
+
+      - name: Install front-end dependencies
+        run: pnpm install --frozen-lockfile --dir frontend
+
+      - name: Run front-end lint
+        run: pnpm --dir frontend run lint
       # 6. (Optional) Build dev Docker image
       # - name: Build Docker image
       #   run: docker build -f Dockerfile.dev -t lego-gpt-dev .

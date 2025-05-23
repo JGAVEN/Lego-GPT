@@ -8,6 +8,7 @@
 * React `InventoryScanner` component and `useDetectInventory` hook.
 * Optional `fakeredis` dependency for running queue tests
 * `detector/` micro-service and Dockerfile for inventory detection
+* GitHub Actions CI lints front-end code with pnpm
 
 ### Changed
 * Updated architecture and backlog documentation.
