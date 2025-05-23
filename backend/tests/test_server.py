@@ -17,6 +17,7 @@ os.environ["PYTHONPATH"] = str(project_root)
 
 import importlib
 from backend import auth
+import backend.worker
 
 
 class ServerTests(unittest.TestCase):
@@ -62,13 +63,32 @@ class ServerTests(unittest.TestCase):
         status, data = self._request(
             "POST",
             "/generate",
-            body=b'{"prompt":"cube","seed":1}',
+            body=b'{"prompt":"cube","seed":1,"inventory_filter":{"Brick":1}}',
             token=self.token,
         )
         self.assertEqual(status, 200)
         payload = json.loads(data)
         self.assertEqual(payload["job_id"], "abc")
-        mock_queue.enqueue.assert_called_once()
+        mock_queue.enqueue.assert_called_once_with(
+            backend.worker.generate_job,
+            "cube",
+            1,
+            {"Brick": 1},
+        )
+
+    @patch("backend.server.queue")
+    def test_generate_bad_inventory(self, mock_queue):
+        mock_job = MagicMock(id="abc")
+        mock_queue.enqueue.return_value = mock_job
+
+        status, _ = self._request(
+            "POST",
+            "/generate",
+            body=b'{"prompt":"cube","inventory_filter":123}',
+            token=self.token,
+        )
+        self.assertEqual(status, 400)
+        mock_queue.enqueue.assert_not_called()
 
     def test_generate_requires_auth(self):
         status, _ = self._request(

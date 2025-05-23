@@ -34,9 +34,18 @@ def get_inventory() -> Dict[str, int]:
     return _INVENTORY
 
 
-def filter_counts(counts: Dict[str, int]) -> Dict[str, int]:
-    """Trim brick counts to the available inventory."""
-    inv = get_inventory()
+def filter_counts(counts: Dict[str, int], inventory: Dict[str, int] | None = None) -> Dict[str, int]:
+    """Trim brick counts to the available inventory.
+
+    Parameters
+    ----------
+    counts : Dict[str, int]
+        Brick counts returned by the model.
+    inventory : Dict[str, int] | None
+        Optional inventory map to use instead of the global
+        ``BRICK_INVENTORY``.
+    """
+    inv = inventory if inventory is not None else get_inventory()
     if not inv:
         return counts
     filtered: Dict[str, int] = {}

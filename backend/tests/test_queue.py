@@ -33,11 +33,11 @@ class QueueTests(unittest.TestCase):
                 "gltf_url": None,
                 "brick_counts": {},
             }
-            job = q.enqueue(worker.generate_job, "cube", 1)
+            job = q.enqueue(worker.generate_job, "cube", 1, None)
             SimpleWorker([q], connection=redis_conn).work(burst=True)
             self.assertTrue(job.is_finished)
             self.assertEqual(job.result["png_url"], "/static/x/preview.png")
-            mock_gen.assert_called_once()
+            mock_gen.assert_called_once_with("cube", 1, None)
 
 
 if __name__ == "__main__":  # pragma: no cover

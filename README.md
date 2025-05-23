@@ -24,7 +24,7 @@ real-life building via a built-in Three.js viewer.
 | 🧩 **Connectivity filter** in solver | Removes brick clusters not connected to the ground |
 | 🖼️ **Three.js LDraw viewer** | Interactive 3-D view if `.ldr` output is available |
 | 🌐 **AR Quick-Look export** | `.gltf` file for iOS AR viewer |
-| 📦 **Inventory filter** | Limits brick counts using `BRICK_INVENTORY` JSON |
+| 📦 **Inventory filter** | Limits brick counts using `BRICK_INVENTORY` JSON or per-request `inventory_filter` |
 | 🆕 **Photo‑based brick inventory detection** – YOLOv8 detector + `/detect_inventory` API | Scan your loose bricks and generate builds you can actually build |
 
 &nbsp;
@@ -77,7 +77,11 @@ docker-compose.yml  Dev stack (backend only for now)
 `POST /generate` requires an `Authorization: Bearer <token>` header and accepts a JSON body:
 
 ```json
-{ "prompt": "text description", "seed": 42 }
+{
+  "prompt": "text description",
+  "seed": 42,
+  "inventory_filter": { "3001.DAT": 2 }  // optional
+}
 ```
 
 It returns a job handle:

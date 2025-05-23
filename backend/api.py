@@ -10,9 +10,13 @@ def health() -> dict:
     return {"ok": True}
 
 
-def generate_lego_model(prompt: str, seed: int = 42) -> dict:
+def generate_lego_model(
+    prompt: str, seed: int = 42, inventory_filter: dict[str, int] | None = None
+) -> dict:
     """Run the model and return URLs for the generated preview and models."""
-    png_path, ldr_path, gltf_path, brick_counts = generate(prompt, seed)
+    png_path, ldr_path, gltf_path, brick_counts = generate(
+        prompt, seed, inventory_filter
+    )
     rel_png = Path(png_path).resolve().relative_to(STATIC_ROOT.parent)
     png_url = f"/static/{rel_png.parent.name}/preview.png"
     ldr_url = None

@@ -7,9 +7,13 @@ from backend.detector import detect_inventory
 QUEUE_NAME = "legogpt"
 
 
-def generate_job(prompt: str, seed: int | None = 42) -> dict:
+def generate_job(
+    prompt: str,
+    seed: int | None = 42,
+    inventory_filter: dict[str, int] | None = None,
+) -> dict:
     """Background job that runs the model and returns file URLs."""
-    return generate_lego_model(prompt, seed)
+    return generate_lego_model(prompt, seed, inventory_filter)
 
 
 def detect_job(image_b64: str) -> dict:
