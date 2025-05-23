@@ -23,6 +23,7 @@
 | B-12 | **XS** | JWT auth unit tests                  | **Done** | encode/decode helpers |
 | B-13 | **XS** | Front-end lint step in CI            | **Done** | pnpm runs ESLint in workflow |
 | B-14 | **S** | YOLOv8 model auto-loader            | **Done** | `DETECTOR_MODEL` env var selects weights |
+| B-15 | **XS** | Console scripts for server/worker   | **Done** | `lego-gpt-server`, `lego-gpt-worker`, `lego-detect-worker` |
 |------|-----|---------------------------------------|--------|-------|
 | S-10 | **M** | Introduce `ILPSolver` interface & refactor | **Done** | Branch `feature/solver-refactor` |
 | S-11 | **M** | Implement OR-Tools MIP constraints   | **Done** | Connectivity filter added; solver computes stable subset |
