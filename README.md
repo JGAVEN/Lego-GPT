@@ -81,6 +81,8 @@ docker compose up --build
 ```
 
 The API will be available at http://localhost:8000/health.
+The `/health` endpoint responds with `{ "ok": true, "version": "x.y.z" }` so you
+can verify the backend version.
 
 > **Prerequisites**
 > * Python 3.11+
@@ -104,6 +106,9 @@ docker-compose.yml  Dev stack (backend + detector workers)
 &nbsp;
 
 ## 5. API Contract
+
+`GET /health` returns `{ "ok": true, "version": "x.y.z" }` and can be used to
+verify that the backend is running.
 
 `POST /generate` requires an `Authorization: Bearer <token>` header and accepts a JSON body:
 

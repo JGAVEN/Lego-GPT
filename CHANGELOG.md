@@ -13,6 +13,7 @@
 * Setup script now retries offline install before fetching packages
 * Clearer message when the pnpm store lacks packages and no network is available
 * `scripts/generate_jwt.py` helper for creating auth tokens
+* `/health` endpoint now returns backend `version`
 
 ### Changed
 * Updated architecture and backlog documentation.

@@ -1,13 +1,14 @@
 """Minimal API functions for offline use."""
 from pathlib import Path
 from backend.inference import generate
+from backend import __version__
 
 STATIC_ROOT = Path(__file__).parent / "static"
 
 
 def health() -> dict:
-    """Simple liveness check used by the HTTP server."""
-    return {"ok": True}
+    """Return service liveness and version information."""
+    return {"ok": True, "version": __version__}
 
 
 def generate_lego_model(
