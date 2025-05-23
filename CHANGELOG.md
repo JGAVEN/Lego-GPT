@@ -11,6 +11,8 @@
 
 ### Changed
 * Updated architecture and backlog documentation.
+* `/detect_inventory` now validates base64 input and returns HTTP 400 if
+  malformed.
 
 ### Fixed
 * _None yet_

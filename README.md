@@ -115,8 +115,9 @@ pass it to the `LDrawViewer` React component for interactive viewing.
 
 ### Detect Brick Inventory
 
-`POST /detect_inventory` expects `{ "image": "<base64>" }` and returns
-`{ "job_id": "xyz" }`. Poll `GET /detect_inventory/{job_id}` for the result:
+`POST /detect_inventory` expects `{ "image": "<base64>" }` with a **valid**
+base64 string and returns `{ "job_id": "xyz" }`. Poll
+`GET /detect_inventory/{job_id}` for the result:
 
 ```json
 { "brick_counts": { "3001.DAT": 2 } }
