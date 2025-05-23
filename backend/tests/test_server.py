@@ -61,6 +61,7 @@ class ServerTests(unittest.TestCase):
         self.assertEqual(status, 200)
         payload = json.loads(data)
         self.assertTrue(payload.get("ok"))
+        self.assertRegex(payload.get("version", ""), r"\d+\.\d+\.\d+")
 
     def test_static_path_traversal_blocked(self):
         status, _ = self._request("GET", "/static/../server.py")
