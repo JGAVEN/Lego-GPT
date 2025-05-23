@@ -30,6 +30,11 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Install pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@10.11.0 --activate
+
       - name: Install front-end deps
         run: pnpm install --frozen-lockfile --dir frontend
 

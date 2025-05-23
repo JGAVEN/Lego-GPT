@@ -16,7 +16,7 @@
   malformed.
 
 ### Fixed
-* _None yet_
+* CI installs pnpm before running front-end tests.
 
 # Changelog
 
