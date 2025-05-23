@@ -39,6 +39,8 @@ cd Lego-GPT
 # Install front-end dependencies.
 # The script installs from the local pnpm store if possible and fetches from
 # the registry when online. Run it once with network access.
+# Running it offline before the store is populated will print instructions
+# to retry with network access.
 ./scripts/setup_frontend.sh
 
 # Install pnpm (requires Node.js)
@@ -147,6 +149,8 @@ Default rate limit is `5` generate requests per token per minute (configurable v
    The script first attempts an offline install and fetches from the registry if needed.
    Run it once with network access (`pnpm install --dir frontend` works too) so
    future lints and dev builds work offline.
+   Running it before this first networked install will show a message
+   explaining that the pnpm store is missing.
    Run `npm run lint` after editing UI code. CI also runs this lint step automatically.
 4. Run `python -m unittest discover -v` before pushing. The test suite uses
    Python's built-in `unittest` module—no need for `pytest`.
