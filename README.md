@@ -14,13 +14,14 @@ real-life building.
 
 &nbsp;
 
-## 2. What’s New (2025-05-17)
+## 2. What’s New (2025-05-23)
 | Change | Impact |
 |--------|--------|
 | 🔄 **Open-source solver** – replaced proprietary Gurobi MIP with **OR-Tools 9.10 + HiGHS**. | Runs licence-free everywhere (local dev, CI, containers). |
 | 🔌 **Auto-loader** picks the first available backend (OR-Tools → Gurobi if licence exists). | Seamless fallback; no code changes needed. |
 | 🩹 **Solver shim** monkey-patches the CMU call-site (`stability_score`). | Upstream sub-module remains untouched. |
 | 🔐 **JWT auth + rate limit** on `/generate` | Prevents abuse; set `JWT_SECRET` and `RATE_LIMIT` |
+| 🧩 **Connectivity filter** in solver | Removes brick clusters not connected to the ground |
 
 &nbsp;
 
