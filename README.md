@@ -98,6 +98,18 @@ The API will be available at http://localhost:8000/health.
 The `/health` endpoint responds with `{ "ok": true, "version": "x.y.z" }` so you
 can verify the backend version.
 
+### Train the Brick Detector
+
+Fine‑tune the YOLOv8 model when you have a labelled dataset. The
+`lego-detect-train` console script wraps the `ultralytics` training API:
+
+```bash
+lego-detect-train data.yaml --epochs 100 --out detector/model.pt
+```
+
+The resulting weights file can then be referenced via the `DETECTOR_MODEL`
+environment variable when running the detector worker.
+
 > **Prerequisites**
 > * Python 3.11+
 > * Node.js 20+
