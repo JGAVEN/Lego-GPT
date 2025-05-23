@@ -10,6 +10,8 @@ from __future__ import annotations
 import uuid
 from pathlib import Path
 
+from backend.export import ldr_to_gltf
+
 import backend.solver.shim  # noqa: F401  (forces monkey-patch)
 
 MODEL = None
@@ -45,8 +47,8 @@ def generate(prompt: str, seed: int | None = None):
 
     Returns
     -------
-    tuple[str, str | None, dict]
-        PNG path, optional LDraw path, and brick-count dict.
+    tuple[str, str | None, str | None, dict]
+        PNG path, optional LDraw and glTF paths, and brick-count dict.
     """
     model = load_model()
     result = model.generate(prompt, seed=seed)
@@ -57,6 +59,7 @@ def generate(prompt: str, seed: int | None = None):
 
     png_path = output_dir / "preview.png"
     ldr_path = output_dir / "model.ldr"
+    gltf_path = output_dir / "model.gltf"
 
     # Always save PNG
     png_path.write_bytes(result["png"])
@@ -65,7 +68,10 @@ def generate(prompt: str, seed: int | None = None):
     if result.get("ldr"):
         ldr_path.write_text(result["ldr"])
         ldr_path_str: str | None = str(ldr_path)
+        ldr_to_gltf(ldr_path, gltf_path)
+        gltf_path_str: str | None = str(gltf_path)
     else:
         ldr_path_str = None
+        gltf_path_str = None
 
-    return str(png_path), ldr_path_str, result["brick_counts"]
+    return str(png_path), ldr_path_str, gltf_path_str, result["brick_counts"]
