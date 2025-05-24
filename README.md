@@ -56,8 +56,8 @@ npm install -g pnpm@10.5.2
 # Install front-end dependencies.
 # The script installs from the local pnpm store if possible and fetches from
 # the registry when online. Run it once with network access.
-# Running it offline before the store is populated will print instructions
-# to retry with network access. The script requires `pnpm` to be installed.
+# Running it offline before the store is populated prints a brief message and
+# skips linting. The script requires `pnpm` to be installed.
 ./scripts/setup_frontend.sh
 
 # Install backend dependencies and dev tools (includes `ruff` for linting)
