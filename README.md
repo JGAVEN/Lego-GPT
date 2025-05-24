@@ -91,6 +91,8 @@ lego-gpt-server \
 # Generated assets are written to `backend/static/{uuid}/` by default.
 # Pass ``--static-root <dir>`` or set the ``STATIC_ROOT`` environment
 # variable to override the directory.
+# Set ``CORS_ORIGINS`` or pass ``--cors-origins <origins>`` to control the
+# ``Access-Control-Allow-Origin`` header.
 
 # Generate a JWT for requests
 python scripts/generate_jwt.py --secret mysecret --sub dev

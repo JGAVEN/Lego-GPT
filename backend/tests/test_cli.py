@@ -32,6 +32,7 @@ class CLITests(unittest.TestCase):
             '--rate-limit', '7',
             '--static-root', '/tmp/out',
             '--log-level', 'INFO',
+            '--cors-origins', 'http://x',
         ]
         with patch.object(sys, 'argv', argv):
             with patch('backend.server.run') as mock_run:
@@ -45,6 +46,7 @@ class CLITests(unittest.TestCase):
                     7,
                     '/tmp/out',
                     'INFO',
+                    'http://x',
                 )
 
 

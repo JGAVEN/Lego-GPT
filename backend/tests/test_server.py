@@ -56,6 +56,24 @@ class ServerTests(unittest.TestCase):
         conn.close()
         return resp.status, data
 
+    def _request_full(
+        self,
+        method: str,
+        path: str,
+        body: bytes | None = None,
+        token: str | None = None,
+    ):
+        conn = http.client.HTTPConnection("127.0.0.1", self.port)
+        headers = {}
+        if token:
+            headers["Authorization"] = f"Bearer {token}"
+        conn.request(method, path, body, headers)
+        resp = conn.getresponse()
+        data = resp.read()
+        hdrs = dict(resp.getheaders())
+        conn.close()
+        return resp.status, data, hdrs
+
     def test_health_endpoint(self):
         status, data = self._request("GET", "/health")
         self.assertEqual(status, 200)
@@ -159,6 +177,28 @@ class ServerTests(unittest.TestCase):
         )
         self.assertEqual(status, 400)
         mock_queue.enqueue.assert_not_called()
+
+    def test_options_cors_headers(self):
+        status, _, headers = self._request_full("OPTIONS", "/generate")
+        self.assertEqual(status, 204)
+        self.assertEqual(headers.get("Access-Control-Allow-Origin"), "*")
+        self.assertIn("POST", headers.get("Access-Control-Allow-Methods", ""))
+
+    def test_static_gltf_content_type(self):
+        import tempfile
+        import shutil
+        from pathlib import Path
+
+        tmp = Path(tempfile.mkdtemp())
+        gltf_dir = tmp / "x"
+        gltf_dir.mkdir(parents=True, exist_ok=True)
+        (gltf_dir / "model.gltf").write_text("{}")
+        self.server.STATIC_ROOT = tmp.resolve()
+
+        status, _, headers = self._request_full("GET", "/static/x/model.gltf")
+        self.assertEqual(status, 200)
+        self.assertEqual(headers.get("Content-Type"), "model/gltf+json")
+        shutil.rmtree(tmp)
 
 
 if __name__ == "__main__":  # pragma: no cover
