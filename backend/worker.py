@@ -1,6 +1,7 @@
 """RQ worker for asynchronous generation jobs."""
 from redis import Redis
 from rq import Worker, Queue, Connection
+import os
 from backend.api import generate_lego_model
 from backend.detector import detect_inventory
 
@@ -23,12 +24,27 @@ def detect_job(image_b64: str) -> dict:
 
 
 def run_worker(redis_url: str = "redis://localhost:6379/0") -> None:
-    """Entry point to start an RQ worker."""
+    """Start an RQ worker that processes generation jobs."""
     conn = Redis.from_url(redis_url)
     with Connection(conn):
         worker = Worker([QUEUE_NAME])
         worker.work()
 
 
-if __name__ == "__main__":  # pragma: no cover
-    run_worker()
+def main(argv: list[str] | None = None) -> None:
+    """CLI entry point for ``lego-gpt-worker``."""
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Run Lego GPT RQ worker")
+    parser.add_argument(
+        "--redis-url",
+        default=os.getenv("REDIS_URL", "redis://localhost:6379/0"),
+        help="Redis connection URL (default: env REDIS_URL or redis://localhost:6379/0)",
+    )
+    args = parser.parse_args(argv)
+
+    run_worker(args.redis_url)
+
+
+if __name__ == "__main__":  # pragma: no cover - CLI entry
+    main()
