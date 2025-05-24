@@ -6,7 +6,7 @@ This plan lists the next five logical sprints after completing the deployment au
 * Added `benchmark_scalability.py` script to measure throughput.
 * Documented tuning guidelines in `docs/SCALABILITY_BENCHMARKING.md`.
 
-## Sprint 2 – Advanced front-end features
+## Sprint 2 – Advanced front-end features (completed)
 * Improve offline UX with queued requests when offline.
 * Add settings page to manage cached results.
 
