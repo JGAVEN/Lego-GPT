@@ -6,9 +6,9 @@ This document lists the next five sprints after completing the solver edge-case 
 * Provided `detector/Dockerfile.train` and `scripts/train_detector.sh`.
 * Documented dataset layout in `docs/DETECTOR_DATASET.md`.
 
-## Sprint 2 – Offline mode improvements
+## Sprint 2 – Offline mode improvements (completed)
 * Cache API responses in IndexedDB for repeat access.
-* Add a service worker route for cached preview images.
+* Added a service worker route for cached preview images.
 
 ## Sprint 3 – Enhanced CLI options
 * Support batch generation via a file of prompts.

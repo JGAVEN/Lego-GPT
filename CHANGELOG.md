@@ -1,3 +1,10 @@
+## [0.5.32] – 2025-05-25
+### Added
+* Offline mode improvements: IndexedDB caching for API responses.
+* Service worker caches preview images for offline viewing.
+### Changed
+* Backend package version bumped to 0.5.32.
+
 ## [0.5.31] – 2025-05-24
 ### Added
 * Training Dockerfile (`detector/Dockerfile.train`) and helper script `scripts/train_detector.sh`.

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { GenerateRequest, GenerateResponse } from "./lego";
 import { API_BASE } from "./lego";
+import { getCachedGenerate, setCachedGenerate } from "../lib/db";
 
 export interface UseGenerateResult {
   data: GenerateResponse | null;
@@ -31,6 +32,8 @@ export default function useGenerate(
       setLoading(true);
       setError(null);
       setData(null);
+      const cacheKey = JSON.stringify({ prompt, seed, inventoryFilter });
+      const cached = await getCachedGenerate(cacheKey);
       try {
         const reqBody: GenerateRequest = { prompt };
         if (seed !== undefined && seed !== null) {
@@ -58,6 +61,7 @@ export default function useGenerate(
             const result = (await poll.json()) as GenerateResponse;
             if (!cancelled) {
               setData(result);
+              await setCachedGenerate(cacheKey, result);
             }
             break;
           }
@@ -68,7 +72,10 @@ export default function useGenerate(
         }
         } catch (err: unknown) {
           if (!cancelled) {
-            if (err instanceof Error && err.name !== "AbortError") {
+            if (cached) {
+              setData(cached);
+              setError("Offline - showing cached result");
+            } else if (err instanceof Error && err.name !== "AbortError") {
               setError(err.message);
             } else {
               setError("Unknown error");
