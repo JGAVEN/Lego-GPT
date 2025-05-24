@@ -25,7 +25,8 @@ git clone git@github.com:JGAVEN/Lego-GPT.git
 cd Lego-GPT && git submodule update --init
 pnpm fetch --dir frontend && pnpm install --offline --dir frontend \
   # run automatically in the dev container's setup script
- python -m pip install --editable ./backend[test]  # backend + worker deps (incl. fakeredis for tests)
+  # installs React and linting packages used by scripts/lint_frontend.js
+python -m pip install --editable ./backend[test]  # backend + worker deps (incl. fakeredis for tests)
   # also installed automatically in the dev container
 ```
 

@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 # Fetch and install front-end dependencies.
 # Run with network access during initial setup.
+# Installs React runtime packages and dev tools used by lint_frontend.js:
+#   @eslint/js, @types/react, @types/react-dom, @vitejs/plugin-react,
+#   eslint, eslint-config-prettier, eslint-plugin-react-hooks,
+#   eslint-plugin-react-refresh, globals, prettier, typescript,
+#   typescript-eslint and vite.
 set -euo pipefail
 
 if ! command -v pnpm >/dev/null 2>&1; then

@@ -6,9 +6,9 @@ This plan lists the next five logical sprints after completing the deployment au
 * Added `benchmark_scalability.py` script to measure throughput.
 * Documented tuning guidelines in `docs/SCALABILITY_BENCHMARKING.md`.
 
-## Sprint 2 – Advanced front-end features
-* Improve offline UX with queued requests when offline.
-* Add settings page to manage cached results.
+## Sprint 2 – Advanced front-end features (completed)
+* Offline requests are queued and processed when connectivity returns.
+* New settings page allows clearing cached results and queued jobs.
 
 ## Sprint 3 – Cloud infrastructure templates
 * Provide Terraform samples for common cloud providers.

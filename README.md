@@ -37,6 +37,7 @@ real-life building via a built-in Three.js viewer.
 | 🆕 **`--inventory` & `.env` support** | CLI loads env vars from `.env` and accepts `--inventory` JSON |
 | 🆕 **Batch generation & progress** | Use `--file prompts.txt` and watch progress dots while waiting |
 | 🧹 **Cleanup script** (`lego-gpt-cleanup`) | Remove old asset directories (use `--dry-run` to preview) |
+| 🆕 **Offline queue + settings** | Requests made offline are queued and cached results can be cleared in the settings page |
 
 &nbsp;
 
@@ -143,6 +144,7 @@ lego-gpt-cli --token $(cat token.txt) generate --file prompts.txt
 pnpm --dir frontend run dev    # http://localhost:5173
 # The PWA caches generated models in IndexedDB and preview images via a
 # service worker so previously viewed results remain available offline.
+# Requests made while offline are queued and processed once connectivity returns.
 # Lint UI code (skips if dependencies are missing)
 pnpm --dir frontend run lint
 # Lint backend code
@@ -191,14 +193,14 @@ Release tags trigger a workflow that builds CPU and GPU images and publishes
 them to GitHub Container Registry.  You can pull the latest versioned images:
 
 ```bash
-docker pull ghcr.io/<owner>/lego-gpt:v0.5.36        # CPU
-docker pull ghcr.io/<owner>/lego-gpt:gpu-v0.5.36    # GPU
+docker pull ghcr.io/<owner>/lego-gpt:v0.5.37        # CPU
+docker pull ghcr.io/<owner>/lego-gpt:gpu-v0.5.37    # GPU
 ```
 
 Run the API server with:
 
 ```bash
-docker run -p 8000:8000 ghcr.io/<owner>/lego-gpt:v0.5.36
+docker run -p 8000:8000 ghcr.io/<owner>/lego-gpt:v0.5.37
 ```
 
 Override the command to start a worker or the detector worker as needed.
@@ -302,12 +304,16 @@ Default rate limit is `5` generate requests per token per minute (configurable v
 1. **One atomic branch per ticket** (`feature/<ticket-slug>`).
 2. Follow `docs/PROJECT_BACKLOG.md` for ticket IDs and size.
 3. Front-end dependencies are installed via `scripts/setup_frontend.sh`.
-   The script first attempts an offline install and fetches from the registry if needed.
+   The script attempts an offline install and fetches from the registry if needed.
    Run it once with network access (`pnpm install --dir frontend` works too) so
-   future lints and dev builds work offline.
-   Running it before this first networked install will show a message
-   explaining that the pnpm store is missing.
-   Run `pnpm --dir frontend run lint` after editing UI code. The command skips if
+   future lints and dev builds work offline. The script installs runtime React
+   packages plus the linting/dev tools required by `lint_frontend.js`:
+   `@eslint/js`, `@types/react`, `@types/react-dom`, `@vitejs/plugin-react`,
+   `eslint`, `eslint-config-prettier`, `eslint-plugin-react-hooks`,
+   `eslint-plugin-react-refresh`, `globals`, `prettier`, `typescript`,
+   `typescript-eslint` and `vite`. Running the setup script offline before the
+   store is populated prints a short message explaining the missing packages.
+   Run `pnpm --dir frontend run lint` after editing UI code; the command skips if
    dependencies are missing.
 4. Run `python -m unittest discover -v` before pushing. The test suite uses
    Python's built-in `unittest` module. `pytest` is optional and works too.
