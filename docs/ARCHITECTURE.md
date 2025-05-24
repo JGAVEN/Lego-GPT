@@ -55,7 +55,9 @@ clusters not connected to the ground.
 4. Inventory filter trims the brick list using `BRICK_INVENTORY`.
 5. Worker writes `preview.png`, `model.ldr`, and `model.gltf` to
    `backend/static/{uuid}/` by default. Pass ``--static-root <dir>``
-   (or set ``STATIC_ROOT``) to override the directory.
+   (or set ``STATIC_ROOT``) to override the directory. Use
+   ``STATIC_URL_PREFIX`` to customise the URL prefix returned to the
+   client (defaults to ``/static``).
 6. When finished, a GET on `/generate/{job_id}` returns `{png_url, ldr_url, gltf_url, brick_counts}`.
 7. Client shows PNG immediately; Three.js lazily loads LDR → interactive viewer.
    The `LDrawLoader` module is fetched from a CDN at runtime.

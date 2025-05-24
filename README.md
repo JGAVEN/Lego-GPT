@@ -14,7 +14,7 @@ real-life building via a built-in Three.js viewer.
 
 &nbsp;
 
-## 2. What’s New (2025-06-01)
+## 2. What’s New (2025-06-07)
 | Change | Impact |
 |--------|--------|
 | 🔄 **Open-source solver** – switched to **OR-Tools 9.10 + HiGHS**. | Runs licence-free everywhere (local dev, CI, containers). |
@@ -29,6 +29,8 @@ real-life building via a built-in Three.js viewer.
 | 🛡️ **Static file handler sanitized** | Blocks path traversal in `/static` requests |
 | 🆕 **Console scripts** for API and workers (`lego-gpt-server`, `lego-gpt-worker`, `lego-detect-worker`) | Easier local development & Docker entrypoints; workers accept `--redis-url` and `--version` |
 | 🛠️ **Ruff linting** for backend code | Consistent style via `ruff check` locally and in CI |
+| 🌍 **CORS configuration** via `--cors-origins` | Allows custom `Access-Control-Allow-Origin` |
+| 🔗 **Static URL prefix** configurable | Set `STATIC_URL_PREFIX` to point asset links at a CDN |
 
 &nbsp;
 
@@ -90,7 +92,8 @@ lego-gpt-server \
 # and exit.
 # Generated assets are written to `backend/static/{uuid}/` by default.
 # Pass ``--static-root <dir>`` or set the ``STATIC_ROOT`` environment
-# variable to override the directory.
+# variable to override the directory. ``STATIC_URL_PREFIX`` customises
+# the URL prefix returned in API responses (default: ``/static``).
 # Set ``CORS_ORIGINS`` or pass ``--cors-origins <origins>`` to control the
 # ``Access-Control-Allow-Origin`` header.
 

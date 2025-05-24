@@ -14,4 +14,7 @@ _env_static = os.getenv("STATIC_ROOT")
 STATIC_ROOT = Path(_env_static) if _env_static else PACKAGE_DIR / "static"
 STATIC_ROOT = STATIC_ROOT.resolve()
 
-__all__ = ["__version__", "STATIC_ROOT"]
+# URL prefix returned for generated assets
+STATIC_URL_PREFIX = os.getenv("STATIC_URL_PREFIX", "/static")
+
+__all__ = ["__version__", "STATIC_ROOT", "STATIC_URL_PREFIX"]

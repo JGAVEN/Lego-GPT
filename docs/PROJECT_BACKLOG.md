@@ -26,6 +26,8 @@
 | B-15 | **XS** | Console scripts for server/worker   | **Done** | `lego-gpt-server`, `lego-gpt-worker`, `lego-detect-worker` |
 | B-16 | **XS** | Ruff lint + CI step                 | **Done** | pyproject config + workflow |
 | B-17 | **XS** | Configurable CORS headers            | **Done** | `--cors-origins` CLI + tests |
+| B-18 | **S** | Customisable static URL prefix       | **Done** | `STATIC_URL_PREFIX` env var |
+| B-19 | **C** | Upload assets to S3/R2               | Open   | Optional CDN support |
 |------|-----|---------------------------------------|--------|-------|
 | S-10 | **M** | Introduce `ILPSolver` interface & refactor | **Done** | Branch `feature/solver-refactor` |
 | S-11 | **M** | Implement OR-Tools MIP constraints   | **Done** | Connectivity filter added; solver computes stable subset |
@@ -36,4 +38,4 @@
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.
 
-_Last updated 2025-06-06_
+_Last updated 2025-06-07_
