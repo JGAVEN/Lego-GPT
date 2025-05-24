@@ -6,11 +6,11 @@ This plan outlines the next five logical sprints after completing the detector t
 * Cache API responses in IndexedDB for repeat access.
 * Added a service worker route for cached preview images.
 
-## Sprint 2 – Enhanced CLI options
+## Sprint 2 – Enhanced CLI options (completed)
 * Support batch generation via a file of prompts.
 * Add progress indicators and richer error messages.
 
-## Sprint 3 – CLI integration tests
+## Sprint 3 – CLI integration tests (completed)
 * Cover new batch and progress features end-to-end.
 * Maintain fast execution with mocked API responses.
 

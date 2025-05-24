@@ -46,6 +46,7 @@
 | B-29 | **XS** | Configurable API base URL in front-end (`VITE_API_URL`) | **Done** | `.env.example` added |
 | B-30 | **XS** | CLI `generate` downloads assets via `--out-dir` | **Done** | Saves PNG/ldr/gltf locally |
 | B-31 | **XS** | CLI batch mode + progress output | **Done** | `--file` option and progress dots |
+| B-32 | **XS** | CLI integration tests | **Done** | End-to-end CLI tests with mocked network |
 | S-15 | **XS** | Log to file via `--log-file` / `LOG_FILE` | **Done** | Server & workers support file logging |
 | D-21 | **M**  | Add Redis service to docker-compose                     | **Done** | `docker compose up` starts all services without extra steps. |
 | A-18 | **S**  | Expose FastAPI router (or rename gateway)               | **Done** | File renamed to `backend/gateway.py`; docs updated. |
@@ -61,4 +62,4 @@
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.
 
-_Last updated 2025-06-20_
+_Last updated 2025-06-21_

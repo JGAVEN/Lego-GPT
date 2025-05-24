@@ -1,3 +1,9 @@
+## [0.5.34] – 2025-06-21
+### Added
+* CLI integration tests covering batch and progress features.
+### Changed
+* Backend package version bumped to 0.5.34.
+
 ## [0.5.33] – 2025-05-26
 ### Changed
 * Documentation clarifies offline front-end lint behavior.
