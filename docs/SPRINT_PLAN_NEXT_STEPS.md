@@ -2,7 +2,7 @@
 
 This plan outlines the following sprints after completing the scalability benchmarking work.
 
-## Sprint 1 – Advanced front-end features
+## Sprint 1 – Advanced front-end features (completed)
 * Improve offline UX with queued requests when offline.
 * Add settings page to manage cached results.
 
