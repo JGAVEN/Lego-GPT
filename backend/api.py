@@ -1,7 +1,7 @@
 """Minimal API functions for offline use."""
 from pathlib import Path
 from backend.inference import generate
-from backend import __version__, STATIC_ROOT
+from backend import __version__, STATIC_ROOT, STATIC_URL_PREFIX
 
 
 def health() -> dict:
@@ -17,15 +17,15 @@ def generate_lego_model(
         prompt, seed, inventory_filter
     )
     rel_png = Path(png_path).resolve().relative_to(STATIC_ROOT.parent)
-    png_url = f"/static/{rel_png.parent.name}/preview.png"
+    png_url = f"{STATIC_URL_PREFIX}/{rel_png.parent.name}/preview.png"
     ldr_url = None
     gltf_url = None
     if ldr_path:
         rel_ldr = Path(ldr_path).resolve().relative_to(STATIC_ROOT.parent)
-        ldr_url = f"/static/{rel_ldr.parent.name}/model.ldr"
+        ldr_url = f"{STATIC_URL_PREFIX}/{rel_ldr.parent.name}/model.ldr"
     if gltf_path:
         rel_gltf = Path(gltf_path).resolve().relative_to(STATIC_ROOT.parent)
-        gltf_url = f"/static/{rel_gltf.parent.name}/model.gltf"
+        gltf_url = f"{STATIC_URL_PREFIX}/{rel_gltf.parent.name}/model.gltf"
     return {
         "png_url": png_url,
         "ldr_url": ldr_url,
