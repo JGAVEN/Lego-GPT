@@ -1,3 +1,9 @@
+## [0.5.17] – 2025-06-09
+### Added
+* `lego-gpt-cli` command-line client for interacting with the API.
+### Changed
+* Backend package version bumped to 0.5.17.
+
 ## [0.5.16] – 2025-06-09
 ### Added
 * `ruff` included in `backend[test]` extras for local linting.

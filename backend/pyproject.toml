@@ -1,6 +1,6 @@
 [project]
 name = "lego-gpt-backend"
-version = "0.5.16"
+version = "0.5.17"
 requires-python = ">=3.11"
 dependencies = [
     "redis>=5",
@@ -26,6 +26,7 @@ lego-gpt-server = "backend.server:main"
 lego-gpt-worker = "backend.worker:main"
 lego-detect-worker = "detector.worker:main"
 lego-detect-train = "detector.train:main"
+lego-gpt-cli = "backend.cli:main"
 
 [build-system]
 requires = ["setuptools>=64", "wheel"]

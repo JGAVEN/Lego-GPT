@@ -28,6 +28,7 @@
 | B-17 | **XS** | Configurable CORS headers            | **Done** | `--cors-origins` CLI + tests |
 | B-18 | **S** | Customisable static URL prefix       | **Done** | `STATIC_URL_PREFIX` env var |
 | B-19 | **C** | Upload assets to S3/R2               | **Done** | Optional CDN support |
+| B-20 | **XS** | `lego-gpt-cli` command-line client    | **Done** | Python script to call the API |
 |------|-----|---------------------------------------|--------|-------|
 | S-10 | **M** | Introduce `ILPSolver` interface & refactor | **Done** | Branch `feature/solver-refactor` |
 | S-11 | **M** | Implement OR-Tools MIP constraints   | **Done** | Connectivity filter added; solver computes stable subset |
@@ -38,4 +39,4 @@
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.
 
-_Last updated 2025-06-08_
+_Last updated 2025-06-09_
