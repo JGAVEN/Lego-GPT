@@ -1,3 +1,8 @@
+## [0.5.33] – 2025-05-26
+### Changed
+* Documentation clarifies offline front-end lint behavior.
+* Backend package version bumped to 0.5.33.
+
 ## [0.5.32] – 2025-05-25
 ### Added
 * Offline mode improvements: IndexedDB caching for API responses.
