@@ -14,9 +14,9 @@ This plan outlines the next five logical sprints after completing the offline mo
 * Build production Docker images for CPU and GPU targets.
 * Publish versioned images to the registry.
 
-## Sprint 4 – Scalability benchmarking
-* Measure throughput with multiple workers and queue setups.
-* Document tuning guidelines for self-hosted deployments.
+## Sprint 4 – Scalability benchmarking (completed)
+* Added `benchmark_scalability.py` script to measure throughput.
+* Documented tuning guidelines in `docs/SCALABILITY_BENCHMARKING.md`.
 
 ## Sprint 5 – Advanced front-end features
 * Improve offline UX with queued requests when offline.

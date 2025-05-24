@@ -18,6 +18,6 @@ This plan outlines the next five logical sprints after completing the detector t
 * Build production Docker images for CPU and GPU targets.
 * Publish versioned images to the registry.
 
-## Sprint 5 – Scalability benchmarking
-* Measure throughput with multiple workers and queue setups.
-* Document tuning guidelines for self-hosted deployments.
+## Sprint 5 – Scalability benchmarking (completed)
+* Added `benchmark_scalability.py` script to measure throughput.
+* Documented tuning guidelines in `docs/SCALABILITY_BENCHMARKING.md`.

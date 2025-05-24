@@ -1,3 +1,9 @@
+## [0.5.36] – 2025-06-22
+### Added
+* Benchmark script `benchmark_scalability.py` and scalability docs.
+### Changed
+* Backend package version bumped to 0.5.36.
+
 ## [0.5.35] – 2025-06-22
 ### Added
 * Production Docker images for CPU and GPU targets.
