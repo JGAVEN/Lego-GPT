@@ -1,5 +1,5 @@
 
-# Lego GPT
+# Lego GPT ![Coverage](https://codecov.io/gh/JGAVEN/Lego-GPT/branch/main/graph/badge.svg)
 
 Generate buildable **LEGO®** creations directly from your browser.
 
@@ -97,6 +97,7 @@ export DETECTOR_MODEL=detector/model.pt       # optional YOLOv8 weights (or pass
 # to control verbosity for server and workers.
 # Optionally place these variables in a ``.env`` file (see ``.env.example``).
 # The backend automatically loads it on startup.
+# See ``docs/TOKEN_ROTATION.md`` for rotating the JWT secret.
 lego-gpt-server \
   --host 0.0.0.0 \
   --port 8000 \
@@ -152,6 +153,7 @@ Install hooks with `pre-commit install` to automatically run `ruff` on each
 commit. The configuration lives in `.pre-commit-config.yaml`.
 
 Run `./scripts/run_tests.sh` to lint and test in one step.
+CI runs the same tests under `coverage` and uploads the report to Codecov.
 
 The Vite dev server proxies `/generate`, `/detect_inventory`, and `/static`
 requests to `http://localhost:8000` so the PWA works against your local backend

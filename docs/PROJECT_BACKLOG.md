@@ -47,10 +47,10 @@
 | B-30 | **XS** | CLI `generate` downloads assets via `--out-dir` | **Done** | Saves PNG/ldr/gltf locally |
 | S-15 | **XS** | Log to file via `--log-file` / `LOG_FILE` | **Done** | Server & workers support file logging |
 | D-21 | **M**  | Add Redis service to docker-compose                     | **Done** | `docker compose up` starts all services without extra steps. |
-| A-18 | **S**  | Expose FastAPI router (or rename gateway)               | **Open** | Surface `APIRouter` in `backend/api.py` or rename file; update docs. |
-| S-09 | **S**  | JWT secret rotation & path-traversal tests               | **Open** | Document rotation process; add unit tests for `../` escapes. |
-| Q-04 | **S**  | Coverage reporting & badges                             | **Open** | Add pytest-cov workflow, upload to Codecov, show badge (≥80%). |
-| R-03 | **C**  | Sync version & CHANGELOG                                 | **Open** | Auto-update version and CHANGELOG on release tags. |
+| A-18 | **S**  | Expose FastAPI router (or rename gateway)               | **Done** | File renamed to `backend/gateway.py`; docs updated. |
+| S-09 | **S**  | JWT secret rotation & path-traversal tests               | **Done** | Added rotation guide and ensured path traversal test. |
+| Q-04 | **S**  | Coverage reporting & badges                             | **Done** | CI runs coverage, uploads to Codecov, README badge added. |
+| R-03 | **C**  | Sync version & CHANGELOG                                 | **Done** | Release workflow bumps version and changelog on tags. |
 | F-07 | **C**  | Migrate FE to TypeScript                                 | **Open** | Convert React code to TS; scaffold for v0.6 passes type-check. |
 | T-05 | **C**  | Solver edge-case unit tests                              | **Open** | Stress cases for ill-conditioned graphs; CI green. |
 

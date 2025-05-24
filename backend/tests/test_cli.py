@@ -11,7 +11,7 @@ for p in (project_root, vendor_root):
         sys.path.insert(0, str(p))
 
 import backend
-import backend.server as server
+import backend.gateway as server
 
 
 class CLITests(unittest.TestCase):
@@ -36,7 +36,7 @@ class CLITests(unittest.TestCase):
             '--cors-origins', 'http://x',
         ]
         with patch.object(sys, 'argv', argv):
-            with patch('backend.server.run') as mock_run:
+            with patch('backend.gateway.run') as mock_run:
                 server.main()
                 mock_run.assert_called_once_with(
                     '1.2.3.4',

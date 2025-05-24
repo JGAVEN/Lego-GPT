@@ -24,7 +24,7 @@ class ServerTests(unittest.TestCase):
     def setUp(self):
         os.environ["JWT_SECRET"] = "testsecret"
         os.environ["RATE_LIMIT"] = "2"
-        import backend.server as server_mod
+        import backend.gateway as server_mod
 
         self.server = importlib.reload(server_mod)
         self.token = auth.encode({"sub": "t"}, "testsecret")
@@ -82,10 +82,10 @@ class ServerTests(unittest.TestCase):
         self.assertRegex(payload.get("version", ""), r"\d+\.\d+\.\d+")
 
     def test_static_path_traversal_blocked(self):
-        status, _ = self._request("GET", "/static/../server.py")
+        status, _ = self._request("GET", "/static/../gateway.py")
         self.assertEqual(status, 404)
 
-    @patch("backend.server.queue")
+    @patch("backend.gateway.queue")
     def test_generate_post(self, mock_queue):
         mock_job = MagicMock(id="abc")
         mock_queue.enqueue.return_value = mock_job
@@ -106,7 +106,7 @@ class ServerTests(unittest.TestCase):
             {"Brick": 1},
         )
 
-    @patch("backend.server.queue")
+    @patch("backend.gateway.queue")
     def test_generate_bad_inventory(self, mock_queue):
         mock_job = MagicMock(id="abc")
         mock_queue.enqueue.return_value = mock_job
@@ -128,7 +128,7 @@ class ServerTests(unittest.TestCase):
         )
         self.assertEqual(status, 401)
 
-    @patch("backend.server.queue")
+    @patch("backend.gateway.queue")
     def test_generate_rate_limit(self, mock_queue):
         mock_job = MagicMock(id="abc")
         mock_queue.enqueue.return_value = mock_job
@@ -148,7 +148,7 @@ class ServerTests(unittest.TestCase):
         )
         self.assertEqual(status, 429)
 
-    @patch("backend.server.queue")
+    @patch("backend.gateway.queue")
     def test_detect_inventory_post(self, mock_queue):
         mock_job = MagicMock(id="xyz")
         mock_queue.enqueue.return_value = mock_job
@@ -164,7 +164,7 @@ class ServerTests(unittest.TestCase):
         self.assertEqual(payload["job_id"], "xyz")
         mock_queue.enqueue.assert_called_once()
 
-    @patch("backend.server.queue")
+    @patch("backend.gateway.queue")
     def test_detect_inventory_invalid_base64(self, mock_queue):
         mock_job = MagicMock(id="xyz")
         mock_queue.enqueue.return_value = mock_job
