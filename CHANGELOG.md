@@ -1,3 +1,9 @@
+## [0.5.21] – 2025-06-13
+### Added
+* `--dry-run` option for `lego-gpt-cleanup`.
+### Changed
+* Backend package version bumped to 0.5.21.
+
 ## [0.5.18] – 2025-06-10
 ### Added
 * `--version` flag for `lego-gpt-cli` and accompanying unit tests.

@@ -10,10 +10,13 @@ from pathlib import Path
 from backend import STATIC_ROOT
 
 
-def cleanup(path: Path = STATIC_ROOT, days: int = 7) -> int:
+def cleanup(path: Path = STATIC_ROOT, days: int = 7, dry_run: bool = False) -> int:
     """Remove subdirectories in *path* older than *days* days.
 
-    Returns the number of directories removed.
+    If ``dry_run`` is ``True`` the directories are listed but not removed.
+
+    Returns the number of directories removed (or that would be removed in dry
+    run mode).
     """
     threshold = time.time() - days * 86400
     count = 0
@@ -21,7 +24,10 @@ def cleanup(path: Path = STATIC_ROOT, days: int = 7) -> int:
         if not item.is_dir():
             continue
         if item.stat().st_mtime < threshold:
-            shutil.rmtree(item, ignore_errors=True)
+            if dry_run:
+                print(f"Would remove {item}")
+            else:
+                shutil.rmtree(item, ignore_errors=True)
             count += 1
     return count
 
@@ -39,8 +45,14 @@ def main(argv: list[str] | None = None) -> None:
         default=int(os.getenv("CLEANUP_DAYS", "7")),
         help="Delete files older than this many days (default: env CLEANUP_DAYS or 7)",
     )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        default=os.getenv("CLEANUP_DRY_RUN", "0") not in {"", "0", "false", "False"},
+        help="List directories without deleting them (default: env CLEANUP_DRY_RUN)",
+    )
     args = parser.parse_args(argv)
-    removed = cleanup(Path(args.path), args.days)
+    removed = cleanup(Path(args.path), args.days, args.dry_run)
     print(f"Removed {removed} directories")
 
 
