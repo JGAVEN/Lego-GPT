@@ -1,3 +1,7 @@
+## [0.5.33] – 2025-06-20
+### Changed
+* `.codex/setup.sh` now calls `scripts/setup_frontend.sh` to handle offline installs.
+
 ## [0.5.32] – 2025-05-25
 ### Added
 * Offline mode improvements: IndexedDB caching for API responses.
