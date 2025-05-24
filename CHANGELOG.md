@@ -1,3 +1,9 @@
+## [0.5.30] – 2025-06-19
+### Added
+* Solver edge-case unit tests covering loops and multi-level overhang scenarios.
+### Changed
+* Backend package version bumped to 0.5.30.
+
 ## [0.5.29] – 2025-06-18
 ### Added
 * `pnpm typecheck` script ensures the TypeScript front-end builds cleanly.
