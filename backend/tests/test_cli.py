@@ -21,6 +21,28 @@ class CLITests(unittest.TestCase):
                 server.main()
                 self.assertEqual(fake_out.getvalue().strip(), backend.__version__)
 
+    def test_cli_options_parsed(self):
+        argv = [
+            'server',
+            '--host', '1.2.3.4',
+            '--port', '1234',
+            '--queue', 'testq',
+            '--redis-url', 'redis://host:9999/1',
+            '--jwt-secret', 'tok',
+            '--rate-limit', '7',
+        ]
+        with patch.object(sys, 'argv', argv):
+            with patch('backend.server.run') as mock_run:
+                server.main()
+                mock_run.assert_called_once_with(
+                    '1.2.3.4',
+                    1234,
+                    'testq',
+                    'redis://host:9999/1',
+                    'tok',
+                    7,
+                )
+
 
 if __name__ == '__main__':  # pragma: no cover
     unittest.main()

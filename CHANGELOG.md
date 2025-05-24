@@ -1,3 +1,10 @@
+## [0.5.11] – 2025-06-03
+### Added
+* Unit test covering server CLI options.
+
+### Changed
+* Project version bumped to 0.5.11.
+
 ## [0.5.10] – 2025-06-02
 ### Added
 * CLI options `--redis-url`, `--jwt-secret` and `--rate-limit` for `lego-gpt-server`.
