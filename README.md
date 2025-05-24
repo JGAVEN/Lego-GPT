@@ -89,13 +89,15 @@ without CORS issues.
 
 ### Docker Compose
 
-Alternatively, start the API and detector workers in Docker containers. The
-dev Dockerfiles install all backend dependencies so the stack works
-out‑of‑the‑box:
+Alternatively, start the API server along with the generation and detector
+workers in Docker containers. The dev Dockerfiles install all backend
+dependencies so the stack works out‑of‑the‑box:
 
 ```bash
 docker compose up --build
 ```
+
+This spins up the API server, a generation worker and the detector worker.
 
 The API will be available at http://localhost:8000/health.
 The `/health` endpoint responds with `{ "ok": true, "version": "x.y.z" }` so you
@@ -129,7 +131,7 @@ docs/               Project docs  (ARCHITECTURE, PROJECT_BACKLOG, CHANGELOG…)
 frontend/           React + Vite PWA scaffold
 vendor/legogpt/     Vendored CMU LegoGPT library
 detector/           Brick-detector micro-service worker
-docker-compose.yml  Dev stack (backend + detector workers)
+docker-compose.yml  Dev stack (server + workers)
 ```
 
 &nbsp;
