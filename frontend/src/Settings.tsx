@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import {
   countCachedGenerates,
   clearGenerateCache,
@@ -52,9 +51,9 @@ export default function Settings() {
           Clear Queue
         </button>
       </div>
-      <Link to="/" className="text-blue-600 underline">
+      <a href="#/" className="text-blue-600 underline">
         Back
-      </Link>
+      </a>
     </main>
   );
 }

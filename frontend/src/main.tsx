@@ -1,19 +1,23 @@
-import { StrictMode } from 'react'
+import { StrictMode, useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
 import Settings from './Settings.tsx'
 import { flushQueue } from './lib/queue'
 
+function Root() {
+  const [hash, setHash] = useState(window.location.hash)
+  useEffect(() => {
+    const handle = () => setHash(window.location.hash)
+    window.addEventListener('hashchange', handle)
+    return () => window.removeEventListener('hashchange', handle)
+  }, [])
+  return hash === '#settings' ? <Settings /> : <App />
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/settings" element={<Settings />} />
-      </Routes>
-    </BrowserRouter>
+    <Root />
   </StrictMode>,
 )
 
