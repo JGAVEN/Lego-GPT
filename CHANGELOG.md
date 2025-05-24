@@ -1,3 +1,9 @@
+## [0.5.28] – 2025-06-17
+### Added
+* Redis service in `docker-compose.yml`.
+### Changed
+* Backend package version bumped to 0.5.28.
+
 ## [0.5.27] – 2025-06-16
 ### Added
 * Front-end `VITE_API_URL` configuration with example env file.
