@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { DetectRequest, DetectResponse } from "./lego";
+import { API_BASE } from "./lego";
 
 export interface UseDetectResult {
   data: DetectResponse | null;
@@ -24,7 +25,7 @@ export default function useDetectInventory(image: string | null): UseDetectResul
       setData(null);
       try {
         const body: DetectRequest = { image };
-        const res = await fetch("/detect_inventory", {
+        const res = await fetch(`${API_BASE}/detect_inventory`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
@@ -35,7 +36,7 @@ export default function useDetectInventory(image: string | null): UseDetectResul
         }
         const { job_id } = (await res.json()) as { job_id: string };
         while (!cancelled) {
-          const poll = await fetch(`/detect_inventory/${job_id}`, {
+          const poll = await fetch(`${API_BASE}/detect_inventory/${job_id}`, {
             signal: ctrl.signal,
           });
           if (poll.status === 200) {

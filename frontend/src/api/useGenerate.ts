@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { GenerateRequest, GenerateResponse } from "./lego";
+import { API_BASE } from "./lego";
 
 export interface UseGenerateResult {
   data: GenerateResponse | null;
@@ -38,7 +39,7 @@ export default function useGenerate(
         if (inventoryFilter) {
           reqBody.inventory_filter = inventoryFilter;
         }
-        const res = await fetch("/generate", {
+        const res = await fetch(`${API_BASE}/generate`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(reqBody),
@@ -50,7 +51,7 @@ export default function useGenerate(
         const { job_id } = (await res.json()) as { job_id: string };
 
         while (!cancelled) {
-          const poll = await fetch(`/generate/${job_id}`, {
+          const poll = await fetch(`${API_BASE}/generate/${job_id}`, {
             signal: ctrl.signal,
           });
           if (poll.status === 200) {

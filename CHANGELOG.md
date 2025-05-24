@@ -1,3 +1,10 @@
+## [0.5.27] – 2025-06-16
+### Added
+* Front-end `VITE_API_URL` configuration with example env file.
+* `--out-dir` option for `lego-gpt-cli generate` to download assets.
+### Changed
+* Backend package version bumped to 0.5.27.
+
 ## [0.5.26] – 2025-06-15
 ### Added
 * Logging to file via `--log-file` and `LOG_FILE`.

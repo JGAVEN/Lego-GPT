@@ -47,6 +47,8 @@ git clone https://github.com/JGAVEN/Lego-GPT.git
 cd Lego-GPT
 
 # Optional: copy ``.env.example`` to ``.env`` and adjust settings.
+# Front-end builds can also read ``frontend/.env``. Copy ``frontend/.env.example``
+# and set ``VITE_API_URL`` if the API runs elsewhere.
 
 # Install pnpm (requires Node.js)
 npm install -g pnpm@10.5.2
@@ -126,7 +128,11 @@ lego-gpt-cli --version
 lego-gpt-cli --token $(cat token.txt) generate "a red car"
 # Pass a brick inventory JSON file
 lego-gpt-cli --token $(cat token.txt) generate "a red car" --inventory my_inv.json
+# Download assets to a directory
+lego-gpt-cli --token $(cat token.txt) generate "a red car" --out-dir my_build
 # The CLI loads API_URL and JWT from a .env file if present
+# The front-end can be pointed at a custom backend by creating
+# `frontend/.env` and setting `VITE_API_URL=http://host:8000`
 
 # Start the front-end PWA
 pnpm --dir frontend run dev    # http://localhost:5173

@@ -64,6 +64,15 @@ def cmd_generate(args: argparse.Namespace) -> None:
     job_id = res["job_id"]
     result = _poll(f"{args.url}/generate/{job_id}", args.token)
     print(json.dumps(result, indent=2))
+    if args.out_dir:
+        out = Path(args.out_dir)
+        out.mkdir(parents=True, exist_ok=True)
+        for key in ["png_url", "ldr_url", "gltf_url"]:
+            url = result.get(key)
+            if url:
+                dest = out / Path(url).name
+                with request.urlopen(url) as resp, open(dest, "wb") as f:
+                    f.write(resp.read())
 
 
 def cmd_detect(args: argparse.Namespace) -> None:
@@ -94,6 +103,10 @@ def main(argv: list[str] | None = None) -> None:
     g.add_argument(
         "--inventory",
         help="Path to brick inventory JSON file",
+    )
+    g.add_argument(
+        "--out-dir",
+        help="Directory to save generated assets",
     )
     g.set_defaults(func=cmd_generate)
     d = sub.add_parser("detect", help="Detect brick inventory from an image")
