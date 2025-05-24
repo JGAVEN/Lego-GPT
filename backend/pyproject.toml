@@ -25,7 +25,7 @@ env = [
 ]
 
 [project.scripts]
-lego-gpt-server = "backend.server:main"
+lego-gpt-server = "backend.gateway:main"
 lego-gpt-worker = "backend.worker:main"
 lego-detect-worker = "detector.worker:main"
 lego-detect-train = "detector.train:main"
