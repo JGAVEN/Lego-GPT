@@ -1,3 +1,11 @@
+## [0.5.14] – 2025-06-06
+### Added
+* `--cors-origins` option and `CORS_ORIGINS` env var configure CORS.
+* Static `.gltf` files served with `model/gltf+json` content type.
+* OPTIONS requests include CORS headers.
+### Changed
+* Backend package version bumped to 0.5.13.
+
 ## [0.5.13] – 2025-06-05
 ### Added
 * `--static-root` option for `lego-gpt-server` to override the output directory.

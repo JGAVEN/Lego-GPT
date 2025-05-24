@@ -22,6 +22,8 @@ queue = Queue(QUEUE_NAME, connection=redis_conn)
 
 JWT_SECRET = os.getenv("JWT_SECRET", "secret")
 RATE_LIMIT = int(os.getenv("RATE_LIMIT", "5"))
+# Allow cross-origin requests
+CORS_ORIGINS = os.getenv("CORS_ORIGINS", "*")
 # token -> (count, window_epoch_minute)
 _TOKEN_USAGE: dict[str, tuple[int, int]] = {}
 
@@ -45,13 +47,27 @@ def _check_auth(headers) -> None:
 
 
 class Handler(BaseHTTPRequestHandler):
+    def _add_cors(self) -> None:
+        if CORS_ORIGINS:
+            self.send_header("Access-Control-Allow-Origin", CORS_ORIGINS)
+
     def _send_json(self, data: dict):
         encoded = json.dumps(data).encode()
         self.send_response(200)
         self.send_header("Content-Type", "application/json")
         self.send_header("Content-Length", str(len(encoded)))
+        self._add_cors()
         self.end_headers()
         self.wfile.write(encoded)
+
+    def do_OPTIONS(self):
+        self.send_response(204)
+        self._add_cors()
+        self.send_header(
+            "Access-Control-Allow-Headers", "Content-Type, Authorization"
+        )
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+        self.end_headers()
 
     def do_GET(self):
         if self.path == "/health":
@@ -78,6 +94,7 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_error(500, "Job failed")
             else:
                 self.send_response(202)
+                self._add_cors()
                 self.end_headers()
             return
         if self.path.startswith("/generate/"):
@@ -101,6 +118,7 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_error(500, "Job failed")
             else:
                 self.send_response(202)
+                self._add_cors()
                 self.end_headers()
             return
         if self.path.startswith("/static/"):
@@ -112,11 +130,15 @@ class Handler(BaseHTTPRequestHandler):
                 return
             self.send_response(200)
             if file_path.suffix == ".png":
-                self.send_header("Content-Type", "image/png")
+                content_type = "image/png"
+            elif file_path.suffix == ".gltf":
+                content_type = "model/gltf+json"
             else:
-                self.send_header("Content-Type", "text/plain")
+                content_type = "text/plain"
+            self.send_header("Content-Type", content_type)
             data = file_path.read_bytes()
             self.send_header("Content-Length", str(len(data)))
+            self._add_cors()
             self.end_headers()
             self.wfile.write(data)
             return
@@ -188,9 +210,10 @@ def run(
     rate_limit: int = RATE_LIMIT,
     static_root: str | None = None,
     log_level: str | None = None,
+    cors_origins: str = CORS_ORIGINS,
 ) -> None:
     """Start the HTTP API server."""
-    global queue, redis_conn, JWT_SECRET, RATE_LIMIT
+    global queue, redis_conn, JWT_SECRET, RATE_LIMIT, CORS_ORIGINS
     redis_conn = Redis.from_url(redis_url)
     queue = Queue(queue_name, connection=redis_conn)
     JWT_SECRET = jwt_secret
@@ -199,6 +222,7 @@ def run(
         import backend as backend_pkg
 
         backend_pkg.STATIC_ROOT = Path(static_root).resolve()
+    CORS_ORIGINS = cors_origins
     setup_logging(log_level)
     server = HTTPServer((host, port), Handler)
     print(f"Serving on http://{host}:{port}")
@@ -260,6 +284,13 @@ def main() -> None:
         default=os.getenv("LOG_LEVEL", "INFO"),
         help="Logging level (default: env LOG_LEVEL or INFO)",
     )
+    parser.add_argument(
+        "--cors-origins",
+        default=os.getenv("CORS_ORIGINS", CORS_ORIGINS),
+        help=(
+            "Access-Control-Allow-Origin header value (default: env CORS_ORIGINS or '*')"
+        ),
+    )
     args = parser.parse_args()
     if args.version:
         print(__version__)
@@ -273,6 +304,7 @@ def main() -> None:
         args.rate_limit,
         args.static_root,
         args.log_level,
+        args.cors_origins,
     )
 
 
