@@ -1,3 +1,9 @@
+## [0.5.16] – 2025-06-09
+### Added
+* `ruff` included in `backend[test]` extras for local linting.
+### Changed
+* Backend package version bumped to 0.5.16.
+
 ## [0.5.15] – 2025-06-08
 ### Added
 * Optional S3/R2 upload via `S3_BUCKET` and `S3_URL_PREFIX`.

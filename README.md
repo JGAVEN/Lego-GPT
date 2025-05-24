@@ -52,7 +52,7 @@ npm install -g pnpm@10.5.2
 # to retry with network access. The script requires `pnpm` to be installed.
 ./scripts/setup_frontend.sh
 
-# Install backend dependencies (including optional test tools)
+# Install backend dependencies and dev tools (includes `ruff` for linting)
 python -m pip install --editable ./backend[test]
 # The dev container's setup script runs this automatically.
 
