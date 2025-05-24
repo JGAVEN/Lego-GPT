@@ -64,6 +64,8 @@ npm install -g pnpm@10.5.2
 # Add the `[env]` extra to enable `.env` configuration support
 python -m pip install --editable ./backend[test,env]
 # The dev container's setup script runs this automatically.
+# `.codex/setup.sh` calls `scripts/setup_frontend.sh` during container setup.
+# This only works offline if the pnpm store was populated once while online.
 
 # Start Redis (local or Docker)
 # docker run -p 6379:6379 -d redis:7
