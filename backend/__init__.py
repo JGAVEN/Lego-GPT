@@ -4,6 +4,21 @@ from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 import os
 
+# Load environment variables from a `.env` file.
+# Prefer ``python-dotenv`` if available, otherwise fall back to a tiny loader.
+try:  # pragma: no cover - optional dependency
+    from dotenv import load_dotenv
+
+    load_dotenv()
+except Exception:  # pragma: no cover - ignore if missing
+    env_path = Path(".env")
+    if env_path.is_file():
+        for line in env_path.read_text().splitlines():
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, value = line.split("=", 1)
+            os.environ.setdefault(key.strip(), value.strip())
+
 try:  # pragma: no cover - during editable installs
     __version__ = version("lego-gpt-backend")
 except PackageNotFoundError:  # pragma: no cover - fallback for tests

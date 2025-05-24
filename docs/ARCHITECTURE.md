@@ -63,6 +63,8 @@ clusters not connected to the ground.
 7. Client shows PNG immediately; Three.js lazily loads LDR → interactive viewer.
    The `LDrawLoader` module is fetched from a CDN at runtime.
 8. Set ``LOG_LEVEL`` or pass ``--log-level`` to server/workers to control logging verbosity.
+9. Environment variables can be placed in a ``.env`` file. If
+   ``python-dotenv`` is installed, the backend loads it automatically on startup.
 
 ---
 
