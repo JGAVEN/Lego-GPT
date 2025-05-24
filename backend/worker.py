@@ -1,7 +1,7 @@
 """RQ worker for asynchronous generation jobs."""
-from redis import Redis
-from rq import Worker, Connection
 import os
+from redis import Redis
+from rq import Connection, Worker
 from backend.logging_config import setup_logging
 from backend.api import generate_lego_model
 from backend.detector import detect_inventory
@@ -29,10 +29,13 @@ def run_worker(
     redis_url: str = "redis://localhost:6379/0",
     queue_name: str = QUEUE_NAME,
     log_level: str | None = None,
+    solver_engine: str | None = None,
 ) -> None:
     """Start an RQ worker that processes generation jobs."""
     conn = Redis.from_url(redis_url)
     setup_logging(log_level)
+    if solver_engine:
+        os.environ["ORTOOLS_ENGINE"] = solver_engine
     with Connection(conn):
         worker = Worker([queue_name])
         worker.work()
@@ -63,13 +66,18 @@ def main(argv: list[str] | None = None) -> None:
         default=os.getenv("LOG_LEVEL", "INFO"),
         help="Logging level (default: env LOG_LEVEL or INFO)",
     )
+    parser.add_argument(
+        "--solver-engine",
+        default=os.getenv("ORTOOLS_ENGINE", "HIGHs"),
+        help="OR-Tools solver backend (default: env ORTOOLS_ENGINE or HIGHs)",
+    )
     args = parser.parse_args(argv)
 
     if args.version:
         print(__version__)
         return
 
-    run_worker(args.redis_url, args.queue, args.log_level)
+    run_worker(args.redis_url, args.queue, args.log_level, args.solver_engine)
 
 
 if __name__ == "__main__":  # pragma: no cover - CLI entry

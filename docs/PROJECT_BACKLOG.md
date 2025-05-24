@@ -38,9 +38,13 @@
 | S-11 | **M** | Implement OR-Tools MIP constraints   | **Done** | Connectivity filter added; solver computes stable subset |
 | S-12 | **S** | Solver auto-loader + unit tests      | **Done** | Part of solver refactor |
 | S-13 | **XS**| Update docs for solver swap          | **Done** | README & ARCHITECTURE |
+| B-25 | **XS** | JWT token CLI (`lego-gpt-token`) | **Done** | Generates auth tokens from the command line |
+| S-14 | **XS** | Configurable OR-Tools backend (`ORTOOLS_ENGINE`) | **Done** | Worker `--solver-engine` flag |
+
+
 
 ### Legend
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.
 
-_Last updated 2025-06-13_
+_Last updated 2025-06-14_

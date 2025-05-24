@@ -73,6 +73,8 @@ export REDIS_URL=redis://localhost:6379/0
 export QUEUE_NAME=legogpt
 lego-gpt-worker --redis-url "$REDIS_URL" --queue "$QUEUE_NAME" \
   --log-level INFO
+# Use a different solver backend with --solver-engine or ORTOOLS_ENGINE
+# lego-gpt-worker --solver-engine CBC
 # Launch the detector worker in another
 lego-detect-worker --redis-url "$REDIS_URL" --queue "$QUEUE_NAME" \
   --model detector/model.pt \
@@ -108,7 +110,7 @@ lego-gpt-server \
 # Set ``S3_BUCKET`` and optional ``S3_URL_PREFIX`` to upload assets to S3/R2.
 
 # Generate a JWT for requests
-python scripts/generate_jwt.py --secret mysecret --sub dev > token.txt
+lego-gpt-token --secret mysecret --sub dev > token.txt
 
 # Check the CLI version
 lego-gpt-cli --version

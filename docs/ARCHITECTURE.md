@@ -65,6 +65,8 @@ clusters not connected to the ground.
 8. Set ``LOG_LEVEL`` or pass ``--log-level`` to server/workers to control logging verbosity.
 9. Environment variables can be placed in a ``.env`` file. If
    ``python-dotenv`` is installed, the backend loads it automatically on startup.
+10. Set ``ORTOOLS_ENGINE`` or pass ``--solver-engine`` to the worker to pick a
+    specific OR-Tools backend (``HIGHs`` or ``CBC``).
 
 ---
 

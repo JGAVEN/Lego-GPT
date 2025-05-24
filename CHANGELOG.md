@@ -1,3 +1,10 @@
+## [0.5.22] – 2025-06-14
+### Added
+* `lego-gpt-token` console script for JWT generation.
+* `ORTOOLS_ENGINE` env var and `--solver-engine` worker option.
+### Changed
+* Backend package version bumped to 0.5.22.
+
 ## [0.5.21] – 2025-06-13
 ### Added
 * `--dry-run` option for `lego-gpt-cleanup`.
