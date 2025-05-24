@@ -64,6 +64,32 @@ class SolverBehaviourTests(unittest.TestCase):
         # Entire stack floats in the air; should be removed
         self.assertEqual(len(result.bricks), 0)
 
+    def test_disconnected_loop_removed(self):
+        bricks = [
+            LegoBrick(h=1, w=1, x=0, y=0, z=1),
+            LegoBrick(h=1, w=1, x=1, y=0, z=1),
+            LegoBrick(h=1, w=1, x=1, y=1, z=1),
+            LegoBrick(h=1, w=1, x=0, y=1, z=1),
+        ]
+        structure = SimpleStructure(bricks)
+        result = self.solver.solve(structure)
+        # Loop floats in the air with no ground connection
+        self.assertEqual(len(result.bricks), 0)
+
+    def test_multi_level_overhang_removed(self):
+        bricks = [
+            LegoBrick(h=1, w=1, x=0, y=0, z=0),
+            LegoBrick(h=1, w=1, x=0, y=0, z=1),
+            LegoBrick(h=1, w=1, x=3, y=0, z=0),
+            LegoBrick(h=1, w=1, x=3, y=0, z=1),
+            LegoBrick(h=4, w=1, x=0, y=0, z=2),
+            LegoBrick(h=1, w=1, x=1, y=0, z=3),
+        ]
+        structure = SimpleStructure(bricks)
+        result = self.solver.solve(structure)
+        # Only the four pillar bricks should remain
+        self.assertEqual(len(result.bricks), 4)
+
 
 if __name__ == "__main__":  # pragma: no cover
     unittest.main()

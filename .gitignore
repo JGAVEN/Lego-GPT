@@ -23,6 +23,9 @@ pnpm-debug.log*
 dist/
 coverage/
 
+# Test artefacts
+out/
+
 # Docker
 *.tar
 *.img

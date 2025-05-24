@@ -52,7 +52,7 @@
 | Q-04 | **S**  | Coverage reporting & badges                             | **Done** | CI runs coverage, uploads to Codecov, README badge added. |
 | R-03 | **C**  | Sync version & CHANGELOG                                 | **Done** | Release workflow bumps version and changelog on tags. |
 | F-07 | **C**  | Migrate FE to TypeScript                                 | **Done** | React code fully in TS; `pnpm typecheck` validates types. |
-| T-05 | **C**  | Solver edge-case unit tests                              | **Open** | Stress cases for ill-conditioned graphs; CI green. |
+| T-05 | **C**  | Solver edge-case unit tests                              | **Done** | Stress cases for ill-conditioned graphs; CI green. |
 
 
 
@@ -60,4 +60,4 @@
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.
 
-_Last updated 2025-06-17_
+_Last updated 2025-06-19_

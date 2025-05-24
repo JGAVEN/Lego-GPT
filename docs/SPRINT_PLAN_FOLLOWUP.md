@@ -2,7 +2,7 @@
 
 This document lists the next five sprints after completing the front-end TypeScript migration.
 
-## Sprint 1 – Solver edge-case unit tests
+## Sprint 1 – Solver edge-case unit tests (completed)
 * Add tests for ill-conditioned graphs and complex overhang scenarios.
 * Keep CI green with OR-Tools HiGHS backend.
 
