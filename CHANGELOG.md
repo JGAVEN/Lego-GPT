@@ -1,3 +1,11 @@
+## [0.5.10] – 2025-06-02
+### Added
+* CLI options `--redis-url`, `--jwt-secret` and `--rate-limit` for `lego-gpt-server`.
+
+### Changed
+* Documentation updated with new server options.
+* Project version bumped to 0.5.10.
+
 ## [0.5.9] – 2025-06-01
 ### Added
 * `ruff` linting configuration in `pyproject.toml`.
