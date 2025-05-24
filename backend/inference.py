@@ -8,7 +8,6 @@ so the pipeline uses our open-source ILP backend.
 from __future__ import annotations
 
 import uuid
-from pathlib import Path
 from backend import STATIC_ROOT
 
 from backend.export import ldr_to_gltf

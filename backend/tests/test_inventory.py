@@ -1,5 +1,5 @@
 import unittest
-from backend.inventory import filter_counts, load_inventory
+from backend.inventory import filter_counts
 
 class InventoryTests(unittest.TestCase):
     def test_filter_excess(self):

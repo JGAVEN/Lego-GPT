@@ -3,7 +3,7 @@ from redis import Redis
 from rq import Worker, Connection
 import os
 
-from backend.worker import QUEUE_NAME, detect_job
+from backend.worker import QUEUE_NAME
 
 
 def run_detector(
