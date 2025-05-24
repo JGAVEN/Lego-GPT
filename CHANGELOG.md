@@ -1,5 +1,12 @@
 ## Unreleased
 
+### Added
+* `ruff` linting configuration in `pyproject.toml`.
+* CI workflow runs `ruff` for backend and detector code.
+
+### Changed
+* Documentation updated to reference running `ruff` locally.
+
 ## [0.5.8] – 2025-05-31
 ### Added
 * `QUEUE_NAME` env var and `--queue` option allow custom RQ queue names for

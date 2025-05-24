@@ -21,6 +21,12 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install ruff
+        run: pip install ruff
+
+      - name: Run ruff
+        run: ruff check backend detector
+
       - name: Run tests
         run: |
           python -m unittest discover -v

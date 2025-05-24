@@ -84,6 +84,8 @@ python scripts/generate_jwt.py --secret mysecret --sub dev
 pnpm --dir frontend run dev    # http://localhost:5173
 # Lint UI code (skips if dependencies are missing)
 pnpm --dir frontend run lint
+# Lint backend code
+ruff check backend detector
 ```
 
 The Vite dev server proxies `/generate`, `/detect_inventory`, and `/static`

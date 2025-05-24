@@ -2,7 +2,7 @@ import os
 import sys
 import unittest
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 # Ensure project root is importable
 project_root = Path(__file__).resolve().parents[2]

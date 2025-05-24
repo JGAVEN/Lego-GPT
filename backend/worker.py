@@ -1,6 +1,6 @@
 """RQ worker for asynchronous generation jobs."""
 from redis import Redis
-from rq import Worker, Queue, Connection
+from rq import Worker, Connection
 import os
 from backend.api import generate_lego_model
 from backend.detector import detect_inventory
