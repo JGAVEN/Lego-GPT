@@ -18,6 +18,6 @@ This plan outlines the next five logical sprints after completing the offline mo
 * Added `benchmark_scalability.py` script to measure throughput.
 * Documented tuning guidelines in `docs/SCALABILITY_BENCHMARKING.md`.
 
-## Sprint 5 – Advanced front-end features
+## Sprint 5 – Advanced front-end features (completed)
 * Improve offline UX with queued requests when offline.
 * Add settings page to manage cached results.

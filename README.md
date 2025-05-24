@@ -143,6 +143,9 @@ lego-gpt-cli --token $(cat token.txt) generate --file prompts.txt
 pnpm --dir frontend run dev    # http://localhost:5173
 # The PWA caches generated models in IndexedDB and preview images via a
 # service worker so previously viewed results remain available offline.
+# Requests made while offline are queued and processed once
+# connectivity returns. Manage cached results and the queue via the
+# Settings page in the PWA.
 # Lint UI code (skips if dependencies are missing)
 pnpm --dir frontend run lint
 # Lint backend code
