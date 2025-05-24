@@ -27,7 +27,7 @@ real-life building via a built-in Three.js viewer.
 | 📦 **Inventory filter** | Limits brick counts using `BRICK_INVENTORY` JSON or per-request `inventory_filter` |
 | 🆕 **Photo‑based brick inventory detection** – YOLOv8 detector + `/detect_inventory` API | Scan your loose bricks and generate builds you can actually build |
 | 🛡️ **Static file handler sanitized** | Blocks path traversal in `/static` requests |
-| 🆕 **Console scripts** for API and workers (`lego-gpt-server`, `lego-gpt-worker`, `lego-detect-worker`) | Easier local development & Docker entrypoints; workers accept `--redis-url` |
+| 🆕 **Console scripts** for API and workers (`lego-gpt-server`, `lego-gpt-worker`, `lego-detect-worker`) | Easier local development & Docker entrypoints; workers accept `--redis-url` and `--version` |
 | 🛠️ **Ruff linting** for backend code | Consistent style via `ruff check` locally and in CI |
 
 &nbsp;
@@ -65,6 +65,7 @@ export QUEUE_NAME=legogpt
 lego-gpt-worker --redis-url "$REDIS_URL" --queue "$QUEUE_NAME"
 # Launch the detector worker in another
 lego-detect-worker --redis-url "$REDIS_URL" --queue "$QUEUE_NAME"
+# Append ``--version`` to either worker command to print the version and exit
 
 # Launch the API server in another
 export JWT_SECRET=mysecret         # auth secret

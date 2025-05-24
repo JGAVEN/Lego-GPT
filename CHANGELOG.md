@@ -1,3 +1,11 @@
+## [0.5.12] – 2025-06-04
+### Added
+* `--version` flag for `lego-gpt-worker` and `lego-detect-worker`.
+* Unit tests covering worker CLI options.
+
+### Changed
+* Project version bumped to 0.5.12.
+
 ## [0.5.11] – 2025-06-03
 ### Added
 * Unit test covering server CLI options.

@@ -4,6 +4,7 @@ from rq import Worker, Connection
 import os
 from backend.api import generate_lego_model
 from backend.detector import detect_inventory
+from backend import __version__
 
 QUEUE_NAME = os.getenv("QUEUE_NAME", "legogpt")
 
@@ -49,7 +50,16 @@ def main(argv: list[str] | None = None) -> None:
         default=os.getenv("QUEUE_NAME", QUEUE_NAME),
         help="RQ queue name (default: env QUEUE_NAME or 'legogpt')",
     )
+    parser.add_argument(
+        "--version",
+        action="store_true",
+        help="Print backend version and exit",
+    )
     args = parser.parse_args(argv)
+
+    if args.version:
+        print(__version__)
+        return
 
     run_worker(args.redis_url, args.queue)
 
