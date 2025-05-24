@@ -8,13 +8,14 @@ from redis import Redis
 from rq import Queue, Job
 from backend.api import health
 from backend import STATIC_ROOT
-from backend.worker import QUEUE_NAME, generate_job, detect_job
+from backend.worker import QUEUE_NAME as DEFAULT_QUEUE, generate_job, detect_job
 from backend.auth import decode as decode_jwt
 from backend import __version__
 
 
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
 redis_conn = Redis.from_url(REDIS_URL)
+QUEUE_NAME = os.getenv("QUEUE_NAME", DEFAULT_QUEUE)
 queue = Queue(QUEUE_NAME, connection=redis_conn)
 
 JWT_SECRET = os.getenv("JWT_SECRET", "secret")
@@ -176,8 +177,10 @@ class Handler(BaseHTTPRequestHandler):
         self.send_error(404)
 
 
-def run(host: str = "0.0.0.0", port: int = 8000):
+def run(host: str = "0.0.0.0", port: int = 8000, queue_name: str = QUEUE_NAME):
     """Start the HTTP API server."""
+    global queue
+    queue = Queue(queue_name, connection=redis_conn)
     server = HTTPServer((host, port), Handler)
     print(f"Serving on http://{host}:{port}")
     server.serve_forever()
@@ -204,11 +207,16 @@ def main() -> None:
         action="store_true",
         help="Print backend version and exit",
     )
+    parser.add_argument(
+        "--queue",
+        default=os.getenv("QUEUE_NAME", QUEUE_NAME),
+        help="RQ queue name (default: env QUEUE_NAME or 'legogpt')",
+    )
     args = parser.parse_args()
     if args.version:
         print(__version__)
         return
-    run(args.host, args.port)
+    run(args.host, args.port, args.queue)
 
 
 if __name__ == "__main__":  # pragma: no cover - CLI entry point

@@ -6,11 +6,14 @@ import os
 from backend.worker import QUEUE_NAME, detect_job
 
 
-def run_detector(redis_url: str = "redis://localhost:6379/0") -> None:
+def run_detector(
+    redis_url: str = "redis://localhost:6379/0",
+    queue_name: str = QUEUE_NAME,
+) -> None:
     """Run an RQ worker that processes detection jobs."""
     conn = Redis.from_url(redis_url)
     with Connection(conn):
-        worker = Worker([QUEUE_NAME])
+        worker = Worker([queue_name])
         worker.work()
 
 
@@ -24,9 +27,14 @@ def main(argv: list[str] | None = None) -> None:
         default=os.getenv("REDIS_URL", "redis://localhost:6379/0"),
         help="Redis connection URL (default: env REDIS_URL or redis://localhost:6379/0)",
     )
+    parser.add_argument(
+        "--queue",
+        default=os.getenv("QUEUE_NAME", QUEUE_NAME),
+        help="RQ queue name (default: env QUEUE_NAME or 'legogpt')",
+    )
     args = parser.parse_args(argv)
 
-    run_detector(args.redis_url)
+    run_detector(args.redis_url, args.queue)
 
 
 if __name__ == "__main__":  # pragma: no cover - CLI entry
