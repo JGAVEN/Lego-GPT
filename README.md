@@ -34,6 +34,7 @@ real-life building via a built-in Three.js viewer.
 | 🔗 **Static URL prefix** configurable | Set `STATIC_URL_PREFIX` to point asset links at a CDN |
 | ☁️ **S3/R2 uploads** | Set `S3_BUCKET` and `S3_URL_PREFIX` to host assets in the cloud |
 | 🆕 **CLI `--version` flag + tests** | `lego-gpt-cli --version` shows backend version; automated tests ensure it works |
+| 🧹 **Cleanup script** (`lego-gpt-cleanup`) | Remove old asset directories |
 
 &nbsp;
 
@@ -121,6 +122,8 @@ pnpm --dir frontend run dev    # http://localhost:5173
 pnpm --dir frontend run lint
 # Lint backend code
 ruff check backend detector
+# Remove assets older than 7 days
+lego-gpt-cleanup --days 7
 ```
 
 ### Pre-commit Hooks
