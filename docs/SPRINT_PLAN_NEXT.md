@@ -18,6 +18,6 @@ This plan outlines the following sprints after completing the initial roadmap.
 * Cache API responses in IndexedDB for repeat access.
 * Added a service worker route for cached preview images.
 
-## Sprint 5 – Enhanced CLI options
+## Sprint 5 – Enhanced CLI options (completed)
 * Support batch generation via a file of prompts.
 * Add progress indicators and richer error messages.

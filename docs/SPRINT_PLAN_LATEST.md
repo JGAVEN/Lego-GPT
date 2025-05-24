@@ -6,7 +6,7 @@ This plan outlines the next five logical sprints after completing the offline mo
 * Support batch generation via a file of prompts.
 * Add progress indicators and richer error messages.
 
-## Sprint 2 – CLI integration tests
+## Sprint 2 – CLI integration tests (completed)
 * Cover new batch and progress features end-to-end.
 * Maintain fast execution with mocked API responses.
 

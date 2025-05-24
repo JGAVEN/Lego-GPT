@@ -10,11 +10,11 @@ This document lists the next five sprints after completing the solver edge-case 
 * Cache API responses in IndexedDB for repeat access.
 * Added a service worker route for cached preview images.
 
-## Sprint 3 – Enhanced CLI options
+## Sprint 3 – Enhanced CLI options (completed)
 * Support batch generation via a file of prompts.
 * Add progress indicators and richer error messages.
 
-## Sprint 4 – CLI integration tests
+## Sprint 4 – CLI integration tests (completed)
 * Cover new batch and progress features end-to-end.
 * Maintain fast execution with mocked API responses.
 
