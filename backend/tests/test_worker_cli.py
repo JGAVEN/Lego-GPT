@@ -27,11 +27,12 @@ class WorkerCLITests(unittest.TestCase):
             'worker',
             '--redis-url', 'redis://host:9999/1',
             '--queue', 'testq',
+            '--log-level', 'DEBUG',
         ]
         with patch.object(sys, 'argv', argv):
             with patch('backend.worker.run_worker') as mock_run:
                 worker.main()
-                mock_run.assert_called_once_with('redis://host:9999/1', 'testq')
+                mock_run.assert_called_once_with('redis://host:9999/1', 'testq', 'DEBUG')
 
     def test_detector_worker_version_flag(self):
         with patch.object(sys, 'argv', ['detector-worker', '--version']):
@@ -44,11 +45,13 @@ class WorkerCLITests(unittest.TestCase):
             'detector-worker',
             '--redis-url', 'redis://host:9999/1',
             '--queue', 'detq',
+            '--model', 'weights.pt',
+            '--log-level', 'WARNING',
         ]
         with patch.object(sys, 'argv', argv):
             with patch('detector.worker.run_detector') as mock_run:
                 detect_worker.main()
-                mock_run.assert_called_once_with('redis://host:9999/1', 'detq')
+                mock_run.assert_called_once_with('redis://host:9999/1', 'detq', 'weights.pt', 'WARNING')
 
 
 if __name__ == '__main__':  # pragma: no cover

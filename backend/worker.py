@@ -2,6 +2,7 @@
 from redis import Redis
 from rq import Worker, Connection
 import os
+from backend.logging_config import setup_logging
 from backend.api import generate_lego_model
 from backend.detector import detect_inventory
 from backend import __version__
@@ -27,9 +28,11 @@ def detect_job(image_b64: str) -> dict:
 def run_worker(
     redis_url: str = "redis://localhost:6379/0",
     queue_name: str = QUEUE_NAME,
+    log_level: str | None = None,
 ) -> None:
     """Start an RQ worker that processes generation jobs."""
     conn = Redis.from_url(redis_url)
+    setup_logging(log_level)
     with Connection(conn):
         worker = Worker([queue_name])
         worker.work()
@@ -55,13 +58,18 @@ def main(argv: list[str] | None = None) -> None:
         action="store_true",
         help="Print backend version and exit",
     )
+    parser.add_argument(
+        "--log-level",
+        default=os.getenv("LOG_LEVEL", "INFO"),
+        help="Logging level (default: env LOG_LEVEL or INFO)",
+    )
     args = parser.parse_args(argv)
 
     if args.version:
         print(__version__)
         return
 
-    run_worker(args.redis_url, args.queue)
+    run_worker(args.redis_url, args.queue, args.log_level)
 
 
 if __name__ == "__main__":  # pragma: no cover - CLI entry
