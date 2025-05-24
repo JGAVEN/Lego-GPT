@@ -1,11 +1,11 @@
-## Unreleased
-
+## [0.5.9] – 2025-06-01
 ### Added
 * `ruff` linting configuration in `pyproject.toml`.
 * CI workflow runs `ruff` for backend and detector code.
 
 ### Changed
 * Documentation updated to reference running `ruff` locally.
+* Project version bumped to 0.5.9.
 
 ## [0.5.8] – 2025-05-31
 ### Added
