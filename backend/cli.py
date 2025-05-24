@@ -8,7 +8,24 @@ import base64
 import json
 import os
 import time
+from pathlib import Path
 from urllib import error, request
+
+# ---------------------------------------------------------------------------
+#                         Optional .env loader
+# ---------------------------------------------------------------------------
+try:  # pragma: no cover - optional dependency
+    from dotenv import load_dotenv
+
+    load_dotenv()
+except Exception:  # pragma: no cover - fallback minimal loader
+    env_path = Path(".env")
+    if env_path.is_file():
+        for line in env_path.read_text().splitlines():
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, value = line.split("=", 1)
+            os.environ.setdefault(key.strip(), value.strip())
 
 
 def _post(url: str, token: str, payload: dict) -> dict:
@@ -36,7 +53,14 @@ def _poll(url: str, token: str) -> dict:
 
 
 def cmd_generate(args: argparse.Namespace) -> None:
-    res = _post(f"{args.url}/generate", args.token, {"prompt": args.prompt, "seed": args.seed})
+    payload = {"prompt": args.prompt, "seed": args.seed}
+    if args.inventory:
+        with open(args.inventory) as f:
+            inv = json.load(f)
+            if not isinstance(inv, dict):
+                raise ValueError("Inventory JSON must be an object")
+        payload["inventory_filter"] = inv
+    res = _post(f"{args.url}/generate", args.token, payload)
     job_id = res["job_id"]
     result = _poll(f"{args.url}/generate/{job_id}", args.token)
     print(json.dumps(result, indent=2))
@@ -67,6 +91,10 @@ def main(argv: list[str] | None = None) -> None:
     g = sub.add_parser("generate", help="Generate a model from text")
     g.add_argument("prompt", help="Text prompt")
     g.add_argument("--seed", type=int, default=42, help="Random seed")
+    g.add_argument(
+        "--inventory",
+        help="Path to brick inventory JSON file",
+    )
     g.set_defaults(func=cmd_generate)
     d = sub.add_parser("detect", help="Detect brick inventory from an image")
     d.add_argument("image", help="Path to image file")
