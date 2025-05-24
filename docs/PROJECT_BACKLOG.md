@@ -43,6 +43,8 @@
 | B-27 | **XS** | CLI loads `.env` | **Done** | `API_URL` and `JWT` automatically read |
 | S-14 | **XS** | Configurable OR-Tools backend (`ORTOOLS_ENGINE`) | **Done** | Worker `--solver-engine` flag |
 | B-28 | **XS** | `lego-gpt-export` CLI for LDraw → glTF | **Done** | Converts models for AR |
+| B-29 | **XS** | Configurable API base URL in front-end (`VITE_API_URL`) | **Done** | `.env.example` added |
+| B-30 | **XS** | CLI `generate` downloads assets via `--out-dir` | **Done** | Saves PNG/ldr/gltf locally |
 | S-15 | **XS** | Log to file via `--log-file` / `LOG_FILE` | **Done** | Server & workers support file logging |
 
 
@@ -51,4 +53,4 @@
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.
 
-_Last updated 2025-06-15_
+_Last updated 2025-06-16_

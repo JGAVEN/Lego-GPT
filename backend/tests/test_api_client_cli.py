@@ -54,6 +54,28 @@ class APIClientCLITests(unittest.TestCase):
         self.assertEqual(payload["inventory_filter"], inv)
         mock_poll.assert_called_once()
 
+    def test_generate_with_out_dir(self):
+        argv = [
+            "cli",
+            "--token",
+            "tok",
+            "generate",
+            "hi",
+            "--out-dir",
+            "out",
+        ]
+        result = {"png_url": "/static/a/preview.png", "ldr_url": None, "gltf_url": None}
+        with patch.object(sys, "argv", argv), \
+             patch("backend.cli._post", return_value={"job_id": "1"}) as mock_post, \
+             patch("backend.cli._poll", return_value=result) as mock_poll, \
+             patch("backend.cli.request.urlopen") as mock_urlopen, \
+             patch("sys.stdout", new=io.StringIO()):
+            mock_urlopen.return_value.__enter__.return_value.read.return_value = b"data"
+            cli.main()
+        mock_post.assert_called_once()
+        mock_poll.assert_called_once()
+        mock_urlopen.assert_called_once()
+
     def test_detect_command(self):
         argv = ["cli", "--token", "tok", "detect", "img.png"]
         with patch.object(sys, "argv", argv), \

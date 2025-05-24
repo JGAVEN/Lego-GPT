@@ -34,3 +34,7 @@ __docker_build*/
 
 # Generated artefacts
 backend/static/
+
+# Local environment
+.env
+
