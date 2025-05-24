@@ -34,6 +34,7 @@ class CLITests(unittest.TestCase):
             '--log-level', 'INFO',
             '--log-file', '/tmp/api.log',
             '--cors-origins', 'http://x',
+            '--inventory', 'inv.json',
         ]
         with patch.object(sys, 'argv', argv):
             with patch('backend.server.run') as mock_run:
@@ -49,6 +50,7 @@ class CLITests(unittest.TestCase):
                     'INFO',
                     '/tmp/api.log',
                     'http://x',
+                    'inv.json',
                 )
 
 

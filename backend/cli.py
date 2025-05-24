@@ -7,6 +7,7 @@ import argparse
 import base64
 import json
 import os
+import sys
 import time
 from pathlib import Path
 from urllib import error, request
@@ -44,8 +45,17 @@ def _poll(url: str, token: str) -> dict:
             with request.urlopen(req) as resp:
                 if resp.status == 200:
                     return json.load(resp)
+                if resp.status == 202:
+                    data = json.loads(resp.read() or b"{}")
+                    progress = int(data.get("progress", 0) * 100)
+                    print(f"{progress}%", file=sys.stderr)
+                    time.sleep(1)
+                    continue
         except error.HTTPError as exc:  # pragma: no cover - simple CLI
             if exc.code == 202:
+                data = json.loads(exc.read() or b"{}")
+                progress = int(data.get("progress", 0) * 100)
+                print(f"{progress}%", file=sys.stderr)
                 time.sleep(1)
                 continue
             raise

@@ -93,9 +93,14 @@ class Handler(BaseHTTPRequestHandler):
             elif job_obj.is_failed:
                 self.send_error(500, "Job failed")
             else:
+                progress = job_obj.meta.get("progress", 0.0)
+                body = json.dumps({"progress": progress}).encode()
                 self.send_response(202)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", str(len(body)))
                 self._add_cors()
                 self.end_headers()
+                self.wfile.write(body)
             return
         if self.path.startswith("/generate/"):
             try:
@@ -117,9 +122,14 @@ class Handler(BaseHTTPRequestHandler):
             elif job_obj.is_failed:
                 self.send_error(500, "Job failed")
             else:
+                progress = job_obj.meta.get("progress", 0.0)
+                body = json.dumps({"progress": progress}).encode()
                 self.send_response(202)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", str(len(body)))
                 self._add_cors()
                 self.end_headers()
+                self.wfile.write(body)
             return
         if self.path.startswith("/static/"):
             base = STATIC_ROOT.resolve()
@@ -212,6 +222,7 @@ def run(
     log_level: str | None = None,
     log_file: str | None = None,
     cors_origins: str = CORS_ORIGINS,
+    inventory_path: str | None = None,
 ) -> None:
     """Start the HTTP API server."""
     global queue, redis_conn, JWT_SECRET, RATE_LIMIT, CORS_ORIGINS
@@ -219,6 +230,11 @@ def run(
     queue = Queue(queue_name, connection=redis_conn)
     JWT_SECRET = jwt_secret
     RATE_LIMIT = rate_limit
+    if inventory_path:
+        os.environ["BRICK_INVENTORY"] = inventory_path
+        import backend.inventory as inv
+
+        inv._INVENTORY = None  # force reload on next access
     if static_root:
         import backend as backend_pkg
 
@@ -297,6 +313,11 @@ def main() -> None:
             "Access-Control-Allow-Origin header value (default: env CORS_ORIGINS or '*')"
         ),
     )
+    parser.add_argument(
+        "--inventory",
+        default=os.getenv("BRICK_INVENTORY"),
+        help="Path to brick inventory JSON (default: env BRICK_INVENTORY)",
+    )
     args = parser.parse_args()
     if args.version:
         print(__version__)
@@ -312,6 +333,7 @@ def main() -> None:
         args.log_level,
         args.log_file,
         args.cors_origins,
+        args.inventory,
     )
 
 

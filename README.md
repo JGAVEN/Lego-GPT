@@ -76,6 +76,8 @@ export REDIS_URL=redis://localhost:6379/0
 export QUEUE_NAME=legogpt
 lego-gpt-worker --redis-url "$REDIS_URL" --queue "$QUEUE_NAME" \
   --log-level INFO
+# Specify an inventory file with --inventory
+# lego-gpt-worker --inventory backend/inventory.json
 # Write worker logs to a file
 # lego-gpt-worker --log-file worker.log
 # Use a different solver backend with --solver-engine or ORTOOLS_ENGINE
@@ -102,6 +104,7 @@ lego-gpt-server \
   --port 8000 \
   --redis-url "$REDIS_URL" \
   --jwt-secret "$JWT_SECRET" \
+  --inventory "$BRICK_INVENTORY" \
   --rate-limit 5 \
   --queue "$QUEUE_NAME" \
   --log-level INFO              # http://localhost:8000/health
@@ -238,6 +241,8 @@ Poll the job via `GET /generate/{job_id}` to receive the asset links:
   "brick_counts": { "Brick 2 x 4": 12 }
 }
 ```
+If the job isn’t finished yet, the endpoint returns `HTTP 202` with
+`{"progress": 0.5}` indicating completion percentage.
 
 The `png_url` can be shown directly in an `<img>` tag. If `ldr_url` is present,
 pass it to the `LDrawViewer` React component for interactive viewing.
@@ -252,6 +257,7 @@ base64 string and returns `{ "job_id": "xyz" }`. Invalid base64 yields
 ```json
 { "brick_counts": { "3001.DAT": 2 } }
 ```
+Results are cached in Redis for 24 hours when available.
 
 Use the counts as the `inventory_filter` in `/generate` requests.
 

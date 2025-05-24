@@ -59,13 +59,15 @@ clusters not connected to the ground.
    (or set ``STATIC_ROOT``) to override the directory. Use
    ``STATIC_URL_PREFIX`` to customise the URL prefix returned to the
    client (defaults to ``/static``).
-6. When finished, a GET on `/generate/{job_id}` returns `{png_url, ldr_url, gltf_url, brick_counts}`.
-7. Client shows PNG immediately; Three.js lazily loads LDR → interactive viewer.
+6. Until the worker finishes, `GET /generate/{job_id}` responds with `HTTP 202` and a
+   `{ "progress": <0-1> }` payload.
+7. When complete, the endpoint returns `{png_url, ldr_url, gltf_url, brick_counts}`.
+8. Client shows PNG immediately; Three.js lazily loads LDR → interactive viewer.
    The `LDrawLoader` module is fetched from a CDN at runtime.
-8. Set ``LOG_LEVEL`` or pass ``--log-level`` to server/workers to control logging verbosity.
-9. Environment variables can be placed in a ``.env`` file. If
-   ``python-dotenv`` is installed, the backend loads it automatically on startup.
-10. Set ``ORTOOLS_ENGINE`` or pass ``--solver-engine`` to the worker to pick a
+9. Set ``LOG_LEVEL`` or pass ``--log-level`` to server/workers to control logging verbosity.
+10. Environment variables can be placed in a ``.env`` file. If
+    ``python-dotenv`` is installed, the backend loads it automatically on startup.
+11. Set ``ORTOOLS_ENGINE`` or pass ``--solver-engine`` to the worker to pick a
     specific OR-Tools backend (``HIGHs`` or ``CBC``).
 
 ---
@@ -80,7 +82,7 @@ clusters not connected to the ground.
 
 ---
 
-_Last updated 2025-06-13_
+_Last updated 2025-06-16_
 
 ---
 
@@ -90,6 +92,9 @@ Adds a YOLOv8‑based computer‑vision worker that converts user‑supplied pho
 
 The API validates that the `image` field contains a valid base64 string and
 returns HTTP 400 for malformed data.
+
+Results are cached in Redis for 24 hours when available so repeated
+uploads of the same photo skip the YOLOv8 model.
 
 The worker lives in the top-level `detector/` directory and can run as a
 standalone micro‑service via `detector/Dockerfile.dev`. Start it locally with the
