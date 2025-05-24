@@ -14,7 +14,7 @@ real-life building via a built-in Three.js viewer.
 
 &nbsp;
 
-## 2. What’s New (2025-06-08)
+## 2. What’s New (2025-06-09)
 | Change | Impact |
 |--------|--------|
 | 🔄 **Open-source solver** – switched to **OR-Tools 9.10 + HiGHS**. | Runs licence-free everywhere (local dev, CI, containers). |
@@ -28,6 +28,7 @@ real-life building via a built-in Three.js viewer.
 | 🆕 **Photo‑based brick inventory detection** – YOLOv8 detector + `/detect_inventory` API | Scan your loose bricks and generate builds you can actually build |
 | 🛡️ **Static file handler sanitized** | Blocks path traversal in `/static` requests |
 | 🆕 **Console scripts** for API and workers (`lego-gpt-server`, `lego-gpt-worker`, `lego-detect-worker`) | Easier local development & Docker entrypoints; workers accept `--redis-url` and `--version` |
+| 🆕 **Command-line client** (`lego-gpt-cli`) | Test the API from your terminal or CI |
 | 🛠️ **Ruff linting** for backend code | Consistent style via `ruff check` locally and in CI |
 | 🌍 **CORS configuration** via `--cors-origins` | Allows custom `Access-Control-Allow-Origin` |
 | 🔗 **Static URL prefix** configurable | Set `STATIC_URL_PREFIX` to point asset links at a CDN |
@@ -100,7 +101,10 @@ lego-gpt-server \
 # Set ``S3_BUCKET`` and optional ``S3_URL_PREFIX`` to upload assets to S3/R2.
 
 # Generate a JWT for requests
-python scripts/generate_jwt.py --secret mysecret --sub dev
+python scripts/generate_jwt.py --secret mysecret --sub dev > token.txt
+
+# Test the API via the command-line client
+lego-gpt-cli --token $(cat token.txt) generate "a red car"
 
 # Start the front-end PWA
 pnpm --dir frontend run dev    # http://localhost:5173
