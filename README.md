@@ -34,6 +34,7 @@ real-life building via a built-in Three.js viewer.
 | 🔗 **Static URL prefix** configurable | Set `STATIC_URL_PREFIX` to point asset links at a CDN |
 | ☁️ **S3/R2 uploads** | Set `S3_BUCKET` and `S3_URL_PREFIX` to host assets in the cloud |
 | 🆕 **CLI `--version` flag + tests** | `lego-gpt-cli --version` shows backend version; automated tests ensure it works |
+| 🆕 **`--inventory` & `.env` support** | CLI loads env vars from `.env` and accepts `--inventory` JSON |
 | 🧹 **Cleanup script** (`lego-gpt-cleanup`) | Remove old asset directories (use `--dry-run` to preview) |
 
 &nbsp;
@@ -117,6 +118,9 @@ lego-gpt-cli --version
 
 # Test the API via the command-line client
 lego-gpt-cli --token $(cat token.txt) generate "a red car"
+# Pass a brick inventory JSON file
+lego-gpt-cli --token $(cat token.txt) generate "a red car" --inventory my_inv.json
+# The CLI loads API_URL and JWT from a .env file if present
 
 # Start the front-end PWA
 pnpm --dir frontend run dev    # http://localhost:5173

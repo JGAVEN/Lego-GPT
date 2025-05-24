@@ -1,3 +1,15 @@
+## [0.5.24] – 2025-06-15
+### Added
+* `.env` loading for `lego-gpt-cli`.
+### Changed
+* Backend package version bumped to 0.5.24.
+
+## [0.5.23] – 2025-06-15
+### Added
+* `--inventory` option for `lego-gpt-cli` to send brick counts.
+### Changed
+* Backend package version bumped to 0.5.23.
+
 ## [0.5.22] – 2025-06-14
 ### Added
 * `lego-gpt-token` console script for JWT generation.

@@ -39,6 +39,8 @@
 | S-12 | **S** | Solver auto-loader + unit tests      | **Done** | Part of solver refactor |
 | S-13 | **XS**| Update docs for solver swap          | **Done** | README & ARCHITECTURE |
 | B-25 | **XS** | JWT token CLI (`lego-gpt-token`) | **Done** | Generates auth tokens from the command line |
+| B-26 | **XS** | CLI `--inventory` option | **Done** | Supply brick counts via JSON file |
+| B-27 | **XS** | CLI loads `.env` | **Done** | `API_URL` and `JWT` automatically read |
 | S-14 | **XS** | Configurable OR-Tools backend (`ORTOOLS_ENGINE`) | **Done** | Worker `--solver-engine` flag |
 
 
@@ -47,4 +49,4 @@
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.
 
-_Last updated 2025-06-14_
+_Last updated 2025-06-15_

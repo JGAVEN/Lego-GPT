@@ -1,4 +1,5 @@
 import io
+import json
 import sys
 import unittest
 from pathlib import Path
@@ -29,6 +30,28 @@ class APIClientCLITests(unittest.TestCase):
              patch("sys.stdout", new=io.StringIO()):
             cli.main()
         mock_post.assert_called_once()
+        mock_poll.assert_called_once()
+
+    def test_generate_with_inventory(self):
+        argv = [
+            "cli",
+            "--token",
+            "tok",
+            "generate",
+            "hello",
+            "--inventory",
+            "inv.json",
+        ]
+        inv = {"3001.DAT": 1}
+        with patch.object(sys, "argv", argv), \
+             patch("backend.cli.open", mock_open(read_data=json.dumps(inv)), create=True), \
+             patch("backend.cli._post", return_value={"job_id": "1"}) as mock_post, \
+             patch("backend.cli._poll", return_value={"ok": True}) as mock_poll, \
+             patch("sys.stdout", new=io.StringIO()):
+            cli.main()
+        mock_post.assert_called_once()
+        payload = mock_post.call_args[0][2]
+        self.assertEqual(payload["inventory_filter"], inv)
         mock_poll.assert_called_once()
 
     def test_detect_command(self):
