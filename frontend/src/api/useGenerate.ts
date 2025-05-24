@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import type { GenerateRequest, GenerateResponse } from "./lego";
-import { generateLego } from "./lego";
-import {
-  getCachedGenerate,
-  setCachedGenerate,
-  addQueuedGenerate,
-} from "../lib/db";
+import { API_BASE } from "./lego";
+import { getCachedGenerate, setCachedGenerate } from "../lib/db";
 
 export interface UseGenerateResult {
   data: GenerateResponse | null;
@@ -38,38 +34,53 @@ export default function useGenerate(
       setData(null);
       const cacheKey = JSON.stringify({ prompt, seed, inventoryFilter });
       const cached = await getCachedGenerate(cacheKey);
-      const reqBody: GenerateRequest = { prompt };
-      if (seed !== undefined && seed !== null) {
-        reqBody.seed = seed;
-      }
-      if (inventoryFilter) {
-        reqBody.inventory_filter = inventoryFilter;
-      }
       try {
-        const result = await generateLego(reqBody, ctrl.signal);
-        if (!cancelled) {
-          setData(result);
-          await setCachedGenerate(cacheKey, result);
+        const reqBody: GenerateRequest = { prompt };
+        if (seed !== undefined && seed !== null) {
+          reqBody.seed = seed;
         }
-      } catch (err: unknown) {
-        if (!cancelled) {
-          if (!navigator.onLine) {
-            await addQueuedGenerate(reqBody);
+        if (inventoryFilter) {
+          reqBody.inventory_filter = inventoryFilter;
+        }
+        const res = await fetch(`${API_BASE}/generate`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(reqBody),
+          signal: ctrl.signal,
+        });
+        if (!res.ok) {
+          throw new Error(`Request failed (${res.status})`);
+        }
+        const { job_id } = (await res.json()) as { job_id: string };
+
+        while (!cancelled) {
+          const poll = await fetch(`${API_BASE}/generate/${job_id}`, {
+            signal: ctrl.signal,
+          });
+          if (poll.status === 200) {
+            const result = (await poll.json()) as GenerateResponse;
+            if (!cancelled) {
+              setData(result);
+              await setCachedGenerate(cacheKey, result);
+            }
+            break;
+          }
+          if (poll.status !== 202) {
+            throw new Error(`Job failed (${poll.status})`);
+          }
+          await new Promise((r) => setTimeout(r, 1000));
+        }
+        } catch (err: unknown) {
+          if (!cancelled) {
             if (cached) {
               setData(cached);
-              setError("Offline - request queued, showing cached result");
+              setError("Offline - showing cached result");
+            } else if (err instanceof Error && err.name !== "AbortError") {
+              setError(err.message);
             } else {
-              setError("Offline - request queued");
+              setError("Unknown error");
             }
-          } else if (cached) {
-            setData(cached);
-            setError("Offline - showing cached result");
-          } else if (err instanceof Error && err.name !== "AbortError") {
-            setError(err.message);
-          } else {
-            setError("Unknown error");
           }
-        }
       } finally {
         if (!cancelled) {
           setLoading(false);
