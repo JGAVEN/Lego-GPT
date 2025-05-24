@@ -1,3 +1,9 @@
+## [0.5.29] – 2025-06-18
+### Added
+* `pnpm typecheck` script ensures the TypeScript front-end builds cleanly.
+### Changed
+* Backend package version bumped to 0.5.29.
+
 ## [0.5.28] – 2025-06-17
 ### Added
 * Redis service in `docker-compose.yml`.
@@ -297,4 +303,3 @@
 ## [0.1.0] – 2025‑05‑14
 ### Added
 - Initial repository setup with docs, `.gitignore`, and backend `/health`.
-

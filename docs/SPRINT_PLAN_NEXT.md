@@ -2,9 +2,9 @@
 
 This plan outlines the following sprints after completing the initial roadmap.
 
-## Sprint 1 – Front-end TypeScript migration
-* Convert React components to TypeScript.
-* Ensure the project builds and type-checks under `pnpm typecheck`.
+## Sprint 1 – Front-end TypeScript migration (completed)
+* Converted all React components to TypeScript.
+* Added a `typecheck` script so the project builds and type-checks via `pnpm typecheck`.
 
 ## Sprint 2 – Solver edge-case unit tests
 * Add tests for ill-conditioned graphs and complex overhang scenarios.
