@@ -5,7 +5,7 @@ import os
 from backend.api import generate_lego_model
 from backend.detector import detect_inventory
 
-QUEUE_NAME = "legogpt"
+QUEUE_NAME = os.getenv("QUEUE_NAME", "legogpt")
 
 
 def generate_job(
@@ -23,11 +23,14 @@ def detect_job(image_b64: str) -> dict:
     return {"brick_counts": counts}
 
 
-def run_worker(redis_url: str = "redis://localhost:6379/0") -> None:
+def run_worker(
+    redis_url: str = "redis://localhost:6379/0",
+    queue_name: str = QUEUE_NAME,
+) -> None:
     """Start an RQ worker that processes generation jobs."""
     conn = Redis.from_url(redis_url)
     with Connection(conn):
-        worker = Worker([QUEUE_NAME])
+        worker = Worker([queue_name])
         worker.work()
 
 
@@ -41,9 +44,14 @@ def main(argv: list[str] | None = None) -> None:
         default=os.getenv("REDIS_URL", "redis://localhost:6379/0"),
         help="Redis connection URL (default: env REDIS_URL or redis://localhost:6379/0)",
     )
+    parser.add_argument(
+        "--queue",
+        default=os.getenv("QUEUE_NAME", QUEUE_NAME),
+        help="RQ queue name (default: env QUEUE_NAME or 'legogpt')",
+    )
     args = parser.parse_args(argv)
 
-    run_worker(args.redis_url)
+    run_worker(args.redis_url, args.queue)
 
 
 if __name__ == "__main__":  # pragma: no cover - CLI entry

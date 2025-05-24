@@ -59,15 +59,18 @@ export REDIS_URL=redis://localhost:6379/0
 
 # Launch the RQ worker in one terminal
 # ``--redis-url`` overrides the REDIS_URL env var
-lego-gpt-worker --redis-url "$REDIS_URL"
+# Optional ``--queue`` overrides the QUEUE_NAME env var
+export QUEUE_NAME=legogpt
+lego-gpt-worker --redis-url "$REDIS_URL" --queue "$QUEUE_NAME"
 # Launch the detector worker in another
-lego-detect-worker --redis-url "$REDIS_URL"
+lego-detect-worker --redis-url "$REDIS_URL" --queue "$QUEUE_NAME"
 
 # Launch the API server in another
 export JWT_SECRET=mysecret         # auth secret
 export BRICK_INVENTORY=backend/inventory.json  # optional inventory
 export DETECTOR_MODEL=detector/model.pt       # optional YOLOv8 weights
 lego-gpt-server --host 0.0.0.0 --port 8000    # http://localhost:8000/health
+# ``--queue`` overrides the QUEUE_NAME env var
 # The `--host` and `--port` options override the defaults and can also be
 # provided via `HOST` and `PORT` environment variables. Use `--version` to
 # print the backend version and exit.

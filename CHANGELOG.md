@@ -1,5 +1,12 @@
 ## Unreleased
 
+## [0.5.8] – 2025-05-31
+### Added
+* `QUEUE_NAME` env var and `--queue` option allow custom RQ queue names for
+  server and workers.
+### Changed
+* Project version bumped to 0.5.8.
+
 ## [0.5.7] – 2025-05-31
 ### Added
 * Docker Compose stack now includes a dedicated generation worker.
