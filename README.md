@@ -14,7 +14,7 @@ real-life building via a built-in Three.js viewer.
 
 &nbsp;
 
-## 2. What’s New (2025-06-09)
+## 2. What’s New (2025-06-10)
 | Change | Impact |
 |--------|--------|
 | 🔄 **Open-source solver** – switched to **OR-Tools 9.10 + HiGHS**. | Runs licence-free everywhere (local dev, CI, containers). |
@@ -33,6 +33,7 @@ real-life building via a built-in Three.js viewer.
 | 🌍 **CORS configuration** via `--cors-origins` | Allows custom `Access-Control-Allow-Origin` |
 | 🔗 **Static URL prefix** configurable | Set `STATIC_URL_PREFIX` to point asset links at a CDN |
 | ☁️ **S3/R2 uploads** | Set `S3_BUCKET` and `S3_URL_PREFIX` to host assets in the cloud |
+| 🆕 **CLI `--version` flag + tests** | `lego-gpt-cli --version` shows backend version; automated tests ensure it works |
 
 &nbsp;
 
@@ -102,6 +103,9 @@ lego-gpt-server \
 
 # Generate a JWT for requests
 python scripts/generate_jwt.py --secret mysecret --sub dev > token.txt
+
+# Check the CLI version
+lego-gpt-cli --version
 
 # Test the API via the command-line client
 lego-gpt-cli --token $(cat token.txt) generate "a red car"

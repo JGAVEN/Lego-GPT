@@ -1,3 +1,9 @@
+## [0.5.18] – 2025-06-10
+### Added
+* `--version` flag for `lego-gpt-cli` and accompanying unit tests.
+### Changed
+* Backend package version bumped to 0.5.18.
+
 ## [0.5.17] – 2025-06-09
 ### Added
 * `lego-gpt-cli` command-line client for interacting with the API.
