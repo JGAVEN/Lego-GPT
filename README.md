@@ -304,12 +304,16 @@ Default rate limit is `5` generate requests per token per minute (configurable v
 1. **One atomic branch per ticket** (`feature/<ticket-slug>`).
 2. Follow `docs/PROJECT_BACKLOG.md` for ticket IDs and size.
 3. Front-end dependencies are installed via `scripts/setup_frontend.sh`.
-   The script first attempts an offline install and fetches from the registry if needed.
+   The script attempts an offline install and fetches from the registry if needed.
    Run it once with network access (`pnpm install --dir frontend` works too) so
-   future lints and dev builds work offline.
-   Running it before this first networked install will show a message
-   explaining that the pnpm store is missing.
-   Run `pnpm --dir frontend run lint` after editing UI code. The command skips if
+   future lints and dev builds work offline. The script installs runtime React
+   packages plus the linting/dev tools required by `lint_frontend.js`:
+   `@eslint/js`, `@types/react`, `@types/react-dom`, `@vitejs/plugin-react`,
+   `eslint`, `eslint-config-prettier`, `eslint-plugin-react-hooks`,
+   `eslint-plugin-react-refresh`, `globals`, `prettier`, `typescript`,
+   `typescript-eslint` and `vite`. Running the setup script offline before the
+   store is populated prints a short message explaining the missing packages.
+   Run `pnpm --dir frontend run lint` after editing UI code; the command skips if
    dependencies are missing.
 4. Run `python -m unittest discover -v` before pushing. The test suite uses
    Python's built-in `unittest` module. `pytest` is optional and works too.
