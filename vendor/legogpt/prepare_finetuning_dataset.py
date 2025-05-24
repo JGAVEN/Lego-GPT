@@ -10,16 +10,26 @@ from transformers import HfArgumentParser
 @dataclass
 class PrepareDatasetArguments:
     input_path: str = field(
-        default='AvaLovelace/StableText2Lego',
-        metadata={'help': 'Path to the directory containing the LEGO dataset to be processed. '
-                          'This dataset should contain at least the fields "captions" (list[string]) and "lego" (string).'},
+        default="AvaLovelace/StableText2Lego",
+        metadata={
+            "help": (
+                "Path to the directory containing the LEGO dataset to be processed. "
+                "This dataset should contain at least the fields "
+                '"captions" (list[string]) and "lego" (string).'
+            )
+        },
     )
     output_path: str = field(
-        default='datasets',
-        metadata={'help': 'Path to the directory in which to save the processed fine-tuning dataset. '
-                          'The fine-tuning dataset will contain the field "messages", a conversational exchange where '
-                          'the user prompts the assistant with a "caption" and the assistant provides a "lego" '
-                          'following that caption.'},
+        default="datasets",
+        metadata={
+            "help": (
+                "Path to the directory in which to save the processed fine-tuning dataset. "
+                "The fine-tuning dataset will contain the field \"messages\", "
+                "a conversational exchange where the user prompts the assistant "
+                "with a \"caption\" and the assistant provides a \"lego\" following "
+                "that caption."
+            )
+        },
     )
 
 
