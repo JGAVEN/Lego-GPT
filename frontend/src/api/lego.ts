@@ -38,7 +38,19 @@ export async function generateLego(
         "Is the backend running? Try `docker compose up` in the repo root."
     );
   }
-  return (await res.json()) as GenerateResponse;
+  const { job_id } = (await res.json()) as { job_id: string };
+  while (true) {
+    const poll = await fetch(`${API_BASE}/generate/${job_id}`, {
+      signal: abortSignal,
+    });
+    if (poll.status === 200) {
+      return (await poll.json()) as GenerateResponse;
+    }
+    if (poll.status !== 202) {
+      throw new Error(`Job failed (${poll.status})`);
+    }
+    await new Promise((r) => setTimeout(r, 1000));
+  }
 }
 
 export async function detectInventory(
