@@ -137,6 +137,8 @@ lego-gpt-cli --token $(cat token.txt) generate "a red car" --out-dir my_build
 
 # Start the front-end PWA
 pnpm --dir frontend run dev    # http://localhost:5173
+# The PWA caches generated models in IndexedDB and preview images via a
+# service worker so previously viewed results remain available offline.
 # Lint UI code (skips if dependencies are missing)
 pnpm --dir frontend run lint
 # Lint backend code
