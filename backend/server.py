@@ -177,10 +177,20 @@ class Handler(BaseHTTPRequestHandler):
         self.send_error(404)
 
 
-def run(host: str = "0.0.0.0", port: int = 8000, queue_name: str = QUEUE_NAME):
+def run(
+    host: str = "0.0.0.0",
+    port: int = 8000,
+    queue_name: str = QUEUE_NAME,
+    redis_url: str = REDIS_URL,
+    jwt_secret: str = JWT_SECRET,
+    rate_limit: int = RATE_LIMIT,
+) -> None:
     """Start the HTTP API server."""
-    global queue
+    global queue, redis_conn, JWT_SECRET, RATE_LIMIT
+    redis_conn = Redis.from_url(redis_url)
     queue = Queue(queue_name, connection=redis_conn)
+    JWT_SECRET = jwt_secret
+    RATE_LIMIT = rate_limit
     server = HTTPServer((host, port), Handler)
     print(f"Serving on http://{host}:{port}")
     server.serve_forever()
@@ -212,11 +222,34 @@ def main() -> None:
         default=os.getenv("QUEUE_NAME", QUEUE_NAME),
         help="RQ queue name (default: env QUEUE_NAME or 'legogpt')",
     )
+    parser.add_argument(
+        "--redis-url",
+        default=os.getenv("REDIS_URL", REDIS_URL),
+        help="Redis connection URL (default: env REDIS_URL or redis://localhost:6379/0)",
+    )
+    parser.add_argument(
+        "--jwt-secret",
+        default=os.getenv("JWT_SECRET", JWT_SECRET),
+        help="JWT secret for request authentication (default: env JWT_SECRET or 'secret')",
+    )
+    parser.add_argument(
+        "--rate-limit",
+        type=int,
+        default=int(os.getenv("RATE_LIMIT", str(RATE_LIMIT))),
+        help="Requests per token per minute (default: env RATE_LIMIT or 5)",
+    )
     args = parser.parse_args()
     if args.version:
         print(__version__)
         return
-    run(args.host, args.port, args.queue)
+    run(
+        args.host,
+        args.port,
+        args.queue,
+        args.redis_url,
+        args.jwt_secret,
+        args.rate_limit,
+    )
 
 
 if __name__ == "__main__":  # pragma: no cover - CLI entry point

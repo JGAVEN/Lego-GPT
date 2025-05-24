@@ -70,11 +70,18 @@ lego-detect-worker --redis-url "$REDIS_URL" --queue "$QUEUE_NAME"
 export JWT_SECRET=mysecret         # auth secret
 export BRICK_INVENTORY=backend/inventory.json  # optional inventory
 export DETECTOR_MODEL=detector/model.pt       # optional YOLOv8 weights
-lego-gpt-server --host 0.0.0.0 --port 8000    # http://localhost:8000/health
-# ``--queue`` overrides the QUEUE_NAME env var
-# The `--host` and `--port` options override the defaults and can also be
-# provided via `HOST` and `PORT` environment variables. Use `--version` to
-# print the backend version and exit.
+# ``--jwt-secret``, ``--redis-url`` and ``--rate-limit`` override the
+# corresponding environment variables.
+lego-gpt-server \
+  --host 0.0.0.0 \
+  --port 8000 \
+  --redis-url "$REDIS_URL" \
+  --jwt-secret "$JWT_SECRET" \
+  --rate-limit 5 \
+  --queue "$QUEUE_NAME"              # http://localhost:8000/health
+# The `--host` and `--port` options can also be provided via `HOST` and
+# `PORT` environment variables. Use `--version` to print the backend version
+# and exit.
 # Generated assets are written to `backend/static/{uuid}/` by default. Set the
 # `STATIC_ROOT` environment variable to override the directory.
 
