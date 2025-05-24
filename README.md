@@ -14,7 +14,7 @@ real-life building via a built-in Three.js viewer.
 
 &nbsp;
 
-## 2. What’s New (2025-05-29)
+## 2. What’s New (2025-06-01)
 | Change | Impact |
 |--------|--------|
 | 🔄 **Open-source solver** – switched to **OR-Tools 9.10 + HiGHS**. | Runs licence-free everywhere (local dev, CI, containers). |
@@ -28,6 +28,7 @@ real-life building via a built-in Three.js viewer.
 | 🆕 **Photo‑based brick inventory detection** – YOLOv8 detector + `/detect_inventory` API | Scan your loose bricks and generate builds you can actually build |
 | 🛡️ **Static file handler sanitized** | Blocks path traversal in `/static` requests |
 | 🆕 **Console scripts** for API and workers (`lego-gpt-server`, `lego-gpt-worker`, `lego-detect-worker`) | Easier local development & Docker entrypoints; workers accept `--redis-url` |
+| 🛠️ **Ruff linting** for backend code | Consistent style via `ruff check` locally and in CI |
 
 &nbsp;
 
