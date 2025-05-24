@@ -2,6 +2,7 @@
 from pathlib import Path
 from backend.inference import generate
 from backend import __version__, STATIC_ROOT, STATIC_URL_PREFIX
+from backend.storage import maybe_upload_assets
 
 
 def health() -> dict:
@@ -16,16 +17,32 @@ def generate_lego_model(
     png_path, ldr_path, gltf_path, brick_counts = generate(
         prompt, seed, inventory_filter
     )
-    rel_png = Path(png_path).resolve().relative_to(STATIC_ROOT.parent)
-    png_url = f"{STATIC_URL_PREFIX}/{rel_png.parent.name}/preview.png"
-    ldr_url = None
-    gltf_url = None
+
+    paths = [Path(png_path)]
     if ldr_path:
-        rel_ldr = Path(ldr_path).resolve().relative_to(STATIC_ROOT.parent)
-        ldr_url = f"{STATIC_URL_PREFIX}/{rel_ldr.parent.name}/model.ldr"
+        paths.append(Path(ldr_path))
     if gltf_path:
-        rel_gltf = Path(gltf_path).resolve().relative_to(STATIC_ROOT.parent)
-        gltf_url = f"{STATIC_URL_PREFIX}/{rel_gltf.parent.name}/model.gltf"
+        paths.append(Path(gltf_path))
+
+    urls, uploaded = maybe_upload_assets(paths)
+
+    if uploaded:
+        url_iter = iter(urls)
+        png_url = next(url_iter)
+        ldr_url = next(url_iter) if ldr_path else None
+        gltf_url = next(url_iter) if gltf_path else None
+    else:
+        rel_png = Path(png_path).resolve().relative_to(STATIC_ROOT.parent)
+        png_url = f"{STATIC_URL_PREFIX}/{rel_png.parent.name}/preview.png"
+        ldr_url = None
+        gltf_url = None
+        if ldr_path:
+            rel_ldr = Path(ldr_path).resolve().relative_to(STATIC_ROOT.parent)
+            ldr_url = f"{STATIC_URL_PREFIX}/{rel_ldr.parent.name}/model.ldr"
+        if gltf_path:
+            rel_gltf = Path(gltf_path).resolve().relative_to(STATIC_ROOT.parent)
+            gltf_url = f"{STATIC_URL_PREFIX}/{rel_gltf.parent.name}/model.gltf"
+
     return {
         "png_url": png_url,
         "ldr_url": ldr_url,
