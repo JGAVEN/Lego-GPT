@@ -1,3 +1,10 @@
+## [0.5.31] – 2025-05-24
+### Added
+* Training Dockerfile (`detector/Dockerfile.train`) and helper script `scripts/train_detector.sh`.
+* Documentation of the detector dataset format.
+### Changed
+* Backend package version bumped to 0.5.31.
+
 ## [0.5.30] – 2025-06-19
 ### Added
 * Solver edge-case unit tests covering loops and multi-level overhang scenarios.

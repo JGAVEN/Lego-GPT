@@ -103,6 +103,14 @@ model when a labelled dataset is available:
 lego-detect-train data.yaml --epochs 100 --out detector/model.pt
 ```
 
+Alternatively, build the training container and mount your dataset:
+
+```bash
+scripts/train_detector.sh /path/to/data.yaml --epochs 100 --out detector/model.pt
+```
+
+Refer to [DETECTOR_DATASET.md](DETECTOR_DATASET.md) for details on the expected dataset format.
+
 Set the `DETECTOR_MODEL` environment variable (or pass ``--model`` to
 ``lego-detect-worker``) with the path to the YOLOv8 weights file.  If the
 variable is unset or the `ultralytics` package is

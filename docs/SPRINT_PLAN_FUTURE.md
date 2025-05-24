@@ -2,9 +2,9 @@
 
 This document lists the next five sprints after completing the solver edge-case tests.
 
-## Sprint 1 – Detector training workflow
-* Provide Dockerfile and scripts to train YOLOv8 models.
-* Document dataset format and expected output.
+## Sprint 1 – Detector training workflow (completed)
+* Provided `detector/Dockerfile.train` and `scripts/train_detector.sh`.
+* Documented dataset layout in `docs/DETECTOR_DATASET.md`.
 
 ## Sprint 2 – Offline mode improvements
 * Cache API responses in IndexedDB for repeat access.

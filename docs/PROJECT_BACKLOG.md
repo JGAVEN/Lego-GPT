@@ -3,7 +3,7 @@
 
 | ID   | Pri | Title                               | Status | Notes |
 |------|-----|-------------------------------------|--------|-------|
-| B‑1 | **v0.5** Inventory Detection | Fine‑tune YOLOv8 on 3 k brick images | CV lead | WIP: training script added |
+| B‑1 | **v0.5** Inventory Detection | Fine‑tune YOLOv8 on 3 k brick images | CV lead | **Done**: training Dockerfile and docs |
 | B‑2 | v0.5 | Build `detector/` micro‑service, Dockerfile, RQ worker | CV lead | **Done** |
 | B‑3 | v0.5 | Add `/detect_inventory` endpoint in Gateway + tests | Backend | **Done** |
 | B‑4 | v0.5 | Front‑end camera / upload workflow + inventory table | FE | **Done** |

@@ -7,8 +7,8 @@ This document lists the next five sprints after completing the front-end TypeScr
 * Keep CI green with OR-Tools HiGHS backend.
 
 ## Sprint 2 – Detector training workflow
-* Provide Dockerfile and scripts to train YOLOv8 models.
-* Document dataset format and expected output.
+* Provided `detector/Dockerfile.train` and `scripts/train_detector.sh`.
+* Documented dataset layout in `docs/DETECTOR_DATASET.md`.
 
 ## Sprint 3 – Offline mode improvements
 * Cache API responses in IndexedDB for repeat access.
