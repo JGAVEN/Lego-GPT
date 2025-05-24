@@ -167,7 +167,7 @@ dependencies so the stack works out‑of‑the‑box:
 docker compose up --build
 ```
 
-This spins up the API server, a generation worker and the detector worker.
+This spins up Redis, the API server, a generation worker and the detector worker.
 
 The API will be available at http://localhost:8000/health.
 The `/health` endpoint responds with `{ "ok": true, "version": "x.y.z" }` so you
