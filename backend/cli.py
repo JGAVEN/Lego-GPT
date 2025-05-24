@@ -7,9 +7,21 @@ import argparse
 import base64
 import json
 import os
+import sys
 import time
 from pathlib import Path
-from urllib import error, request
+from urllib import request
+from urllib.error import HTTPError
+
+
+def _extract_error(exc: HTTPError) -> str:
+    """Return a user-friendly message from an ``HTTPError``."""
+    try:
+        data = exc.read().decode()
+        detail = json.loads(data).get("detail", data)
+        return str(detail)
+    except Exception:  # pragma: no cover - malformed error
+        return exc.reason
 
 # ---------------------------------------------------------------------------
 #                         Optional .env loader
@@ -33,54 +45,87 @@ def _post(url: str, token: str, payload: dict) -> dict:
     req = request.Request(
         url, data=data, headers={"Content-Type": "application/json", "Authorization": f"Bearer {token}"}
     )
-    with request.urlopen(req) as resp:
-        return json.load(resp)
+    try:
+        with request.urlopen(req) as resp:
+            return json.load(resp)
+    except HTTPError as exc:  # pragma: no cover - simple CLI
+        msg = _extract_error(exc)
+        raise RuntimeError(f"POST {url} failed ({exc.code}): {msg}") from None
 
 
-def _poll(url: str, token: str) -> dict:
+def _poll(url: str, token: str, progress: bool = False) -> dict:
     while True:
         req = request.Request(url, headers={"Authorization": f"Bearer {token}"})
         try:
             with request.urlopen(req) as resp:
                 if resp.status == 200:
+                    if progress:
+                        print("", file=sys.stderr)
                     return json.load(resp)
-        except error.HTTPError as exc:  # pragma: no cover - simple CLI
+        except HTTPError as exc:  # pragma: no cover - simple CLI
             if exc.code == 202:
+                if progress:
+                    print(".", end="", file=sys.stderr, flush=True)
                 time.sleep(1)
                 continue
-            raise
+            msg = _extract_error(exc)
+            raise RuntimeError(f"GET {url} failed ({exc.code}): {msg}") from None
         time.sleep(1)
 
 
 def cmd_generate(args: argparse.Namespace) -> None:
-    payload = {"prompt": args.prompt, "seed": args.seed}
+    prompts: list[str] = []
+    if args.file:
+        with open(args.file) as f:
+            prompts.extend([p.strip() for p in f if p.strip()])
+    if args.prompt:
+        prompts.append(args.prompt)
+    if not prompts:
+        raise SystemExit("Prompt or --file required")
+
+    inv: dict | None = None
     if args.inventory:
         with open(args.inventory) as f:
             inv = json.load(f)
             if not isinstance(inv, dict):
                 raise ValueError("Inventory JSON must be an object")
-        payload["inventory_filter"] = inv
-    res = _post(f"{args.url}/generate", args.token, payload)
-    job_id = res["job_id"]
-    result = _poll(f"{args.url}/generate/{job_id}", args.token)
-    print(json.dumps(result, indent=2))
-    if args.out_dir:
-        out = Path(args.out_dir)
-        out.mkdir(parents=True, exist_ok=True)
-        for key in ["png_url", "ldr_url", "gltf_url"]:
-            url = result.get(key)
-            if url:
-                dest = out / Path(url).name
-                with request.urlopen(url) as resp, open(dest, "wb") as f:
-                    f.write(resp.read())
+
+    for idx, prompt in enumerate(prompts, 1):
+        payload = {"prompt": prompt, "seed": args.seed}
+        if inv is not None:
+            payload["inventory_filter"] = inv
+        try:
+            print(f"[{idx}/{len(prompts)}] Generating '{prompt}'", file=sys.stderr)
+            res = _post(f"{args.url}/generate", args.token, payload)
+            job_id = res["job_id"]
+            result = _poll(f"{args.url}/generate/{job_id}", args.token, progress=True)
+        except Exception as exc:
+            print(f"Error: {exc}", file=sys.stderr)
+            continue
+        print(json.dumps(result, indent=2))
+        if args.out_dir:
+            out = Path(args.out_dir)
+            out.mkdir(parents=True, exist_ok=True)
+            for key in ["png_url", "ldr_url", "gltf_url"]:
+                url = result.get(key)
+                if url:
+                    dest = out / Path(url).name
+                    with request.urlopen(url) as resp, open(dest, "wb") as f:
+                        f.write(resp.read())
 
 
 def cmd_detect(args: argparse.Namespace) -> None:
     with open(args.image, "rb") as f:
         img_b64 = base64.b64encode(f.read()).decode()
-    res = _post(f"{args.url}/detect_inventory", args.token, {"image": img_b64})
-    job_id = res["job_id"]
-    result = _poll(f"{args.url}/detect_inventory/{job_id}", args.token)
+    try:
+        res = _post(f"{args.url}/detect_inventory", args.token, {"image": img_b64})
+        job_id = res["job_id"]
+        result = _poll(
+            f"{args.url}/detect_inventory/{job_id}", args.token, progress=True
+        )
+    except Exception as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        return
     print(json.dumps(result, indent=2))
 
 
@@ -98,7 +143,8 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--token", default=os.getenv("JWT"), help="JWT auth token or JWT env var")
     sub = parser.add_subparsers(dest="cmd")
     g = sub.add_parser("generate", help="Generate a model from text")
-    g.add_argument("prompt", help="Text prompt")
+    g.add_argument("prompt", nargs="?", help="Text prompt")
+    g.add_argument("--file", help="Path to text file with prompts")
     g.add_argument("--seed", type=int, default=42, help="Random seed")
     g.add_argument(
         "--inventory",
