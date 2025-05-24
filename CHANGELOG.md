@@ -1,7 +1,11 @@
 ## Unreleased
+
+## [0.5.5] – 2025-05-31
 ### Added
 * `STATIC_ROOT` environment variable allows overriding the default
   `backend/static` directory.
+### Changed
+* Project version bumped to 0.5.5.
 
 ## [0.5.4] – 2025-05-31
 ### Added
