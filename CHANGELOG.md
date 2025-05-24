@@ -11,6 +11,12 @@
 ### Changed
 * Backend package version bumped to 0.5.19.
 
+## [0.5.20] – 2025-06-12
+### Added
+* `lego-gpt-cleanup` script removes old static assets.
+### Changed
+* Backend package version bumped to 0.5.20.
+
 ## [0.5.17] – 2025-06-09
 ### Added
 * `lego-gpt-cli` command-line client for interacting with the API.
