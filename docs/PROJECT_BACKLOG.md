@@ -51,7 +51,7 @@
 | S-09 | **S**  | JWT secret rotation & path-traversal tests               | **Done** | Added rotation guide and ensured path traversal test. |
 | Q-04 | **S**  | Coverage reporting & badges                             | **Done** | CI runs coverage, uploads to Codecov, README badge added. |
 | R-03 | **C**  | Sync version & CHANGELOG                                 | **Done** | Release workflow bumps version and changelog on tags. |
-| F-07 | **C**  | Migrate FE to TypeScript                                 | **Open** | Convert React code to TS; scaffold for v0.6 passes type-check. |
+| F-07 | **C**  | Migrate FE to TypeScript                                 | **Done** | React code fully in TS; `pnpm typecheck` validates types. |
 | T-05 | **C**  | Solver edge-case unit tests                              | **Open** | Stress cases for ill-conditioned graphs; CI green. |
 
 
