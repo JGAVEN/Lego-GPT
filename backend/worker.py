@@ -30,10 +30,11 @@ def run_worker(
     queue_name: str = QUEUE_NAME,
     log_level: str | None = None,
     solver_engine: str | None = None,
+    log_file: str | None = None,
 ) -> None:
     """Start an RQ worker that processes generation jobs."""
     conn = Redis.from_url(redis_url)
-    setup_logging(log_level)
+    setup_logging(log_level, log_file)
     if solver_engine:
         os.environ["ORTOOLS_ENGINE"] = solver_engine
     with Connection(conn):
@@ -67,6 +68,11 @@ def main(argv: list[str] | None = None) -> None:
         help="Logging level (default: env LOG_LEVEL or INFO)",
     )
     parser.add_argument(
+        "--log-file",
+        default=os.getenv("LOG_FILE"),
+        help="File path to write logs (default: env LOG_FILE)",
+    )
+    parser.add_argument(
         "--solver-engine",
         default=os.getenv("ORTOOLS_ENGINE", "HIGHs"),
         help="OR-Tools solver backend (default: env ORTOOLS_ENGINE or HIGHs)",
@@ -77,7 +83,13 @@ def main(argv: list[str] | None = None) -> None:
         print(__version__)
         return
 
-    run_worker(args.redis_url, args.queue, args.log_level, args.solver_engine)
+    run_worker(
+        args.redis_url,
+        args.queue,
+        args.log_level,
+        args.solver_engine,
+        args.log_file,
+    )
 
 
 if __name__ == "__main__":  # pragma: no cover - CLI entry

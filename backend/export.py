@@ -1,4 +1,4 @@
-"""Stub for converting LDraw files to glTF for AR Quick-Look."""
+"""LDraw to glTF export helpers and CLI."""
 from __future__ import annotations
 
 import json
@@ -15,4 +15,19 @@ def ldr_to_gltf(ldr_path: str | Path, gltf_path: str | Path) -> None:
         "nodes": [],
     }
     gltf_path.write_text(json.dumps(gltf_data))
+
+
+def main(argv: list[str] | None = None) -> None:
+    """Command-line interface for ``lego-gpt-export``."""
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Convert .ldr model to glTF")
+    parser.add_argument("ldr", help="Input .ldr file")
+    parser.add_argument("gltf", help="Output .gltf file")
+    args = parser.parse_args(argv)
+    ldr_to_gltf(args.ldr, args.gltf)
+
+
+if __name__ == "__main__":  # pragma: no cover - CLI entry
+    main()
 

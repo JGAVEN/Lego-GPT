@@ -74,12 +74,16 @@ export REDIS_URL=redis://localhost:6379/0
 export QUEUE_NAME=legogpt
 lego-gpt-worker --redis-url "$REDIS_URL" --queue "$QUEUE_NAME" \
   --log-level INFO
+# Write worker logs to a file
+# lego-gpt-worker --log-file worker.log
 # Use a different solver backend with --solver-engine or ORTOOLS_ENGINE
 # lego-gpt-worker --solver-engine CBC
 # Launch the detector worker in another
 lego-detect-worker --redis-url "$REDIS_URL" --queue "$QUEUE_NAME" \
   --model detector/model.pt \
   --log-level INFO
+# Log detection worker output
+# lego-detect-worker --log-file detect.log
 # Append ``--version`` to either worker command to print the version and exit
 
 # Launch the API server in another
@@ -99,6 +103,8 @@ lego-gpt-server \
   --rate-limit 5 \
   --queue "$QUEUE_NAME" \
   --log-level INFO              # http://localhost:8000/health
+# Logs can also be written to a file using --log-file or LOG_FILE
+#  --log-file server.log
 # The `--host` and `--port` options can also be provided via `HOST` and
 # `PORT` environment variables. Use `--version` to print the backend version
 # and exit.
@@ -130,6 +136,8 @@ pnpm --dir frontend run lint
 ruff check backend detector
 # Remove assets older than 7 days (preview with --dry-run)
 lego-gpt-cleanup --days 7 --dry-run
+# Convert an existing .ldr model to glTF
+lego-gpt-export model.ldr model.gltf
 # Set CLEANUP_DAYS and CLEANUP_DRY_RUN in the environment to persist defaults
 ```
 

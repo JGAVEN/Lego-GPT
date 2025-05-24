@@ -210,6 +210,7 @@ def run(
     rate_limit: int = RATE_LIMIT,
     static_root: str | None = None,
     log_level: str | None = None,
+    log_file: str | None = None,
     cors_origins: str = CORS_ORIGINS,
 ) -> None:
     """Start the HTTP API server."""
@@ -223,7 +224,7 @@ def run(
 
         backend_pkg.STATIC_ROOT = Path(static_root).resolve()
     CORS_ORIGINS = cors_origins
-    setup_logging(log_level)
+    setup_logging(log_level, log_file)
     server = HTTPServer((host, port), Handler)
     print(f"Serving on http://{host}:{port}")
     server.serve_forever()
@@ -285,6 +286,11 @@ def main() -> None:
         help="Logging level (default: env LOG_LEVEL or INFO)",
     )
     parser.add_argument(
+        "--log-file",
+        default=os.getenv("LOG_FILE"),
+        help="File path to write logs (default: env LOG_FILE)",
+    )
+    parser.add_argument(
         "--cors-origins",
         default=os.getenv("CORS_ORIGINS", CORS_ORIGINS),
         help=(
@@ -304,6 +310,7 @@ def main() -> None:
         args.rate_limit,
         args.static_root,
         args.log_level,
+        args.log_file,
         args.cors_origins,
     )
 

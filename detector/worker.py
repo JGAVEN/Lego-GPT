@@ -12,12 +12,13 @@ def run_detector(
     queue_name: str = QUEUE_NAME,
     model_path: str | None = None,
     log_level: str | None = None,
+    log_file: str | None = None,
 ) -> None:
     """Run an RQ worker that processes detection jobs."""
     conn = Redis.from_url(redis_url)
     if model_path:
         os.environ["DETECTOR_MODEL"] = model_path
-    setup_logging(log_level)
+    setup_logging(log_level, log_file)
     with Connection(conn):
         worker = Worker([queue_name])
         worker.work()
@@ -49,6 +50,11 @@ def main(argv: list[str] | None = None) -> None:
         help="Logging level (default: env LOG_LEVEL or INFO)",
     )
     parser.add_argument(
+        "--log-file",
+        default=os.getenv("LOG_FILE"),
+        help="File path to write logs (default: env LOG_FILE)",
+    )
+    parser.add_argument(
         "--version",
         action="store_true",
         help="Print backend version and exit",
@@ -59,7 +65,13 @@ def main(argv: list[str] | None = None) -> None:
         print(__version__)
         return
 
-    run_detector(args.redis_url, args.queue, args.model, args.log_level)
+    run_detector(
+        args.redis_url,
+        args.queue,
+        args.model,
+        args.log_level,
+        args.log_file,
+    )
 
 
 if __name__ == "__main__":  # pragma: no cover - CLI entry

@@ -1,6 +1,7 @@
 import importlib
 import logging
 import os
+import tempfile
 from pathlib import Path
 import sys
 import unittest
@@ -16,4 +17,16 @@ class LoggingConfigTests(unittest.TestCase):
         importlib.reload(lc)
         lc.setup_logging()
         self.assertEqual(logging.getLogger().level, logging.WARNING)
+
+    def test_log_file_env(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "out.log"
+            os.environ['LOG_FILE'] = str(path)
+            import backend.logging_config as lc
+            importlib.reload(lc)
+            for h in logging.root.handlers[:]:
+                logging.root.removeHandler(h)
+            lc.setup_logging()
+            logging.info("hi")
+            self.assertTrue(path.exists())
 
