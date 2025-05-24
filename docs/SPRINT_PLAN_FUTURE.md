@@ -18,6 +18,6 @@ This document lists the next five sprints after completing the solver edge-case 
 * Cover new batch and progress features end-to-end.
 * Maintain fast execution with mocked API responses.
 
-## Sprint 5 – Deployment automation
+## Sprint 5 – Deployment automation (completed)
 * Build production Docker images for CPU and GPU targets.
 * Publish versioned images to the registry.

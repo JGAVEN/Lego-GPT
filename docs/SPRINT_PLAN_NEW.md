@@ -14,7 +14,7 @@ This plan outlines the next five logical sprints after completing the detector t
 * Cover new batch and progress features end-to-end.
 * Maintain fast execution with mocked API responses.
 
-## Sprint 4 – Deployment automation
+## Sprint 4 – Deployment automation (completed)
 * Build production Docker images for CPU and GPU targets.
 * Publish versioned images to the registry.
 

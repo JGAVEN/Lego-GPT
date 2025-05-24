@@ -180,6 +180,24 @@ The API will be available at http://localhost:8000/health.
 The `/health` endpoint responds with `{ "ok": true, "version": "x.y.z" }` so you
 can verify the backend version.
 
+### Production Docker Images
+
+Release tags trigger a workflow that builds CPU and GPU images and publishes
+them to GitHub Container Registry.  You can pull the latest versioned images:
+
+```bash
+docker pull ghcr.io/<owner>/lego-gpt:v0.5.35        # CPU
+docker pull ghcr.io/<owner>/lego-gpt:gpu-v0.5.35    # GPU
+```
+
+Run the API server with:
+
+```bash
+docker run -p 8000:8000 ghcr.io/<owner>/lego-gpt:v0.5.35
+```
+
+Override the command to start a worker or the detector worker as needed.
+
 ### Train the Brick Detector
 
 Fine‑tune the YOLOv8 model when you have a labelled dataset. The
