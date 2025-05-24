@@ -44,6 +44,8 @@ real-life building via a built-in Three.js viewer.
 git clone https://github.com/JGAVEN/Lego-GPT.git
 cd Lego-GPT
 
+# Optional: copy ``.env.example`` to ``.env`` and adjust settings.
+
 # Install pnpm (requires Node.js)
 npm install -g pnpm@10.5.2
 
@@ -55,7 +57,8 @@ npm install -g pnpm@10.5.2
 ./scripts/setup_frontend.sh
 
 # Install backend dependencies and dev tools (includes `ruff` for linting)
-python -m pip install --editable ./backend[test]
+# Add the `[env]` extra to enable `.env` configuration support
+python -m pip install --editable ./backend[test,env]
 # The dev container's setup script runs this automatically.
 
 # Start Redis (local or Docker)
@@ -82,6 +85,8 @@ export DETECTOR_MODEL=detector/model.pt       # optional YOLOv8 weights (or pass
 # ``--jwt-secret``, ``--redis-url`` and ``--rate-limit`` override the
 # corresponding environment variables. Use ``--log-level`` or ``LOG_LEVEL``
 # to control verbosity for server and workers.
+# Optionally place these variables in a ``.env`` file (see ``.env.example``).
+# The backend automatically loads it on startup.
 lego-gpt-server \
   --host 0.0.0.0 \
   --port 8000 \

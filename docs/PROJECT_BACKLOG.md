@@ -30,6 +30,7 @@
 | B-19 | **C** | Upload assets to S3/R2               | **Done** | Optional CDN support |
 | B-20 | **XS** | `lego-gpt-cli` command-line client    | **Done** | Python script to call the API |
 | B-21 | **XS** | CLI `--version` flag and tests        | **Done** | Unit tests cover the new flag |
+| B-22 | **XS** | `.env` configuration support          | **Done** | Load variables via python-dotenv |
 |------|-----|---------------------------------------|--------|-------|
 | S-10 | **M** | Introduce `ILPSolver` interface & refactor | **Done** | Branch `feature/solver-refactor` |
 | S-11 | **M** | Implement OR-Tools MIP constraints   | **Done** | Connectivity filter added; solver computes stable subset |
@@ -40,4 +41,4 @@
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.
 
-_Last updated 2025-06-10_
+_Last updated 2025-06-11_

@@ -4,6 +4,13 @@
 ### Changed
 * Backend package version bumped to 0.5.18.
 
+## [0.5.19] – 2025-06-11
+### Added
+* `.env` configuration support via optional `python-dotenv`.
+* Example `.env.example` file.
+### Changed
+* Backend package version bumped to 0.5.19.
+
 ## [0.5.17] – 2025-06-09
 ### Added
 * `lego-gpt-cli` command-line client for interacting with the API.
