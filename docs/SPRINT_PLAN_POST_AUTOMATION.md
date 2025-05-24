@@ -2,9 +2,9 @@
 
 This plan lists the next five logical sprints after completing the deployment automation.
 
-## Sprint 1 – Scalability benchmarking
-* Measure throughput with multiple workers and queue setups.
-* Document tuning guidelines for self-hosted deployments.
+## Sprint 1 – Scalability benchmarking (completed)
+* Added `benchmark_scalability.py` script to measure throughput.
+* Documented tuning guidelines in `docs/SCALABILITY_BENCHMARKING.md`.
 
 ## Sprint 2 – Advanced front-end features
 * Improve offline UX with queued requests when offline.

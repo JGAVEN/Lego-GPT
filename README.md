@@ -99,6 +99,7 @@ export DETECTOR_MODEL=detector/model.pt       # optional YOLOv8 weights (or pass
 # Optionally place these variables in a ``.env`` file (see ``.env.example``).
 # The backend automatically loads it on startup.
 # See ``docs/TOKEN_ROTATION.md`` for rotating the JWT secret.
+# See ``docs/SCALABILITY_BENCHMARKING.md`` for load-testing guidance.
 lego-gpt-server \
   --host 0.0.0.0 \
   --port 8000 \
@@ -151,6 +152,10 @@ lego-gpt-cleanup --days 7 --dry-run
 # Convert an existing .ldr model to glTF
 lego-gpt-export model.ldr model.gltf
 # Set CLEANUP_DAYS and CLEANUP_DRY_RUN in the environment to persist defaults
+
+# Measure API throughput with 4 concurrent requests
+python scripts/benchmark_scalability.py --token $(cat token.txt) \
+    --requests 20 --concurrency 4
 ```
 
 ### Pre-commit Hooks
@@ -186,14 +191,14 @@ Release tags trigger a workflow that builds CPU and GPU images and publishes
 them to GitHub Container Registry.  You can pull the latest versioned images:
 
 ```bash
-docker pull ghcr.io/<owner>/lego-gpt:v0.5.35        # CPU
-docker pull ghcr.io/<owner>/lego-gpt:gpu-v0.5.35    # GPU
+docker pull ghcr.io/<owner>/lego-gpt:v0.5.36        # CPU
+docker pull ghcr.io/<owner>/lego-gpt:gpu-v0.5.36    # GPU
 ```
 
 Run the API server with:
 
 ```bash
-docker run -p 8000:8000 ghcr.io/<owner>/lego-gpt:v0.5.35
+docker run -p 8000:8000 ghcr.io/<owner>/lego-gpt:v0.5.36
 ```
 
 Override the command to start a worker or the detector worker as needed.

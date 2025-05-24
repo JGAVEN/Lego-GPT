@@ -57,7 +57,7 @@
 | T-05 | **C**  | Solver edge-case unit tests                              | **Done** | Stress cases for ill-conditioned graphs; CI green. |
 
 | D-22 | **S**  | Deployment automation (CPU & GPU images)               | **Done** | Release workflow builds and pushes Docker images |
-| D-23 | **S**  | Scalability benchmarking                              | Open | Measure throughput; tuning docs |
+| D-23 | **S**  | Scalability benchmarking                              | **Done** | Benchmark script and tuning docs |
 | F-08 | **C**  | Advanced front-end features                            | Open | Offline queue + settings page |
 
 
