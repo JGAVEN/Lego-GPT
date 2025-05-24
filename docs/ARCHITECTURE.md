@@ -44,7 +44,7 @@ clusters not connected to the ground.
 | **API**       | Auth, rate-limit, CORS headers, enqueue job, expose static file links                                       | Python http.server stub |
 | **Worker**    | `lego-gpt-worker` runs `rq` jobs, lazy-loads LegoGPT, routes bricks → solver, saves PNG + LDR (use `--redis-url`, `--queue`, and `--version`) | Python 3.12, CUDA 12.2, HF `transformers` |
 | **Solver**    | Verify physical stability via MIP (connectivity, gravity, overhang)                           | OR-Tools / HiGHS |
-| **Storage**   | Serve artifacts locally or upload to S3 / Cloudflare R2                             | `/static` or S3 bucket; `lego-gpt-cleanup` removes old files |
+| **Storage**   | Serve artifacts locally or upload to S3 / Cloudflare R2                             | `/static` or S3 bucket; `lego-gpt-cleanup` removes old files (`--dry-run` to preview) |
 
 ---
 
@@ -78,7 +78,7 @@ clusters not connected to the ground.
 
 ---
 
-_Last updated 2025-06-08_
+_Last updated 2025-06-13_
 
 ---
 

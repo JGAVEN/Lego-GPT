@@ -14,7 +14,7 @@ real-life building via a built-in Three.js viewer.
 
 &nbsp;
 
-## 2. What’s New (2025-06-10)
+## 2. What’s New (2025-06-13)
 | Change | Impact |
 |--------|--------|
 | 🔄 **Open-source solver** – switched to **OR-Tools 9.10 + HiGHS**. | Runs licence-free everywhere (local dev, CI, containers). |
@@ -34,7 +34,7 @@ real-life building via a built-in Three.js viewer.
 | 🔗 **Static URL prefix** configurable | Set `STATIC_URL_PREFIX` to point asset links at a CDN |
 | ☁️ **S3/R2 uploads** | Set `S3_BUCKET` and `S3_URL_PREFIX` to host assets in the cloud |
 | 🆕 **CLI `--version` flag + tests** | `lego-gpt-cli --version` shows backend version; automated tests ensure it works |
-| 🧹 **Cleanup script** (`lego-gpt-cleanup`) | Remove old asset directories |
+| 🧹 **Cleanup script** (`lego-gpt-cleanup`) | Remove old asset directories (use `--dry-run` to preview) |
 
 &nbsp;
 
@@ -122,8 +122,9 @@ pnpm --dir frontend run dev    # http://localhost:5173
 pnpm --dir frontend run lint
 # Lint backend code
 ruff check backend detector
-# Remove assets older than 7 days
-lego-gpt-cleanup --days 7
+# Remove assets older than 7 days (preview with --dry-run)
+lego-gpt-cleanup --days 7 --dry-run
+# Set CLEANUP_DAYS and CLEANUP_DRY_RUN in the environment to persist defaults
 ```
 
 ### Pre-commit Hooks

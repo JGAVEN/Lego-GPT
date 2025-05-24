@@ -28,6 +28,18 @@ class CleanupTests(unittest.TestCase):
         self.assertTrue(new_d.exists())
         shutil.rmtree(base)
 
+    def test_cleanup_dry_run(self):
+        base = Path("test-static")
+        base.mkdir(exist_ok=True)
+        old_d = base / "old"
+        old_d.mkdir()
+        old_time = time.time() - 2 * 86400
+        os.utime(old_d, (old_time, old_time))
+        removed = cleanup(base, days=1, dry_run=True)
+        self.assertEqual(removed, 1)
+        self.assertTrue(old_d.exists())
+        shutil.rmtree(base)
+
 
 if __name__ == "__main__":
     unittest.main()
