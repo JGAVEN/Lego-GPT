@@ -2,9 +2,9 @@
 
 This plan outlines the next five logical sprints after completing the detector training workflow.
 
-## Sprint 1 – Offline mode improvements
+## Sprint 1 – Offline mode improvements (completed)
 * Cache API responses in IndexedDB for repeat access.
-* Add a service worker route for cached preview images.
+* Added a service worker route for cached preview images.
 
 ## Sprint 2 – Enhanced CLI options
 * Support batch generation via a file of prompts.
