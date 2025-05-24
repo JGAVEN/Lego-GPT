@@ -1,3 +1,10 @@
+## [0.5.37] – 2025-06-22
+### Added
+* Offline request queue with automatic processing when back online.
+* Settings page to manage cached results and queued jobs.
+### Changed
+* Backend package version bumped to 0.5.37.
+
 ## [0.5.36] – 2025-06-22
 ### Added
 * Benchmark script `benchmark_scalability.py` and scalability docs.

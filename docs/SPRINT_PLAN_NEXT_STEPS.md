@@ -2,9 +2,9 @@
 
 This plan outlines the following sprints after completing the scalability benchmarking work.
 
-## Sprint 1 – Advanced front-end features
-* Improve offline UX with queued requests when offline.
-* Add settings page to manage cached results.
+## Sprint 1 – Advanced front-end features (completed)
+* Offline requests are queued and processed when connectivity returns.
+* New settings page allows clearing cached results and queued jobs.
 
 ## Sprint 2 – Cloud infrastructure templates
 * Provide Terraform samples for common cloud providers.
