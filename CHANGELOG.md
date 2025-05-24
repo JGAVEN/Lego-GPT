@@ -1,5 +1,11 @@
 ## Unreleased
 
+## [0.5.6] – 2025-05-31
+### Added
+* `--redis-url` option for `lego-gpt-worker` and `lego-detect-worker`.
+### Changed
+* Project version bumped to 0.5.6.
+
 ## [0.5.5] – 2025-05-31
 ### Added
 * `STATIC_ROOT` environment variable allows overriding the default

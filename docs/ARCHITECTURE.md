@@ -41,7 +41,7 @@ clusters not connected to the ground.
 |------------|-------------------------------------------------------------------------------------------------|--------------|
 | **Front-end** | Prompt form, spinner, preview image, 3-D viewer, offline PWA shell                            | React 18, Vite, Three.js (`LDrawLoader` from CDN) |
 | **API**       | Auth, rate-limit, enqueue job, expose static file links                                       | Python http.server stub |
-| **Worker**    | `lego-gpt-worker` runs `rq` jobs, lazy-loads LegoGPT, routes bricks → solver, saves PNG + LDR | Python 3.12, CUDA 12.2, HF `transformers` |
+| **Worker**    | `lego-gpt-worker` runs `rq` jobs, lazy-loads LegoGPT, routes bricks → solver, saves PNG + LDR (use `--redis-url` to override the queue) | Python 3.12, CUDA 12.2, HF `transformers` |
 | **Solver**    | Verify physical stability via MIP (connectivity, gravity, overhang)                           | OR-Tools / HiGHS |
 | **Storage**   | Serve artifacts, 7-day TTL, promote to S3 / Cloudflare R2 in prod                             | Local `/static` → CDN later |
 

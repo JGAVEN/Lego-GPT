@@ -27,7 +27,7 @@ real-life building via a built-in Three.js viewer.
 | 📦 **Inventory filter** | Limits brick counts using `BRICK_INVENTORY` JSON or per-request `inventory_filter` |
 | 🆕 **Photo‑based brick inventory detection** – YOLOv8 detector + `/detect_inventory` API | Scan your loose bricks and generate builds you can actually build |
 | 🛡️ **Static file handler sanitized** | Blocks path traversal in `/static` requests |
-| 🆕 **Console scripts** for API and workers (`lego-gpt-server`, `lego-gpt-worker`, `lego-detect-worker`) | Easier local development & Docker entrypoints |
+| 🆕 **Console scripts** for API and workers (`lego-gpt-server`, `lego-gpt-worker`, `lego-detect-worker`) | Easier local development & Docker entrypoints; workers accept `--redis-url` |
 
 &nbsp;
 
@@ -54,11 +54,14 @@ python -m pip install --editable ./backend[test]
 
 # Start Redis (local or Docker)
 # docker run -p 6379:6379 -d redis:7
+# Optionally set the Redis URL for server and workers
+export REDIS_URL=redis://localhost:6379/0
 
 # Launch the RQ worker in one terminal
-lego-gpt-worker
+# ``--redis-url`` overrides the REDIS_URL env var
+lego-gpt-worker --redis-url "$REDIS_URL"
 # Launch the detector worker in another
-lego-detect-worker
+lego-detect-worker --redis-url "$REDIS_URL"
 
 # Launch the API server in another
 export JWT_SECRET=mysecret         # auth secret
