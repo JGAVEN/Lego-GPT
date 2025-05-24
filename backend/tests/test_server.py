@@ -148,6 +148,18 @@ class ServerTests(unittest.TestCase):
         )
         self.assertEqual(status, 429)
 
+    @patch("backend.server.Job")
+    def test_generate_progress(self, mock_job):
+        job = MagicMock()
+        job.is_finished = False
+        job.is_failed = False
+        job.meta = {"progress": 0.5}
+        mock_job.fetch.return_value = job
+        status, data = self._request("GET", "/generate/123", token=self.token)
+        self.assertEqual(status, 202)
+        payload = json.loads(data)
+        self.assertEqual(payload["progress"], 0.5)
+
     @patch("backend.server.queue")
     def test_detect_inventory_post(self, mock_queue):
         mock_job = MagicMock(id="xyz")

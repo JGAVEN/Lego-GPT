@@ -46,6 +46,9 @@
 | B-29 | **XS** | Configurable API base URL in front-end (`VITE_API_URL`) | **Done** | `.env.example` added |
 | B-30 | **XS** | CLI `generate` downloads assets via `--out-dir` | **Done** | Saves PNG/ldr/gltf locally |
 | S-15 | **XS** | Log to file via `--log-file` / `LOG_FILE` | **Done** | Server & workers support file logging |
+| B-31 | **XS** | `--inventory` option for server and worker | **Done** | Override `BRICK_INVENTORY` via CLI |
+| B-32 | **S**  | Progress polling on `/generate/{job_id}` | **Done** | 202 responses include `progress` JSON |
+| B-33 | **S**  | Redis caching for `/detect_inventory` | **Done** | Speeds up repeated detections |
 
 
 

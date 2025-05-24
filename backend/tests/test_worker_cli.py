@@ -30,11 +30,19 @@ class WorkerCLITests(unittest.TestCase):
             '--log-level', 'DEBUG',
             '--log-file', '/tmp/w.log',
             '--solver-engine', 'CBC',
+            '--inventory', 'inv.json',
         ]
         with patch.object(sys, 'argv', argv):
             with patch('backend.worker.run_worker') as mock_run:
                 worker.main()
-                mock_run.assert_called_once_with('redis://host:9999/1', 'testq', 'DEBUG', 'CBC', '/tmp/w.log')
+                mock_run.assert_called_once_with(
+                    'redis://host:9999/1',
+                    'testq',
+                    'DEBUG',
+                    'CBC',
+                    '/tmp/w.log',
+                    'inv.json',
+                )
 
     def test_detector_worker_version_flag(self):
         with patch.object(sys, 'argv', ['detector-worker', '--version']):

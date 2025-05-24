@@ -13,6 +13,19 @@ import os
 from io import BytesIO
 from pathlib import Path
 from typing import Dict
+import hashlib
+import json
+
+try:
+    from redis import Redis
+
+    _tmp = Redis.from_url(os.getenv("REDIS_URL", "redis://localhost:6379/0"))
+    if hasattr(_tmp, "get") and hasattr(_tmp, "setex"):
+        _REDIS = _tmp
+    else:  # pragma: no cover - stubbed redis
+        _REDIS = None
+except Exception:  # pragma: no cover - optional dependency
+    _REDIS = None  # type: ignore
 
 try:  # heavy deps may be missing in minimal environments
     from PIL import Image
@@ -57,6 +70,16 @@ def detect_inventory(image_data: bytes | str, model_path: str | Path | None = No
         img_bytes = image_data
         _validate_base64(base64.b64encode(img_bytes).decode())
 
+    cache_key = None
+    if _REDIS is not None:
+        cache_key = "det_cache:" + hashlib.md5(img_bytes).hexdigest()
+        cached = _REDIS.get(cache_key)
+        if cached:
+            try:
+                return json.loads(cached.decode())
+            except Exception:
+                pass
+
     if _YOLO_AVAILABLE:
         path = Path(model_path or os.getenv("DETECTOR_MODEL", "detector/model.pt"))
         try:
@@ -67,8 +90,12 @@ def detect_inventory(image_data: bytes | str, model_path: str | Path | None = No
             for cls_id in result.boxes.cls.tolist():
                 name = model.names[int(cls_id)]
                 counts[name] = counts.get(name, 0) + 1
+            if cache_key and _REDIS is not None:
+                _REDIS.setex(cache_key, 86400, json.dumps(counts))
             return counts
         except Exception:  # pragma: no cover - fallback on errors
             pass
-
-    return {"3001.DAT": 1}
+    counts = {"3001.DAT": 1}
+    if cache_key and _REDIS is not None:
+        _REDIS.setex(cache_key, 86400, json.dumps(counts))
+    return counts

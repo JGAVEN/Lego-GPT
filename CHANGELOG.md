@@ -1,3 +1,11 @@
+## [0.5.28] – 2025-06-16
+### Added
+* `--inventory` option for `lego-gpt-server` and `lego-gpt-worker`.
+* Job progress reporting on `/generate/{job_id}`.
+* Redis cache for `/detect_inventory` results.
+### Changed
+* Backend package version bumped to 0.5.28.
+
 ## [0.5.27] – 2025-06-16
 ### Added
 * Front-end `VITE_API_URL` configuration with example env file.
