@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import type { GenerateRequest, GenerateResponse } from "./lego";
 import { API_BASE } from "./lego";
-import { getCachedGenerate, setCachedGenerate } from "../lib/db";
+import {
+  getCachedGenerate,
+  setCachedGenerate,
+  addPendingGenerate,
+} from "../lib/db";
 
 export interface UseGenerateResult {
   data: GenerateResponse | null;
@@ -75,10 +79,17 @@ export default function useGenerate(
             if (cached) {
               setData(cached);
               setError("Offline - showing cached result");
-            } else if (err instanceof Error && err.name !== "AbortError") {
-              setError(err.message);
             } else {
-              setError("Unknown error");
+              await addPendingGenerate({
+                prompt,
+                seed: seed ?? null,
+                inventory_filter: inventoryFilter,
+              });
+              if (err instanceof Error && err.name !== "AbortError") {
+                setError("Offline - request queued");
+              } else {
+                setError("Unknown error");
+              }
             }
           }
       } finally {

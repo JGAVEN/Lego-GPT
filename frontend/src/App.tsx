@@ -2,8 +2,11 @@ import { useState, useEffect, FormEvent, ChangeEvent } from "react";
 import useGenerate from "./api/useGenerate";
 import useDetectInventory from "./api/useDetectInventory";
 import LDrawViewer from "./LDrawViewer";
+import Settings from "./Settings";
+import { processPending } from "./lib/offlineQueue";
 
 export default function App() {
+  const [page, setPage] = useState<"main" | "settings">("main");
   const [prompt, setPrompt] = useState("");
   const [seed, setSeed] = useState("");
   const [photo, setPhoto] = useState<string | null>(null);
@@ -13,6 +16,15 @@ export default function App() {
   );
 
   const detect = useDetectInventory(photo);
+
+  useEffect(() => {
+    function handleOnline() {
+      processPending();
+    }
+    processPending();
+    window.addEventListener("online", handleOnline);
+    return () => window.removeEventListener("online", handleOnline);
+  }, []);
 
   useEffect(() => {
     if (detect.data) {
@@ -43,9 +55,19 @@ export default function App() {
     reader.readAsDataURL(file);
   }
 
+  if (page === "settings") {
+    return <Settings onBack={() => setPage("main")} />;
+  }
+
   return (
     <main className="p-6 max-w-xl mx-auto font-sans">
       <h1 className="text-2xl font-bold mb-4">Lego GPT Demo</h1>
+      <button
+        className="text-sm underline mb-4"
+        onClick={() => setPage("settings")}
+      >
+        Settings
+      </button>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>

@@ -37,6 +37,7 @@ real-life building via a built-in Three.js viewer.
 | 🆕 **`--inventory` & `.env` support** | CLI loads env vars from `.env` and accepts `--inventory` JSON |
 | 🆕 **Batch generation & progress** | Use `--file prompts.txt` and watch progress dots while waiting |
 | 🧹 **Cleanup script** (`lego-gpt-cleanup`) | Remove old asset directories (use `--dry-run` to preview) |
+| 🆕 **Offline queue + settings** | Requests made offline are queued and cached results can be cleared in the settings page |
 
 &nbsp;
 
@@ -143,6 +144,7 @@ lego-gpt-cli --token $(cat token.txt) generate --file prompts.txt
 pnpm --dir frontend run dev    # http://localhost:5173
 # The PWA caches generated models in IndexedDB and preview images via a
 # service worker so previously viewed results remain available offline.
+# Requests made while offline are queued and processed once connectivity returns.
 # Lint UI code (skips if dependencies are missing)
 pnpm --dir frontend run lint
 # Lint backend code
@@ -191,14 +193,14 @@ Release tags trigger a workflow that builds CPU and GPU images and publishes
 them to GitHub Container Registry.  You can pull the latest versioned images:
 
 ```bash
-docker pull ghcr.io/<owner>/lego-gpt:v0.5.36        # CPU
-docker pull ghcr.io/<owner>/lego-gpt:gpu-v0.5.36    # GPU
+docker pull ghcr.io/<owner>/lego-gpt:v0.5.37        # CPU
+docker pull ghcr.io/<owner>/lego-gpt:gpu-v0.5.37    # GPU
 ```
 
 Run the API server with:
 
 ```bash
-docker run -p 8000:8000 ghcr.io/<owner>/lego-gpt:v0.5.36
+docker run -p 8000:8000 ghcr.io/<owner>/lego-gpt:v0.5.37
 ```
 
 Override the command to start a worker or the detector worker as needed.
