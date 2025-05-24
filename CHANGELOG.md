@@ -1,3 +1,10 @@
+## [0.5.15] – 2025-06-08
+### Added
+* Optional S3/R2 upload via `S3_BUCKET` and `S3_URL_PREFIX`.
+* `boto3` optional dependency (`s3` extra).
+### Changed
+* Backend package version bumped to 0.5.15.
+
 ## [0.5.14] – 2025-06-06
 ### Added
 * `--cors-origins` option and `CORS_ORIGINS` env var configure CORS.

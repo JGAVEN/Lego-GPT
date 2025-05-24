@@ -43,7 +43,7 @@ clusters not connected to the ground.
 | **API**       | Auth, rate-limit, CORS headers, enqueue job, expose static file links                                       | Python http.server stub |
 | **Worker**    | `lego-gpt-worker` runs `rq` jobs, lazy-loads LegoGPT, routes bricks → solver, saves PNG + LDR (use `--redis-url`, `--queue`, and `--version`) | Python 3.12, CUDA 12.2, HF `transformers` |
 | **Solver**    | Verify physical stability via MIP (connectivity, gravity, overhang)                           | OR-Tools / HiGHS |
-| **Storage**   | Serve artifacts, 7-day TTL, promote to S3 / Cloudflare R2 in prod                             | Local `/static` → CDN later |
+| **Storage**   | Serve artifacts locally or upload to S3 / Cloudflare R2                             | `/static` or S3 bucket |
 
 ---
 
@@ -69,13 +69,13 @@ clusters not connected to the ground.
 
 * **Baseline**: single GPU container (A10G 24 GB) → ≈2 s/token, 3 req/s.  
 * **Horizontal**: add Redis-RQ queue + N workers when concurrency > 5.  
-* **Static assets**: move `/static` to R2 or S3 + CloudFront for global latency.  
+* **Static assets**: optionally upload to R2 or S3 + CloudFront for global latency.
 * **Model optimisations**: quantise to INT4 for CPU-only fallback; distil for mobile.  
 * **Solver speed**: HiGHS handles typical models < 5 ms.
 
 ---
 
-_Last updated 2025-06-01_
+_Last updated 2025-06-08_
 
 ---
 

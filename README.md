@@ -14,7 +14,7 @@ real-life building via a built-in Three.js viewer.
 
 &nbsp;
 
-## 2. What’s New (2025-06-07)
+## 2. What’s New (2025-06-08)
 | Change | Impact |
 |--------|--------|
 | 🔄 **Open-source solver** – switched to **OR-Tools 9.10 + HiGHS**. | Runs licence-free everywhere (local dev, CI, containers). |
@@ -31,6 +31,7 @@ real-life building via a built-in Three.js viewer.
 | 🛠️ **Ruff linting** for backend code | Consistent style via `ruff check` locally and in CI |
 | 🌍 **CORS configuration** via `--cors-origins` | Allows custom `Access-Control-Allow-Origin` |
 | 🔗 **Static URL prefix** configurable | Set `STATIC_URL_PREFIX` to point asset links at a CDN |
+| ☁️ **S3/R2 uploads** | Set `S3_BUCKET` and `S3_URL_PREFIX` to host assets in the cloud |
 
 &nbsp;
 
@@ -96,6 +97,7 @@ lego-gpt-server \
 # the URL prefix returned in API responses (default: ``/static``).
 # Set ``CORS_ORIGINS`` or pass ``--cors-origins <origins>`` to control the
 # ``Access-Control-Allow-Origin`` header.
+# Set ``S3_BUCKET`` and optional ``S3_URL_PREFIX`` to upload assets to S3/R2.
 
 # Generate a JWT for requests
 python scripts/generate_jwt.py --secret mysecret --sub dev
@@ -150,6 +152,7 @@ environment variable when running the detector worker.
 > * Python 3.11+
 > * Node.js 20+
 > * pnpm package manager
+> * Optional: `boto3` for S3 uploads
 
 &nbsp;
 
