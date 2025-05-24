@@ -1,3 +1,15 @@
+## [0.5.26] – 2025-06-15
+### Added
+* Logging to file via `--log-file` and `LOG_FILE`.
+### Changed
+* Backend package version bumped to 0.5.26.
+
+## [0.5.25] – 2025-06-15
+### Added
+* `lego-gpt-export` CLI converts `.ldr` to `.gltf`.
+### Changed
+* Backend package version bumped to 0.5.25.
+
 ## [0.5.24] – 2025-06-15
 ### Added
 * `.env` loading for `lego-gpt-cli`.

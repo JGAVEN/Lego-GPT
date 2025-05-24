@@ -32,6 +32,7 @@ class CLITests(unittest.TestCase):
             '--rate-limit', '7',
             '--static-root', '/tmp/out',
             '--log-level', 'INFO',
+            '--log-file', '/tmp/api.log',
             '--cors-origins', 'http://x',
         ]
         with patch.object(sys, 'argv', argv):
@@ -46,6 +47,7 @@ class CLITests(unittest.TestCase):
                     7,
                     '/tmp/out',
                     'INFO',
+                    '/tmp/api.log',
                     'http://x',
                 )
 

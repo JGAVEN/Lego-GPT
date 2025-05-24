@@ -42,6 +42,8 @@
 | B-26 | **XS** | CLI `--inventory` option | **Done** | Supply brick counts via JSON file |
 | B-27 | **XS** | CLI loads `.env` | **Done** | `API_URL` and `JWT` automatically read |
 | S-14 | **XS** | Configurable OR-Tools backend (`ORTOOLS_ENGINE`) | **Done** | Worker `--solver-engine` flag |
+| B-28 | **XS** | `lego-gpt-export` CLI for LDraw → glTF | **Done** | Converts models for AR |
+| S-15 | **XS** | Log to file via `--log-file` / `LOG_FILE` | **Done** | Server & workers support file logging |
 
 
 
