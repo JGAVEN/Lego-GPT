@@ -46,6 +46,13 @@
 | B-29 | **XS** | Configurable API base URL in front-end (`VITE_API_URL`) | **Done** | `.env.example` added |
 | B-30 | **XS** | CLI `generate` downloads assets via `--out-dir` | **Done** | Saves PNG/ldr/gltf locally |
 | S-15 | **XS** | Log to file via `--log-file` / `LOG_FILE` | **Done** | Server & workers support file logging |
+| D-21 | **M**  | Add Redis service to docker-compose                     | **Open** | `docker compose up` starts all services without extra steps. |
+| A-18 | **S**  | Expose FastAPI router (or rename gateway)               | **Open** | Surface `APIRouter` in `backend/api.py` or rename file; update docs. |
+| S-09 | **S**  | JWT secret rotation & path-traversal tests               | **Open** | Document rotation process; add unit tests for `../` escapes. |
+| Q-04 | **S**  | Coverage reporting & badges                             | **Open** | Add pytest-cov workflow, upload to Codecov, show badge (≥80%). |
+| R-03 | **C**  | Sync version & CHANGELOG                                 | **Open** | Auto-update version and CHANGELOG on release tags. |
+| F-07 | **C**  | Migrate FE to TypeScript                                 | **Open** | Convert React code to TS; scaffold for v0.6 passes type-check. |
+| T-05 | **C**  | Solver edge-case unit tests                              | **Open** | Stress cases for ill-conditioned graphs; CI green. |
 
 
 
