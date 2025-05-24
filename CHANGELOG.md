@@ -1,4 +1,7 @@
 ## Unreleased
+### Added
+* `STATIC_ROOT` environment variable allows overriding the default
+  `backend/static` directory.
 
 ## [0.5.4] – 2025-05-31
 ### Added
