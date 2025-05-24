@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import importlib
 import json
+import os
 import sys
 from typing import Any, Tuple
 
@@ -16,7 +17,8 @@ from legogpt.data import LegoStructure
 from .ortools_solver import OrtoolsSolver
 
 try:  # Instantiate solver if OR-Tools is available
-    _solver = OrtoolsSolver()
+    backend_name = os.getenv("ORTOOLS_ENGINE", "HIGHs")
+    _solver = OrtoolsSolver(backend_name)
 except Exception:  # pragma: no cover - fallback to dummy score
     _solver = None
 

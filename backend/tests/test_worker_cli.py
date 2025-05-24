@@ -28,11 +28,12 @@ class WorkerCLITests(unittest.TestCase):
             '--redis-url', 'redis://host:9999/1',
             '--queue', 'testq',
             '--log-level', 'DEBUG',
+            '--solver-engine', 'CBC',
         ]
         with patch.object(sys, 'argv', argv):
             with patch('backend.worker.run_worker') as mock_run:
                 worker.main()
-                mock_run.assert_called_once_with('redis://host:9999/1', 'testq', 'DEBUG')
+                mock_run.assert_called_once_with('redis://host:9999/1', 'testq', 'DEBUG', 'CBC')
 
     def test_detector_worker_version_flag(self):
         with patch.object(sys, 'argv', ['detector-worker', '--version']):

@@ -22,7 +22,7 @@ except Exception:  # pragma: no cover - ignore if missing
 try:  # pragma: no cover - during editable installs
     __version__ = version("lego-gpt-backend")
 except PackageNotFoundError:  # pragma: no cover - fallback for tests
-    __version__ = "0.5.21"
+    __version__ = "0.5.22"
 
 PACKAGE_DIR = Path(__file__).parent
 _env_static = os.getenv("STATIC_ROOT")
