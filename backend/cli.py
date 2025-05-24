@@ -51,8 +51,16 @@ def cmd_detect(args: argparse.Namespace) -> None:
     print(json.dumps(result, indent=2))
 
 
+from backend import __version__
+
+
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description="Lego GPT API client")
+    parser.add_argument(
+        "--version",
+        action="store_true",
+        help="Print backend version and exit",
+    )
     parser.add_argument("--url", default=os.getenv("API_URL", "http://localhost:8000"), help="API base URL")
     parser.add_argument("--token", default=os.getenv("JWT"), help="JWT auth token or JWT env var")
     sub = parser.add_subparsers(dest="cmd")
@@ -64,6 +72,9 @@ def main(argv: list[str] | None = None) -> None:
     d.add_argument("image", help="Path to image file")
     d.set_defaults(func=cmd_detect)
     args = parser.parse_args(argv)
+    if args.version:
+        print(__version__)
+        return
     if not args.cmd:
         parser.print_help()
         return

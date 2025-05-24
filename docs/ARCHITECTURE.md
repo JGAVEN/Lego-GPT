@@ -40,7 +40,7 @@ clusters not connected to the ground.
 | Layer      | Responsibility                                                                                 | Tech / Notes |
 |------------|-------------------------------------------------------------------------------------------------|--------------|
 | **Front-end** | Prompt form, spinner, preview image, 3-D viewer, offline PWA shell                            | React 18, Vite, Three.js (`LDrawLoader` from CDN) |
-| **CLI**       | Call `/generate` and `/detect_inventory` from the terminal      | `lego-gpt-cli` Python script |
+| **CLI**       | Call `/generate` and `/detect_inventory` from the terminal (supports `--version`)     | `lego-gpt-cli` Python script |
 | **API**       | Auth, rate-limit, CORS headers, enqueue job, expose static file links                                       | Python http.server stub |
 | **Worker**    | `lego-gpt-worker` runs `rq` jobs, lazy-loads LegoGPT, routes bricks → solver, saves PNG + LDR (use `--redis-url`, `--queue`, and `--version`) | Python 3.12, CUDA 12.2, HF `transformers` |
 | **Solver**    | Verify physical stability via MIP (connectivity, gravity, overhang)                           | OR-Tools / HiGHS |

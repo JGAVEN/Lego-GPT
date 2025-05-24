@@ -1,0 +1,47 @@
+import io
+import sys
+import unittest
+from pathlib import Path
+from unittest.mock import patch, mock_open
+
+project_root = Path(__file__).resolve().parents[2]
+vendor_root = project_root / "vendor"
+for p in (project_root, vendor_root):
+    if str(p) not in sys.path:
+        sys.path.insert(0, str(p))
+
+import backend
+import backend.cli as cli
+
+
+class APIClientCLITests(unittest.TestCase):
+    def test_version_flag(self):
+        with patch.object(sys, "argv", ["cli", "--version"]):
+            with patch("sys.stdout", new=io.StringIO()) as fake_out:
+                cli.main()
+                self.assertEqual(fake_out.getvalue().strip(), backend.__version__)
+
+    def test_generate_command(self):
+        argv = ["cli", "--token", "tok", "generate", "hello"]
+        with patch.object(sys, "argv", argv), \
+             patch("backend.cli._post", return_value={"job_id": "1"}) as mock_post, \
+             patch("backend.cli._poll", return_value={"ok": True}) as mock_poll, \
+             patch("sys.stdout", new=io.StringIO()):
+            cli.main()
+        mock_post.assert_called_once()
+        mock_poll.assert_called_once()
+
+    def test_detect_command(self):
+        argv = ["cli", "--token", "tok", "detect", "img.png"]
+        with patch.object(sys, "argv", argv), \
+             patch("backend.cli.open", mock_open(read_data=b"img"), create=True), \
+             patch("backend.cli._post", return_value={"job_id": "1"}) as mock_post, \
+             patch("backend.cli._poll", return_value={"ok": True}) as mock_poll, \
+             patch("sys.stdout", new=io.StringIO()):
+            cli.main()
+        mock_post.assert_called_once()
+        mock_poll.assert_called_once()
+
+
+if __name__ == "__main__":  # pragma: no cover
+    unittest.main()
