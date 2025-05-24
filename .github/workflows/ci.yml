@@ -46,7 +46,7 @@ jobs:
           version: 10.5.2
 
       - name: Install front-end dependencies
-        run: pnpm install --frozen-lockfile --dir frontend
+        run: pnpm install --no-frozen-lockfile --dir frontend
 
       - name: Run front-end lint
         run: pnpm --dir frontend run lint

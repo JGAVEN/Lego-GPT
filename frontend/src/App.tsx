@@ -1,4 +1,5 @@
 import { useState, useEffect, FormEvent, ChangeEvent } from "react";
+import { Link } from "react-router-dom";
 import useGenerate from "./api/useGenerate";
 import useDetectInventory from "./api/useDetectInventory";
 import LDrawViewer from "./LDrawViewer";
@@ -46,6 +47,11 @@ export default function App() {
   return (
     <main className="p-6 max-w-xl mx-auto font-sans">
       <h1 className="text-2xl font-bold mb-4">Lego GPT Demo</h1>
+      <nav className="mb-4">
+        <Link to="/settings" className="text-blue-600 underline">
+          Settings
+        </Link>
+      </nav>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>

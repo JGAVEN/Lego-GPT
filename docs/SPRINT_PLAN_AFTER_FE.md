@@ -1,6 +1,6 @@
-# Latest Sprint Plan
+# Sprint Plan After Advanced Front-end Features
 
-This plan outlines the next five logical sprints after completing the advanced front-end features.
+With the offline queue and settings page finished, the project focuses on deployment and polish.
 
 ## Sprint 1 – Cloud infrastructure templates
 * Provide Terraform samples for common cloud providers.
