@@ -1,0 +1,16 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/app
+
+COPY backend ./backend
+COPY detector ./detector
+COPY vendor/legogpt ./legogpt
+COPY vendor/legogpt/data ./legogpt/data
+
+RUN pip install --no-cache-dir --editable ./backend[cv]
+
+CMD ["lego-detect-train", "--help"]

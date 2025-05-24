@@ -184,8 +184,16 @@ Fine‑tune the YOLOv8 model when you have a labelled dataset. The
 lego-detect-train data.yaml --epochs 100 --out detector/model.pt
 ```
 
+You can also train inside Docker:
+
+```bash
+scripts/train_detector.sh /path/to/data.yaml --epochs 100 --out detector/model.pt
+```
+
 The resulting weights file can then be referenced via the `DETECTOR_MODEL`
-environment variable when running the detector worker.
+environment variable when running the detector worker. See
+[`docs/DETECTOR_DATASET.md`](docs/DETECTOR_DATASET.md) for the required dataset
+layout.
 
 > **Prerequisites**
 > * Python 3.11+

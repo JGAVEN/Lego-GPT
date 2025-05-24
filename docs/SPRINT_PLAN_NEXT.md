@@ -10,9 +10,9 @@ This plan outlines the following sprints after completing the initial roadmap.
 * Add tests for ill-conditioned graphs and complex overhang scenarios.
 * Keep CI green with OR-Tools HiGHS backend.
 
-## Sprint 3 – Detector training workflow
-* Provide Dockerfile and scripts to train YOLOv8 models.
-* Document dataset format and expected output.
+## Sprint 3 – Detector training workflow (completed)
+* Provided `detector/Dockerfile.train` and `scripts/train_detector.sh`.
+* Documented dataset layout in `docs/DETECTOR_DATASET.md`.
 
 ## Sprint 4 – Offline mode improvements
 * Cache API responses in IndexedDB for repeat access.
