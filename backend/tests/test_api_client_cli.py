@@ -87,6 +87,18 @@ class APIClientCLITests(unittest.TestCase):
         mock_post.assert_called_once()
         mock_poll.assert_called_once()
 
+    def test_generate_batch_file(self):
+        argv = ["cli", "--token", "tok", "generate", "--file", "prompts.txt"]
+        prompts = "one\ntwo\n"
+        with patch.object(sys, "argv", argv), \
+             patch("backend.cli.open", mock_open(read_data=prompts), create=True), \
+             patch("backend.cli._post", return_value={"job_id": "1"}) as mock_post, \
+             patch("backend.cli._poll", return_value={"ok": True}) as mock_poll, \
+             patch("sys.stdout", new=io.StringIO()):
+            cli.main()
+        self.assertEqual(mock_post.call_count, 2)
+        self.assertEqual(mock_poll.call_count, 2)
+
 
 if __name__ == "__main__":  # pragma: no cover
     unittest.main()

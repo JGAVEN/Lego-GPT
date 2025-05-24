@@ -2,7 +2,7 @@
 
 This plan outlines the next five logical sprints after completing the offline mode improvements.
 
-## Sprint 1 – Enhanced CLI options
+## Sprint 1 – Enhanced CLI options (completed)
 * Support batch generation via a file of prompts.
 * Add progress indicators and richer error messages.
 

@@ -35,6 +35,7 @@ real-life building via a built-in Three.js viewer.
 | ☁️ **S3/R2 uploads** | Set `S3_BUCKET` and `S3_URL_PREFIX` to host assets in the cloud |
 | 🆕 **CLI `--version` flag + tests** | `lego-gpt-cli --version` shows backend version; automated tests ensure it works |
 | 🆕 **`--inventory` & `.env` support** | CLI loads env vars from `.env` and accepts `--inventory` JSON |
+| 🆕 **Batch generation & progress** | Use `--file prompts.txt` and watch progress dots while waiting |
 | 🧹 **Cleanup script** (`lego-gpt-cleanup`) | Remove old asset directories (use `--dry-run` to preview) |
 
 &nbsp;
@@ -131,6 +132,8 @@ lego-gpt-cli --token $(cat token.txt) generate "a red car"
 lego-gpt-cli --token $(cat token.txt) generate "a red car" --inventory my_inv.json
 # Download assets to a directory
 lego-gpt-cli --token $(cat token.txt) generate "a red car" --out-dir my_build
+# Generate multiple models from a file of prompts
+lego-gpt-cli --token $(cat token.txt) generate --file prompts.txt
 # The CLI loads API_URL and JWT from a .env file if present
 # The front-end can be pointed at a custom backend by creating
 # `frontend/.env` and setting `VITE_API_URL=http://host:8000`
