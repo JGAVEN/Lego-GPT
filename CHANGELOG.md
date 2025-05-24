@@ -1,5 +1,12 @@
 ## Unreleased
 
+## [0.5.7] – 2025-05-31
+### Added
+* Docker Compose stack now includes a dedicated generation worker.
+* Docker images use the new console scripts as default entrypoints.
+### Changed
+* Project version bumped to 0.5.7.
+
 ## [0.5.6] – 2025-05-31
 ### Added
 * `--redis-url` option for `lego-gpt-worker` and `lego-detect-worker`.

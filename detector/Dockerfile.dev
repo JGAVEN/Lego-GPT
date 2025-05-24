@@ -13,4 +13,4 @@ COPY vendor/legogpt/data /app/legogpt/data
 
 RUN pip install --no-cache-dir --editable ./backend
 
-CMD ["python", "-m", "detector.worker"]
+CMD ["lego-detect-worker"]

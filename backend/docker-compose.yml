@@ -10,4 +10,12 @@ services:
       - .:/app/backend
     ports:
       - "8000:8000"
-    command: python server.py
+    command: lego-gpt-server
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    working_dir: /app/backend
+    volumes:
+      - .:/app/backend
+    command: lego-gpt-worker

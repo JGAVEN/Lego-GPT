@@ -16,4 +16,4 @@ RUN pip install --no-cache-dir --editable ./backend
 
 WORKDIR /app/backend
 EXPOSE 8000
-CMD ["python", "server.py"]
+CMD ["lego-gpt-server"]

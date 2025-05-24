@@ -9,7 +9,15 @@ services:
       - ./backend:/app/backend:delegated
     ports:
       - "8000:8000"
-    command: python server.py
+    command: lego-gpt-server
+  worker:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile.dev
+    working_dir: /app/backend
+    volumes:
+      - ./backend:/app/backend:delegated
+    command: lego-gpt-worker
   detector:
     build:
       context: .
@@ -18,4 +26,4 @@ services:
     volumes:
       - ./backend:/app/backend:delegated
       - ./detector:/app/detector:delegated
-    command: python -m detector.worker
+    command: lego-detect-worker
