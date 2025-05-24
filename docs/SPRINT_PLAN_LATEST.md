@@ -10,7 +10,7 @@ This plan outlines the next five logical sprints after completing the offline mo
 * Cover new batch and progress features end-to-end.
 * Maintain fast execution with mocked API responses.
 
-## Sprint 3 – Deployment automation
+## Sprint 3 – Deployment automation (completed)
 * Build production Docker images for CPU and GPU targets.
 * Publish versioned images to the registry.
 

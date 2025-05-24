@@ -1,0 +1,22 @@
+FROM nvidia/cuda:12.2.0-cudnn8-runtime-ubuntu22.04
+
+RUN apt-get update \
+    && apt-get install -y python3 python3-pip \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/app
+
+COPY backend ./backend
+COPY detector ./detector
+COPY vendor/legogpt ./legogpt
+COPY vendor/legogpt/data ./legogpt/data
+
+RUN pip3 install --no-cache-dir ./backend[cv]
+
+WORKDIR /app/backend
+EXPOSE 8000
+CMD ["lego-gpt-server"]

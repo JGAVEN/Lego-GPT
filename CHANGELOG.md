@@ -1,3 +1,9 @@
+## [0.5.35] – 2025-06-22
+### Added
+* Production Docker images for CPU and GPU targets.
+### Changed
+* Backend package version bumped to 0.5.35.
+
 ## [0.5.34] – 2025-06-21
 ### Added
 * CLI integration tests covering batch and progress features.
