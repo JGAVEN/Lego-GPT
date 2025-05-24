@@ -2,7 +2,7 @@
 from redis import Redis
 from rq import Worker, Connection
 import os
-
+from backend import __version__
 from backend.worker import QUEUE_NAME
 
 
@@ -32,7 +32,16 @@ def main(argv: list[str] | None = None) -> None:
         default=os.getenv("QUEUE_NAME", QUEUE_NAME),
         help="RQ queue name (default: env QUEUE_NAME or 'legogpt')",
     )
+    parser.add_argument(
+        "--version",
+        action="store_true",
+        help="Print backend version and exit",
+    )
     args = parser.parse_args(argv)
+
+    if args.version:
+        print(__version__)
+        return
 
     run_detector(args.redis_url, args.queue)
 
