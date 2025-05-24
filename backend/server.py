@@ -3,6 +3,7 @@
 import json
 import os
 import time
+from pathlib import Path
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from redis import Redis
 from rq import Queue, Job
@@ -11,6 +12,7 @@ from backend import STATIC_ROOT
 from backend.worker import QUEUE_NAME as DEFAULT_QUEUE, generate_job, detect_job
 from backend.auth import decode as decode_jwt
 from backend import __version__
+from backend.logging_config import setup_logging
 
 
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
@@ -184,6 +186,8 @@ def run(
     redis_url: str = REDIS_URL,
     jwt_secret: str = JWT_SECRET,
     rate_limit: int = RATE_LIMIT,
+    static_root: str | None = None,
+    log_level: str | None = None,
 ) -> None:
     """Start the HTTP API server."""
     global queue, redis_conn, JWT_SECRET, RATE_LIMIT
@@ -191,6 +195,11 @@ def run(
     queue = Queue(queue_name, connection=redis_conn)
     JWT_SECRET = jwt_secret
     RATE_LIMIT = rate_limit
+    if static_root:
+        import backend as backend_pkg
+
+        backend_pkg.STATIC_ROOT = Path(static_root).resolve()
+    setup_logging(log_level)
     server = HTTPServer((host, port), Handler)
     print(f"Serving on http://{host}:{port}")
     server.serve_forever()
@@ -238,6 +247,19 @@ def main() -> None:
         default=int(os.getenv("RATE_LIMIT", str(RATE_LIMIT))),
         help="Requests per token per minute (default: env RATE_LIMIT or 5)",
     )
+    parser.add_argument(
+        "--static-root",
+        default=os.getenv("STATIC_ROOT", str(STATIC_ROOT)),
+        help=(
+            "Directory for generated assets (default: env STATIC_ROOT or "
+            "backend/static)"
+        ),
+    )
+    parser.add_argument(
+        "--log-level",
+        default=os.getenv("LOG_LEVEL", "INFO"),
+        help="Logging level (default: env LOG_LEVEL or INFO)",
+    )
     args = parser.parse_args()
     if args.version:
         print(__version__)
@@ -249,6 +271,8 @@ def main() -> None:
         args.redis_url,
         args.jwt_secret,
         args.rate_limit,
+        args.static_root,
+        args.log_level,
     )
 
 

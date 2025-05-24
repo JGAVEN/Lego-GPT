@@ -30,6 +30,8 @@ class CLITests(unittest.TestCase):
             '--redis-url', 'redis://host:9999/1',
             '--jwt-secret', 'tok',
             '--rate-limit', '7',
+            '--static-root', '/tmp/out',
+            '--log-level', 'INFO',
         ]
         with patch.object(sys, 'argv', argv):
             with patch('backend.server.run') as mock_run:
@@ -41,6 +43,8 @@ class CLITests(unittest.TestCase):
                     'redis://host:9999/1',
                     'tok',
                     7,
+                    '/tmp/out',
+                    'INFO',
                 )
 
 

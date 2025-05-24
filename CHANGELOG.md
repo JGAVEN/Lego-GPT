@@ -1,3 +1,17 @@
+## [0.5.13] – 2025-06-05
+### Added
+* `--static-root` option for `lego-gpt-server` to override the output directory.
+* Documentation updated with new server option.
+* Unit test covers the CLI parsing of `--static-root`.
+* `--model` option for `lego-detect-worker` sets the YOLOv8 weights path.
+* ``--log-level`` option and ``LOG_LEVEL`` env var configure logging for server
+  and workers.
+* Added `.pre-commit-config.yaml` for automatic `ruff` checks.
+* `scripts/run_tests.sh` runs linting and tests.
+
+### Changed
+* Project version bumped to 0.5.13.
+
 ## [0.5.12] – 2025-06-04
 ### Added
 * `--version` flag for `lego-gpt-worker` and `lego-detect-worker`.

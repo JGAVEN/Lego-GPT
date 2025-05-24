@@ -62,29 +62,35 @@ export REDIS_URL=redis://localhost:6379/0
 # ``--redis-url`` overrides the REDIS_URL env var
 # Optional ``--queue`` overrides the QUEUE_NAME env var
 export QUEUE_NAME=legogpt
-lego-gpt-worker --redis-url "$REDIS_URL" --queue "$QUEUE_NAME"
+lego-gpt-worker --redis-url "$REDIS_URL" --queue "$QUEUE_NAME" \
+  --log-level INFO
 # Launch the detector worker in another
-lego-detect-worker --redis-url "$REDIS_URL" --queue "$QUEUE_NAME"
+lego-detect-worker --redis-url "$REDIS_URL" --queue "$QUEUE_NAME" \
+  --model detector/model.pt \
+  --log-level INFO
 # Append ``--version`` to either worker command to print the version and exit
 
 # Launch the API server in another
 export JWT_SECRET=mysecret         # auth secret
 export BRICK_INVENTORY=backend/inventory.json  # optional inventory
-export DETECTOR_MODEL=detector/model.pt       # optional YOLOv8 weights
+export DETECTOR_MODEL=detector/model.pt       # optional YOLOv8 weights (or pass --model)
 # ``--jwt-secret``, ``--redis-url`` and ``--rate-limit`` override the
-# corresponding environment variables.
+# corresponding environment variables. Use ``--log-level`` or ``LOG_LEVEL``
+# to control verbosity for server and workers.
 lego-gpt-server \
   --host 0.0.0.0 \
   --port 8000 \
   --redis-url "$REDIS_URL" \
   --jwt-secret "$JWT_SECRET" \
   --rate-limit 5 \
-  --queue "$QUEUE_NAME"              # http://localhost:8000/health
+  --queue "$QUEUE_NAME" \
+  --log-level INFO              # http://localhost:8000/health
 # The `--host` and `--port` options can also be provided via `HOST` and
 # `PORT` environment variables. Use `--version` to print the backend version
 # and exit.
-# Generated assets are written to `backend/static/{uuid}/` by default. Set the
-# `STATIC_ROOT` environment variable to override the directory.
+# Generated assets are written to `backend/static/{uuid}/` by default.
+# Pass ``--static-root <dir>`` or set the ``STATIC_ROOT`` environment
+# variable to override the directory.
 
 # Generate a JWT for requests
 python scripts/generate_jwt.py --secret mysecret --sub dev
@@ -96,6 +102,12 @@ pnpm --dir frontend run lint
 # Lint backend code
 ruff check backend detector
 ```
+
+### Pre-commit Hooks
+Install hooks with `pre-commit install` to automatically run `ruff` on each
+commit. The configuration lives in `.pre-commit-config.yaml`.
+
+Run `./scripts/run_tests.sh` to lint and test in one step.
 
 The Vite dev server proxies `/generate`, `/detect_inventory`, and `/static`
 requests to `http://localhost:8000` so the PWA works against your local backend
