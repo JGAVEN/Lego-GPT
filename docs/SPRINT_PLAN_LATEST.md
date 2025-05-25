@@ -114,5 +114,8 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 34 – Admin analytics dashboard (completed)
 * Simple metrics dashboard shows request and submission counts.
 
+## Sprint 35 – Comment notifications (completed)
+* Email is sent to `COMMENT_NOTIFY_EMAIL` when a new comment is posted.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.

@@ -242,6 +242,22 @@ class ServerTests(unittest.TestCase):
         payload = json.loads(data)
         self.assertEqual(payload["comments"][0]["text"], "nice")
 
+    @patch("backend.notify.send_comment_notification")
+    def test_comments_post_triggers_notification(self, mock_notify):
+        import tempfile
+        from pathlib import Path
+
+        tmp = Path(tempfile.mkdtemp())
+        self.server.COMMENTS_ROOT = tmp
+        status, _ = self._request(
+            "POST",
+            "/comments/2",
+            body=b'{"comment":"great"}',
+            token=self.token,
+        )
+        self.assertEqual(status, 200)
+        mock_notify.assert_called_once()
+
     def test_metrics_endpoint(self):
         with patch("backend.gateway.queue.enqueue") as mock_q:
             mock_q.return_value.id = "j"
