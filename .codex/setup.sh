@@ -14,9 +14,8 @@ python -m pip install --no-cache-dir -e ./backend[test] || \
 corepack enable
 corepack prepare pnpm@10.5.2 --activate
 
-# Pre-install front-end packages while network access is available. This
-# populates the pnpm store so that later offline installs succeed.
-pnpm install --dir frontend
-
-# Install using the cached packages once network access is removed
-pnpm install --offline --dir frontend
+# Install front-end packages using the project script. This populates the
+# pnpm store and verifies the Cypress binary so future lints and tests work
+# offline.
+./scripts/setup_frontend.sh || \
+  echo "Warning: front-end setup failed; linting may be skipped"

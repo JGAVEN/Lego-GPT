@@ -8,17 +8,20 @@ import {
   countPendingCollabs,
   clearPendingCollabs,
 } from "./lib/db";
+import { hasSubscription, subscribe, unsubscribe } from "./lib/push";
 
 export default function Settings({ onBack }: { onBack: () => void }) {
   const { t } = useI18n();
   const [cacheCount, setCacheCount] = useState(0);
   const [queueCount, setQueueCount] = useState(0);
   const [editCount, setEditCount] = useState(0);
+  const [push, setPush] = useState(false);
 
   async function refresh() {
     setCacheCount(await countCachedGenerates());
     setQueueCount(await countPendingGenerates());
     setEditCount(await countPendingCollabs());
+    setPush(await hasSubscription());
   }
 
   useEffect(() => {
@@ -31,6 +34,7 @@ export default function Settings({ onBack }: { onBack: () => void }) {
       <p>{t("cachedResults")} {cacheCount}</p>
       <p>{t("queuedRequests")} {queueCount}</p>
       <p>{t("pendingEdits")} {editCount}</p>
+      <p>{push ? t("pushEnabled") : ""}</p>
       <div className="mt-4 space-x-2">
         <button
           className="bg-gray-200 px-3 py-1 rounded"
@@ -61,6 +65,20 @@ export default function Settings({ onBack }: { onBack: () => void }) {
           aria-label="clear edits"
         >
           {t("clearEdits")}
+        </button>
+        <button
+          className="bg-gray-200 px-3 py-1 rounded"
+          onClick={async () => {
+            if (await hasSubscription()) {
+              await unsubscribe();
+            } else {
+              await subscribe();
+            }
+            setPush(await hasSubscription());
+          }}
+          aria-label="toggle push"
+        >
+          {t("togglePush")}
         </button>
       </div>
       <button className="mt-6 text-blue-600 underline" onClick={onBack} aria-label="back">

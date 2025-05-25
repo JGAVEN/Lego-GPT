@@ -45,5 +45,18 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 13 – Interface polish (completed)
 * The PWA remains English only and includes a collaboration demo page.
 
+## Sprint 14 – Collaborative undo/redo (completed)
+* WebSocket server keeps per-room history and handles `/undo` and `/redo`.
+* Demo page shows Undo and Redo buttons.
+
+## Sprint 15 – Push subscription management (completed)
+* Settings page can enable or disable Web Push notifications.
+
+## Sprint 16 – Expanded example library (completed)
+* Added more sample prompts and images in `examples.json`.
+
+## Sprint 17 – Automated front-end setup (completed)
+* Dev container calls `scripts/setup_frontend.sh` to install packages.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.

@@ -1,10 +1,14 @@
-"""Simple WebSocket server for real-time collaboration."""
+"""Simple WebSocket server for real-time collaboration.
+
+Rooms keep a shared message history so clients can issue ``/undo`` and
+``/redo`` commands. New peers receive the full history on connect.
+"""
 from __future__ import annotations
 
 import asyncio
 import os
 from collections import defaultdict
-from typing import Dict, Set
+from typing import Dict, List, Set
 
 try:  # optional dependency
     import websockets
@@ -17,6 +21,8 @@ except Exception:  # pragma: no cover - missing optional dep
     WEBSOCKETS_AVAILABLE = False
 
 _rooms: Dict[str, Set[WebSocketServerProtocol]] = defaultdict(set)  # type: ignore
+_history: Dict[str, List[str]] = defaultdict(list)
+_redo: Dict[str, List[str]] = defaultdict(list)
 
 
 async def _handler(ws: WebSocketServerProtocol, path: str) -> None:
@@ -26,15 +32,36 @@ async def _handler(ws: WebSocketServerProtocol, path: str) -> None:
     room = path.split("/", 2)[-1]
     peers = _rooms[room]
     peers.add(ws)
+    # Send existing history to the new peer
+    for item in _history[room]:
+        await ws.send(item)
     try:
         async for msg in ws:
-            for peer in list(peers):
-                if peer != ws:
-                    await peer.send(msg)
+            broadcast = None
+            if msg == "/undo":
+                if _history[room]:
+                    item = _history[room].pop()
+                    _redo[room].append(item)
+                    broadcast = f"UNDO: {item}"
+            elif msg == "/redo":
+                if _redo[room]:
+                    item = _redo[room].pop()
+                    _history[room].append(item)
+                    broadcast = f"REDO: {item}"
+            else:
+                _history[room].append(msg)
+                _redo[room].clear()
+                broadcast = msg
+            if broadcast:
+                for peer in list(peers):
+                    if peer != ws:
+                        await peer.send(broadcast)
     finally:
         peers.remove(ws)
         if not peers:
             del _rooms[room]
+            _history.pop(room, None)
+            _redo.pop(room, None)
 
 
 async def run_server(host: str = "0.0.0.0", port: int = 8765) -> None:

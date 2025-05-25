@@ -45,6 +45,12 @@ export default function CollabDemo({ onBack }: Props) {
     setMessage("");
   }
 
+  function sendCommand(cmd: string) {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(cmd);
+    }
+  }
+
   if (!room) {
     return (
       <main className="p-6 max-w-xl mx-auto font-sans">
@@ -84,6 +90,18 @@ export default function CollabDemo({ onBack }: Props) {
           onClick={send}
         >
           {t("send")}
+        </button>
+        <button
+          className="ml-2 bg-gray-200 px-3 py-1 rounded mt-2"
+          onClick={() => sendCommand("/undo")}
+        >
+          {t("undo")}
+        </button>
+        <button
+          className="ml-2 bg-gray-200 px-3 py-1 rounded mt-2"
+          onClick={() => sendCommand("/redo")}
+        >
+          {t("redo")}
         </button>
       </div>
       <ul className="border p-2 h-40 overflow-auto mb-4">

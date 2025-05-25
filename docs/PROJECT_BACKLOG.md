@@ -66,6 +66,10 @@
 | F-11 | **C**  | Real-time collaboration via WebSocket                | **Done** | `lego-gpt-collab` server |
 | B-35 | **S**  | Custom model checkpoint support                      | **Done** | `LEGOGPT_MODEL` env var |
 | F-12 | **C**  | Accessibility polish                                 | **Done** | ARIA labels & keyboard nav |
+| F-13 | **C**  | Collaborative undo/redo                              | **Done** | `/undo` and `/redo` commands |
+| F-14 | **C**  | Push subscription toggle                             | **Done** | Settings page button |
+| F-15 | **C**  | Expanded example library                             | **Done** | More sample prompts |
+| F-16 | **C**  | Automated front-end setup                           | **Done** | Dev container installs packages via setup script |
 
 
 
@@ -73,4 +77,4 @@
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.
 
-_Last updated 2025-07-02_
+_Last updated 2025-07-03_

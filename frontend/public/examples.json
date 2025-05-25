@@ -16,5 +16,17 @@
     "title": "Mini Pirate Ship",
     "prompt": "mini pirate ship with black sails",
     "image": "https://placehold.co/200x150?text=Pirate+Ship"
+  },
+  {
+    "id": "4",
+    "title": "Green Dragon",
+    "prompt": "build a small green dragon",
+    "image": "https://placehold.co/200x150?text=Green+Dragon"
+  },
+  {
+    "id": "5",
+    "title": "Orange Plane",
+    "prompt": "orange propeller plane",
+    "image": "https://placehold.co/200x150?text=Orange+Plane"
   }
 ]

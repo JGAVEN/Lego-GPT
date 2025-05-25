@@ -4,6 +4,18 @@
 * Push notifications triggered by collaboration events.
 * Demo page showcasing real-time editing.
 
+## [0.5.43] – 2025-07-25
+### Added
+* Collaborative undo/redo commands in the WebSocket server.
+* Push notification toggle in the settings page.
+* Expanded community example gallery.
+
+## [0.5.44] – 2025-07-26
+### Added
+* Dev container setup installs front-end dependencies via `scripts/setup_frontend.sh`.
+### Changed
+* `run_tests.sh` now attempts to install front-end packages if missing.
+
 ## [0.5.41] – 2025-07-02
 ### Added
 * `lego-gpt-collab` WebSocket server for real-time collaboration.
