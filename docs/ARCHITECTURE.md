@@ -60,13 +60,18 @@ clusters not connected to the ground.
    ``STATIC_URL_PREFIX`` to customise the URL prefix returned to the
    client (defaults to ``/static``).
 6. When finished, a GET on `/generate/{job_id}` returns `{png_url, ldr_url, gltf_url, brick_counts}`.
-7. Client shows PNG immediately; Three.js lazily loads LDR → interactive viewer.
+7. Clients may subscribe to `/progress/{job_id}` for Server-Sent Events with
+   `{"progress": 0..100}` updates.
+8. Client shows PNG immediately; Three.js lazily loads LDR → interactive viewer.
    The `LDrawLoader` module is fetched from a CDN at runtime.
-8. Set ``LOG_LEVEL`` or pass ``--log-level`` to server/workers to control logging verbosity.
-9. Environment variables can be placed in a ``.env`` file. If
+9. Set ``LOG_LEVEL`` or pass ``--log-level`` to server/workers to control logging verbosity.
+10. Environment variables can be placed in a ``.env`` file. If
    ``python-dotenv`` is installed, the backend loads it automatically on startup.
-10. Set ``ORTOOLS_ENGINE`` or pass ``--solver-engine`` to the worker to pick a
+11. Set ``ORTOOLS_ENGINE`` or pass ``--solver-engine`` to the worker to pick a
     specific OR-Tools backend (``HIGHs`` or ``CBC``).
+
+Community members can post new prompt ideas via ``POST /submit_example``. Each
+submission is stored under ``backend/submissions/`` for manual curation.
 
 ---
 
@@ -80,7 +85,7 @@ clusters not connected to the ground.
 
 ---
 
-_Last updated 2025-06-13_
+_Last updated 2025-07-28_
 
 ---
 

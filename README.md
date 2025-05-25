@@ -14,7 +14,7 @@ real-life building via a built-in Three.js viewer.
 
 &nbsp;
 
-## 2. What’s New (2025-07-01)
+## 2. What’s New (2025-07-28)
 | Change | Impact |
 |--------|--------|
 | 🔄 **Open-source solver** – switched to **OR-Tools 9.10 + HiGHS**. | Runs licence-free everywhere (local dev, CI, containers). |
@@ -47,6 +47,8 @@ real-life building via a built-in Three.js viewer.
 | 📱 **Install prompt & touch controls** | Add to Home Screen button and smoother mobile controls |
 | 🖼️ **Community example gallery** | Browse shared prompts and load them with one click |
 | ➕ **Expanded examples** | New sample prompts showcase model capabilities (see [docs/EXAMPLES.md](docs/EXAMPLES.md)) |
+| ✉️ **Example submissions** | `/submit_example` endpoint stores community prompts |
+| 📶 **Progress events** | `/progress/<job_id>` streams build updates via SSE |
 
 &nbsp;
 
