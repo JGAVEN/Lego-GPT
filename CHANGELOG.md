@@ -1,3 +1,9 @@
+## [0.5.43] – 2025-07-22
+### Added
+* Collaborative undo/redo history in the WebSocket server.
+* Push notifications can be enabled or disabled in Settings.
+* Community examples accept local submissions.
+
 ## [0.5.42] – 2025-07-15
 ### Added
 * Offline collaboration queue with IndexedDB.

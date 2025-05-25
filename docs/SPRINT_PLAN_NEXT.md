@@ -2,11 +2,11 @@
 
 This plan outlines the upcoming sprints after completing the community example library.
 
-## Sprint 1 – Collaborative undo/redo
-* Track edit history and broadcast changes to peers.
-## Sprint 2 – Push subscription management
-* Allow users to enable or disable Web Push notifications.
+## Sprint 1 – Collaboration moderation
+* Allow room owners to remove inappropriate messages.
+## Sprint 2 – Server push notifications
+* Persist subscriptions and send push messages from the backend.
 
-## Sprint 3 – Expand example library
-* Accept community submissions and curate featured builds.
+## Sprint 3 – Hosted example submissions
+* Submit examples to a backend queue for review and publication.
 

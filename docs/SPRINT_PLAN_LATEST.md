@@ -45,5 +45,14 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 13 – Interface polish (completed)
 * The PWA remains English only and includes a collaboration demo page.
 
+## Sprint 14 – Collaborative undo/redo (completed)
+* Server tracks edit history and broadcasts undo/redo events.
+
+## Sprint 15 – Push subscription management (completed)
+* Settings page allows enabling or disabling push notifications.
+
+## Sprint 16 – Community example submissions (completed)
+* Users can add examples locally to the gallery.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.

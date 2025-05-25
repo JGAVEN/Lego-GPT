@@ -1,12 +1,8 @@
 import { useEffect, useState } from "react";
 import { useI18n } from "./i18n";
+import { loadCustomExamples, addCustomExample, Example as CustomExample } from "./lib/customExamples";
 
-interface Example {
-  id: string;
-  title: string;
-  prompt: string;
-  image: string;
-}
+type Example = CustomExample;
 
 export default function Examples({
   onSelect,
@@ -17,12 +13,17 @@ export default function Examples({
 }) {
   const { t } = useI18n();
   const [examples, setExamples] = useState<Example[]>([]);
+  const [title, setTitle] = useState("");
+  const [promptText, setPromptText] = useState("");
+  const [image, setImage] = useState("");
 
   useEffect(() => {
     fetch("/examples.json")
       .then((res) => res.json())
-      .then((data) => setExamples(data as Example[]))
-      .catch(() => setExamples([]));
+      .then((data) => {
+        setExamples([...data, ...loadCustomExamples()]);
+      })
+      .catch(() => setExamples(loadCustomExamples()));
   }, []);
 
   return (
@@ -47,6 +48,41 @@ export default function Examples({
           </div>
         ))}
       </div>
+      <form
+        className="mt-6 space-y-2"
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (!title || !promptText) return;
+          const ex = addCustomExample({ title, prompt: promptText, image });
+          setExamples((list) => [...list, ex]);
+          setTitle("");
+          setPromptText("");
+          setImage("");
+        }}
+      >
+        <h2 className="font-semibold">{t("addExample")}</h2>
+        <input
+          className="border rounded w-full px-2 py-1"
+          placeholder={t("exampleTitle")}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <input
+          className="border rounded w-full px-2 py-1"
+          placeholder={t("examplePrompt")}
+          value={promptText}
+          onChange={(e) => setPromptText(e.target.value)}
+        />
+        <input
+          className="border rounded w-full px-2 py-1"
+          placeholder={t("imageUrl")}
+          value={image}
+          onChange={(e) => setImage(e.target.value)}
+        />
+        <button className="bg-gray-200 px-3 py-1 rounded" type="submit">
+          {t("addExample")}
+        </button>
+      </form>
       <button className="mt-6 text-blue-600 underline" onClick={onBack} aria-label="back">
         {t("back")}
       </button>

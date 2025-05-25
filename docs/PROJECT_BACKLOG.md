@@ -66,6 +66,9 @@
 | F-11 | **C**  | Real-time collaboration via WebSocket                | **Done** | `lego-gpt-collab` server |
 | B-35 | **S**  | Custom model checkpoint support                      | **Done** | `LEGOGPT_MODEL` env var |
 | F-12 | **C**  | Accessibility polish                                 | **Done** | ARIA labels & keyboard nav |
+| F-13 | **S**  | Collaborative undo/redo                               | **Done** | History tracked on server |
+| F-14 | **S**  | Push subscription management                          | **Done** | Enable/disable in settings |
+| F-15 | **C**  | Community example submissions                         | **Done** | Add examples locally |
 
 
 
@@ -73,4 +76,4 @@
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.
 
-_Last updated 2025-07-02_
+_Last updated 2025-07-22_
