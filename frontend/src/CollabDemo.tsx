@@ -12,6 +12,8 @@ export default function CollabDemo({ onBack }: Props) {
   const [message, setMessage] = useState("");
   const [log, setLog] = useState<string[]>([]);
   const [ws, setWs] = useState<WebSocket | null>(null);
+  const [history, setHistory] = useState<string[]>([]);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     if (!room) return;
@@ -22,11 +24,26 @@ export default function CollabDemo({ onBack }: Props) {
       });
     };
     socket.onmessage = (ev) => {
-      setLog((l) => [...l, ev.data]);
+      const data = JSON.parse(ev.data);
+      if (data.type === "edit") {
+        setHistory((h) => {
+          const copy = h.slice(0, index);
+          copy.push(data.data);
+          setIndex(copy.length);
+          return copy;
+        });
+        setLog((l) => [...l, data.data]);
+      } else if (data.type === "undo") {
+        setIndex((i) => Math.max(0, i - 1));
+        setLog((l) => [...l, `Undo: ${data.data}`]);
+      } else if (data.type === "redo") {
+        setIndex((i) => i + 1);
+        setLog((l) => [...l, `Redo: ${data.data}`]);
+      }
       if (navigator.serviceWorker.controller) {
         navigator.serviceWorker.controller.postMessage({
           type: "collab_update",
-          body: ev.data,
+          body: data.data,
         });
       }
     };
@@ -37,10 +54,16 @@ export default function CollabDemo({ onBack }: Props) {
   async function send() {
     if (!message) return;
     if (ws && ws.readyState === WebSocket.OPEN) {
-      ws.send(message);
+      ws.send(JSON.stringify({ type: "edit", data: message }));
     } else if (room) {
-      await queueCollab({ room, data: message });
+      await queueCollab({ room, data: JSON.stringify({ type: "edit", data: message }) });
     }
+    setHistory((h) => {
+      const copy = h.slice(0, index);
+      copy.push(message);
+      setIndex(copy.length);
+      return copy;
+    });
     setLog((l) => [...l, `You: ${message}`]);
     setMessage("");
   }
@@ -84,6 +107,24 @@ export default function CollabDemo({ onBack }: Props) {
           onClick={send}
         >
           {t("send")}
+        </button>
+        <button
+          className="bg-gray-200 px-3 py-1 rounded mt-2 ml-2"
+          onClick={() => {
+            if (index === 0 || !ws) return;
+            ws.send(JSON.stringify({ type: "undo" }));
+          }}
+        >
+          {t("undo")}
+        </button>
+        <button
+          className="bg-gray-200 px-3 py-1 rounded mt-2 ml-2"
+          onClick={() => {
+            if (!ws) return;
+            ws.send(JSON.stringify({ type: "redo" }));
+          }}
+        >
+          {t("redo")}
         </button>
       </div>
       <ul className="border p-2 h-40 overflow-auto mb-4">

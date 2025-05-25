@@ -22,10 +22,18 @@ const en = {
   clearQueue: "Clear Queue",
   pendingEdits: "Queued edits:",
   clearEdits: "Clear Edits",
+  enablePush: "Enable Push Notifications",
+  disablePush: "Disable Push Notifications",
   collabDemo: "Collaboration Demo",
   roomId: "Room ID",
   message: "Message",
   send: "Send",
+  undo: "Undo",
+  redo: "Redo",
+  addExample: "Add Example",
+  exampleTitle: "Title",
+  examplePrompt: "Prompt",
+  imageUrl: "Image URL (optional)",
 };
 
 export type Lang = "en";

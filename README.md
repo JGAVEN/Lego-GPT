@@ -212,14 +212,14 @@ Release tags trigger a workflow that builds CPU and GPU images and publishes
 them to GitHub Container Registry.  You can pull the latest versioned images:
 
 ```bash
-docker pull ghcr.io/<owner>/lego-gpt:v0.5.42        # CPU
-docker pull ghcr.io/<owner>/lego-gpt:gpu-v0.5.42    # GPU
+docker pull ghcr.io/<owner>/lego-gpt:v0.5.43        # CPU
+docker pull ghcr.io/<owner>/lego-gpt:gpu-v0.5.43    # GPU
 ```
 
 Run the API server with:
 
 ```bash
-docker run -p 8000:8000 ghcr.io/<owner>/lego-gpt:v0.5.42
+docker run -p 8000:8000 ghcr.io/<owner>/lego-gpt:v0.5.43
 ```
 
 Override the command to start a worker or the detector worker as needed.
@@ -232,7 +232,7 @@ followed by `terraform apply`:
 
 ```bash
 cd infra/aws
-export TF_VAR_api_image=ghcr.io/<owner>/lego-gpt:v0.5.42
+export TF_VAR_api_image=ghcr.io/<owner>/lego-gpt:v0.5.43
 export TF_VAR_redis_url=redis://hostname:6379/0
 export TF_VAR_jwt_secret=$(openssl rand -hex 32)
 terraform init
