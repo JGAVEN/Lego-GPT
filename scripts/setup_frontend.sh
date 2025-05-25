@@ -2,10 +2,30 @@
 # Fetch and install front-end dependencies.
 # Run with network access during initial setup.
 # Installs React runtime packages and dev tools used by lint_frontend.js:
+#   react, react-dom,
 #   @eslint/js, @types/react, @types/react-dom, @vitejs/plugin-react,
 #   eslint, eslint-config-prettier, eslint-plugin-react-hooks,
 #   eslint-plugin-react-refresh, globals, prettier, typescript,
 #   typescript-eslint and vite.
+
+# Packages required for offline lints and development
+PKGS=(
+  react
+  react-dom
+  @eslint/js
+  @types/react
+  @types/react-dom
+  @vitejs/plugin-react
+  eslint
+  eslint-config-prettier
+  eslint-plugin-react-hooks
+  eslint-plugin-react-refresh
+  globals
+  prettier
+  typescript
+  typescript-eslint
+  vite
+)
 set -euo pipefail
 
 if ! command -v pnpm >/dev/null 2>&1; then
@@ -26,7 +46,7 @@ fi
 
 echo "Offline install failed – attempting to fetch packages from registry..."
 if curl -I --max-time 5 https://registry.npmjs.org >/dev/null 2>&1; then
-  pnpm fetch --prod=false
+  pnpm fetch --prod=false "${PKGS[@]}"
   pnpm install --offline
   echo "Front-end dependencies installed."
   exit 0
