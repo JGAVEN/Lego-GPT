@@ -2,12 +2,11 @@
 
 This plan outlines the upcoming sprints after completing the community example library.
 
-## Sprint 1 – Multi-language support
-* Localise the front-end strings and add a language switcher.
-
-## Sprint 2 – Real-time collaboration
+## Sprint 1 – Real-time collaboration
 * Enable shared editing of builds via WebSocket.
-
-## Sprint 3 – Model quality improvements
+## Sprint 2 – Model quality improvements
 * Experiment with larger LegoGPT checkpoints and training data.
+
+## Sprint 3 – Accessibility polish
+* Improve keyboard navigation and ARIA labels across the PWA.
 

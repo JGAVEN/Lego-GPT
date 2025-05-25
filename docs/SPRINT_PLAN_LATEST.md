@@ -24,5 +24,8 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 6 – Automated UI regression tests (completed)
 * Added Cypress setup and a basic end-to-end test for the PWA.
 
+## Sprint 7 – Multi-language support (completed)
+* Introduced a language switcher and Spanish translations in the PWA.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.

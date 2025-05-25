@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useI18n } from "./i18n";
 
 interface Example {
   id: string;
@@ -14,6 +15,7 @@ export default function Examples({
   onSelect: (prompt: string) => void;
   onBack: () => void;
 }) {
+  const { t } = useI18n();
   const [examples, setExamples] = useState<Example[]>([]);
 
   useEffect(() => {
@@ -25,7 +27,7 @@ export default function Examples({
 
   return (
     <main className="p-6 max-w-xl mx-auto font-sans">
-      <h1 className="text-2xl font-bold mb-4">Community Examples</h1>
+      <h1 className="text-2xl font-bold mb-4">{t("communityExamples")}</h1>
       <div className="space-y-4">
         {examples.map((ex) => (
           <div key={ex.id} className="border p-2 rounded">
@@ -39,13 +41,13 @@ export default function Examples({
                 onBack();
               }}
             >
-              Use Prompt
+              {t("usePrompt")}
             </button>
           </div>
         ))}
       </div>
       <button className="mt-6 text-blue-600 underline" onClick={onBack}>
-        Back
+        {t("back")}
       </button>
     </main>
   );

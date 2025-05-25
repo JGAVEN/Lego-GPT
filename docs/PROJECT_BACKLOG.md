@@ -60,6 +60,7 @@
 | D-23 | **S**  | Scalability benchmarking                              | **Done** | Benchmark script and tuning docs |
 | F-08 | **C**  | Advanced front-end features                            | **Done** | Offline queue + settings page |
 | F-09 | **C**  | Community example library                             | **Done** | Gallery of prompts and builds |
+| F-10 | **C**  | Multi-language support                                | **Done** | Spanish translations and language switcher |
 | B-33 | **S**  | Cloud infrastructure templates                       | **Done** | Terraform sample for AWS App Runner |
 | B-34 | **S**  | Automated UI regression tests                        | **Done** | Cypress setup and basic PWA flow test |
 
@@ -69,4 +70,4 @@
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.
 
-_Last updated 2025-06-30_
+_Last updated 2025-07-01_

@@ -1,4 +1,5 @@
 import { useState, useEffect, FormEvent, ChangeEvent } from "react";
+import { useI18n } from "./i18n";
 import Examples from "./Examples";
 
 interface BeforeInstallPromptEvent extends Event {
@@ -12,6 +13,7 @@ import Settings from "./Settings";
 import { processPending } from "./lib/offlineQueue";
 
 export default function App() {
+  const { t } = useI18n();
   const [page, setPage] = useState<"main" | "settings" | "examples">("main");
   const [prompt, setPrompt] = useState("");
   const [seed, setSeed] = useState("");
@@ -97,31 +99,31 @@ export default function App() {
 
   return (
     <main className="p-6 max-w-xl mx-auto font-sans">
-      <h1 className="text-2xl font-bold mb-4">Lego GPT Demo</h1>
+      <h1 className="text-2xl font-bold mb-4">{t("title")}</h1>
       {showInstall && (
         <button
           onClick={handleInstall}
           className="mb-4 mr-4 bg-green-600 text-white px-3 py-1 rounded"
         >
-          Install App
+          {t("installApp")}
         </button>
       )}
       <button
         className="text-sm underline mb-4"
         onClick={() => setPage("settings")}
       >
-        Settings
+        {t("settings")}
       </button>
       <button
         className="text-sm underline mb-4 ml-4"
         onClick={() => setPage("examples")}
       >
-        Examples
+        {t("examples")}
       </button>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block font-semibold mb-1">Prompt</label>
+          <label className="block font-semibold mb-1">{t("prompt")}</label>
           <input
             className="w-full border rounded px-2 py-1"
             value={prompt}
@@ -131,7 +133,7 @@ export default function App() {
         </div>
 
         <div>
-          <label className="block font-semibold mb-1">Seed (optional)</label>
+          <label className="block font-semibold mb-1">{t("seedOptional")}</label>
           <input
             className="w-full border rounded px-2 py-1"
             value={seed}
@@ -142,15 +144,15 @@ export default function App() {
         </div>
 
         <div>
-          <label className="block font-semibold mb-1">Inventory Photo</label>
+          <label className="block font-semibold mb-1">{t("inventoryPhoto")}</label>
           <input type="file" accept="image/*" onChange={handleFile} />
-          {detect.loading && <p className="text-sm">Detecting…</p>}
+          {detect.loading && <p className="text-sm">{t("detecting")}</p>}
           {detect.error && <p className="text-red-600 text-sm">{detect.error}</p>}
         </div>
 
         {inventory && (
           <div className="mt-2 text-sm">
-            <p className="font-semibold">Detected Inventory:</p>
+            <p className="font-semibold">{t("detectedInventory")}</p>
             <ul className="list-disc list-inside">
               {Object.entries(inventory).map(([part, qty]) => (
                 <li key={part}>
@@ -166,7 +168,7 @@ export default function App() {
           className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
           disabled={loading}
         >
-          {loading ? "Generating…" : "Generate"}
+          {loading ? t("generating") : t("generate")}
         </button>
       </form>
 
@@ -191,7 +193,7 @@ export default function App() {
                 rel="ar"
                 className="text-blue-600 underline"
               >
-                View in AR
+                {t("viewInAR")}
               </a>
             </div>
           )}
