@@ -25,6 +25,19 @@ _history: Dict[str, List[str]] = defaultdict(list)
 _redo: Dict[str, List[str]] = defaultdict(list)
 
 
+async def _broadcast_peers(room: str) -> None:
+    """Notify all peers in ``room`` about the current participant count."""
+    peers = _rooms.get(room)
+    if not peers:
+        return
+    message = f"PEERS {len(peers)}"
+    for peer in list(peers):
+        try:
+            await peer.send(message)
+        except Exception:
+            pass
+
+
 async def _handler(ws: WebSocketServerProtocol, path: str) -> None:
     if not path.startswith("/ws/"):
         await ws.close()
@@ -32,6 +45,7 @@ async def _handler(ws: WebSocketServerProtocol, path: str) -> None:
     room = path.split("/", 2)[-1]
     peers = _rooms[room]
     peers.add(ws)
+    await _broadcast_peers(room)
     # Send existing history to the new peer
     for item in _history[room]:
         await ws.send(item)
@@ -58,7 +72,9 @@ async def _handler(ws: WebSocketServerProtocol, path: str) -> None:
                         await peer.send(broadcast)
     finally:
         peers.remove(ws)
-        if not peers:
+        if peers:
+            await _broadcast_peers(room)
+        else:
             del _rooms[room]
             _history.pop(room, None)
             _redo.pop(room, None)
