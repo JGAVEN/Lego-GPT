@@ -61,6 +61,11 @@ real-life building via a built-in Three.js viewer.
 | 📝 **Moderation dashboard** | Web interface to approve or reject community submissions |
 | 💬 **Collaboration chat** | WebSocket chat messages in the collaboration demo |
 | 📄 **PDF instructions** | Download simple build instructions with each model |
+| 🌍 **Federated search** | `/federated_search` queries multiple instances |
+| 📱 **Mobile polish** | Better layouts and touch targets on phones |
+| 🔑 **Admin roles** | Moderation and analytics require admin JWT |
+| 📈 **Metrics WebSocket** | `lego-gpt-metrics` streams live stats |
+| 💾 **Build history export** | `/history` returns a JSON log of builds |
 
 &nbsp;
 

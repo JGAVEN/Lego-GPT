@@ -80,6 +80,14 @@ export default function Settings({ onBack }: { onBack: () => void }) {
         >
           {t("togglePush")}
         </button>
+        <a
+          className="bg-gray-200 px-3 py-1 rounded"
+          href="/history"
+          download
+          aria-label="export history"
+        >
+          Export History
+        </a>
       </div>
       <button className="mt-6 text-blue-600 underline" onClick={onBack} aria-label="back">
         {t("back")}

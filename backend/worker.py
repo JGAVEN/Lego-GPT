@@ -4,6 +4,7 @@ from redis import Redis
 from rq import Connection, Worker
 from backend.logging_config import setup_logging
 from backend.api import generate_lego_model
+from backend.history import record as record_history
 from backend.detector import detect_inventory
 from backend import __version__
 
@@ -29,6 +30,10 @@ def generate_job(
     if job:
         job.meta["progress"] = 100
         job.save_meta()
+    try:
+        record_history({"prompt": prompt, "seed": seed, "result": result})
+    except Exception:
+        pass
     return result
 
 

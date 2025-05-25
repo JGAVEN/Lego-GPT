@@ -11,6 +11,17 @@ function authHeaders() {
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
+export function isAdmin(): boolean {
+  const token = localStorage.getItem("jwt") || import.meta.env.VITE_JWT;
+  if (!token) return false;
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    return payload.role === "admin";
+  } catch {
+    return false;
+  }
+}
+
 export interface GenerateResponse {
   png_url: string;
   ldr_url: string | null;
@@ -77,4 +88,16 @@ export async function postComment(exampleId: string, comment: string) {
     body: JSON.stringify({ comment }),
   });
   if (!res.ok) throw new Error("Failed");
+}
+
+export async function federatedSearch(query: string) {
+  const res = await fetch(`${API_BASE}/federated_search?q=${encodeURIComponent(query)}`);
+  if (!res.ok) throw new Error("Failed");
+  return (await res.json()) as { examples: Array<any> };
+}
+
+export async function fetchHistory() {
+  const res = await fetch(`${API_BASE}/history`, { headers: authHeaders() });
+  if (!res.ok) throw new Error("Failed");
+  return (await res.json()) as { history: Array<any> };
 }

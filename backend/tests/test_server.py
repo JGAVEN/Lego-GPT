@@ -28,6 +28,8 @@ class ServerTests(unittest.TestCase):
 
         self.server = importlib.reload(server_mod)
         self.token = auth.encode({"sub": "t"}, "testsecret")
+        self.admin_token = auth.encode({"sub": "a", "role": "admin"}, "testsecret")
+        self.server.FEDERATED_INSTANCES = ["http://x"]
         self.httpd = self.server.HTTPServer(("127.0.0.1", 0), self.server.Handler)
         self.port = self.httpd.server_address[1]
         self.thread = threading.Thread(target=self.httpd.serve_forever)
@@ -263,10 +265,36 @@ class ServerTests(unittest.TestCase):
             mock_q.return_value.id = "j"
             self._request("POST", "/generate", body=b"{}", token=self.token)
             self._request("POST", "/detect_inventory", body=b'{"image":"d"}', token=self.token)
-        status, data = self._request("GET", "/metrics")
+        status, data = self._request("GET", "/metrics", token=self.admin_token)
         self.assertEqual(status, 200)
         payload = json.loads(data)
         self.assertGreaterEqual(payload.get("generate_requests", 0), 1)
+
+    def test_metrics_requires_admin(self):
+        status, _ = self._request("GET", "/metrics", token=self.token)
+        self.assertEqual(status, 401)
+
+    def test_history_requires_auth(self):
+        status, _ = self._request("GET", "/history")
+        self.assertEqual(status, 401)
+
+    def test_history_json(self):
+        from backend import HISTORY_ROOT
+        import json as js
+        HISTORY_ROOT.mkdir(parents=True, exist_ok=True)
+        (HISTORY_ROOT / "history.json").write_text(js.dumps([{"prompt": "p"}]))
+        status, data = self._request("GET", "/history", token=self.token)
+        self.assertEqual(status, 200)
+        payload = json.loads(data)
+        self.assertIn("history", payload)
+
+    @patch("backend.gateway._fetch_examples")
+    def test_federated_search(self, mock_fetch):
+        mock_fetch.return_value = [{"id": "1", "title": "remote", "prompt": "remote", "image": ""}]
+        status, data = self._request("GET", "/federated_search?q=remote")
+        self.assertEqual(status, 200)
+        payload = json.loads(data)
+        self.assertEqual(payload["examples"][0]["id"], "1")
 
     @patch("backend.gateway.Job.fetch")
     def test_progress_events(self, mock_fetch):

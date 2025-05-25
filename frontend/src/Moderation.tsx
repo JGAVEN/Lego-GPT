@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useI18n } from "./i18n";
+import { isAdmin } from "./api/lego";
 
 interface Submission {
   file: string;
@@ -10,6 +11,17 @@ interface Submission {
 export default function Moderation({ onBack }: { onBack: () => void }) {
   const { t } = useI18n();
   const [subs, setSubs] = useState<Submission[]>([]);
+
+  if (!isAdmin()) {
+    return (
+      <main className="p-6 max-w-xl mx-auto font-sans">
+        <p>Admin only</p>
+        <button className="underline" onClick={onBack} aria-label="back">
+          {t("back")}
+        </button>
+      </main>
+    );
+  }
 
   useEffect(() => {
     fetch("/submissions")

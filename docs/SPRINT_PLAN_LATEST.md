@@ -117,5 +117,20 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 35 – Comment notifications (completed)
 * Email is sent to `COMMENT_NOTIFY_EMAIL` when a new comment is posted.
 
+## Sprint 36 – Federated example search (completed)
+* Added `/federated_search` endpoint querying other instances.
+
+## Sprint 37 – Mobile UI polish (completed)
+* Improved small-screen layouts and larger touch targets.
+
+## Sprint 38 – Admin roles (completed)
+* JWT tokens can include a `role` claim; moderation and analytics require admin.
+
+## Sprint 39 – Live metrics stream (completed)
+* Optional `lego-gpt-metrics` WebSocket broadcasts metrics updates.
+
+## Sprint 40 – Build history export (completed)
+* Worker records generated builds and `/history` returns the JSON log.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.
