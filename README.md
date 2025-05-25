@@ -171,6 +171,9 @@ Run `./scripts/run_tests.sh` to lint and test in one step.
 CI runs the same tests under `coverage` and uploads the report to Codecov.
 CI also executes a lightweight scalability benchmark via
 `scripts/benchmark_ci.py` to detect performance regressions.
+End-to-end UI tests are written with Cypress. Run them locally with
+`pnpm --dir frontend run build` followed by `pnpm --dir frontend run test:e2e`.
+CI builds the front-end and executes the Cypress suite in headless mode.
 
 The Vite dev server proxies `/generate`, `/detect_inventory`, and `/static`
 requests to `http://localhost:8000` so the PWA works against your local backend
@@ -198,14 +201,14 @@ Release tags trigger a workflow that builds CPU and GPU images and publishes
 them to GitHub Container Registry.  You can pull the latest versioned images:
 
 ```bash
-docker pull ghcr.io/<owner>/lego-gpt:v0.5.40        # CPU
-docker pull ghcr.io/<owner>/lego-gpt:gpu-v0.5.40    # GPU
+docker pull ghcr.io/<owner>/lego-gpt:v0.5.41        # CPU
+docker pull ghcr.io/<owner>/lego-gpt:gpu-v0.5.41    # GPU
 ```
 
 Run the API server with:
 
 ```bash
-docker run -p 8000:8000 ghcr.io/<owner>/lego-gpt:v0.5.40
+docker run -p 8000:8000 ghcr.io/<owner>/lego-gpt:v0.5.41
 ```
 
 Override the command to start a worker or the detector worker as needed.
@@ -218,7 +221,7 @@ followed by `terraform apply`:
 
 ```bash
 cd infra/aws
-export TF_VAR_api_image=ghcr.io/<owner>/lego-gpt:v0.5.40
+export TF_VAR_api_image=ghcr.io/<owner>/lego-gpt:v0.5.41
 export TF_VAR_redis_url=redis://hostname:6379/0
 export TF_VAR_jwt_secret=$(openssl rand -hex 32)
 terraform init

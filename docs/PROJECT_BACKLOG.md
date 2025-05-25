@@ -61,6 +61,7 @@
 | F-08 | **C**  | Advanced front-end features                            | **Done** | Offline queue + settings page |
 | F-09 | **C**  | Community example library                             | **Done** | Gallery of prompts and builds |
 | B-33 | **S**  | Cloud infrastructure templates                       | **Done** | Terraform sample for AWS App Runner |
+| B-34 | **S**  | Automated UI regression tests                       | **Done** | Cypress suite integrated into CI |
 
 
 

@@ -1,3 +1,9 @@
+## [0.5.41] – 2025-06-25
+### Added
+* Cypress UI regression tests and CI step.
+### Changed
+* Backend package version bumped to 0.5.41.
+
 ## [0.5.40] – 2025-06-25
 ### Added
 * CI now runs a lightweight scalability benchmark using a stub server.

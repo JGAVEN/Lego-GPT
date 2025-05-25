@@ -25,6 +25,7 @@ PKGS=(
   typescript
   typescript-eslint
   vite
+  cypress
 )
 set -euo pipefail
 

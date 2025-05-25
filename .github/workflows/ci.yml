@@ -50,6 +50,14 @@ jobs:
 
       - name: Run front-end lint
         run: pnpm --dir frontend run lint
+      - name: Build front-end
+        run: pnpm --dir frontend run build
+      - name: Run Cypress tests
+        run: |
+          pnpm --dir frontend exec vite preview --port 4173 &
+          sleep 5
+          pnpm --dir frontend exec cypress run --config baseUrl=http://localhost:4173
+          pkill -f "vite preview" || true
       - name: Run scalability benchmark
         run: python scripts/benchmark_ci.py
       # 6. (Optional) Build dev Docker image
