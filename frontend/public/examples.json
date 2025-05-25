@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "title": "Red Castle",
+    "prompt": "build a small red castle",
+    "image": "https://placehold.co/200x150?text=Red+Castle"
+  },
+  {
+    "id": "2",
+    "title": "Space Rover",
+    "prompt": "a four-wheeled space rover with antenna",
+    "image": "https://placehold.co/200x150?text=Space+Rover"
+  },
+  {
+    "id": "3",
+    "title": "Mini Pirate Ship",
+    "prompt": "mini pirate ship with black sails",
+    "image": "https://placehold.co/200x150?text=Pirate+Ship"
+  }
+]

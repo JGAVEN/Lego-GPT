@@ -1,4 +1,5 @@
 import { useState, useEffect, FormEvent, ChangeEvent } from "react";
+import Examples from "./Examples";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -11,7 +12,7 @@ import Settings from "./Settings";
 import { processPending } from "./lib/offlineQueue";
 
 export default function App() {
-  const [page, setPage] = useState<"main" | "settings">("main");
+  const [page, setPage] = useState<"main" | "settings" | "examples">("main");
   const [prompt, setPrompt] = useState("");
   const [seed, setSeed] = useState("");
   const [photo, setPhoto] = useState<string | null>(null);
@@ -85,6 +86,15 @@ export default function App() {
     return <Settings onBack={() => setPage("main")} />;
   }
 
+  if (page === "examples") {
+    return (
+      <Examples
+        onBack={() => setPage("main")}
+        onSelect={(p) => setPrompt(p)}
+      />
+    );
+  }
+
   return (
     <main className="p-6 max-w-xl mx-auto font-sans">
       <h1 className="text-2xl font-bold mb-4">Lego GPT Demo</h1>
@@ -101,6 +111,12 @@ export default function App() {
         onClick={() => setPage("settings")}
       >
         Settings
+      </button>
+      <button
+        className="text-sm underline mb-4 ml-4"
+        onClick={() => setPage("examples")}
+      >
+        Examples
       </button>
 
       <form onSubmit={handleSubmit} className="space-y-4">

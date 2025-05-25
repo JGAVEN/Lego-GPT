@@ -59,6 +59,7 @@
 | D-22 | **S**  | Deployment automation (CPU & GPU images)               | **Done** | Release workflow builds and pushes Docker images |
 | D-23 | **S**  | Scalability benchmarking                              | **Done** | Benchmark script and tuning docs |
 | F-08 | **C**  | Advanced front-end features                            | **Done** | Offline queue + settings page |
+| F-09 | **C**  | Community example library                             | **Done** | Gallery of prompts and builds |
 | B-33 | **S**  | Cloud infrastructure templates                       | **Done** | Terraform sample for AWS App Runner |
 
 

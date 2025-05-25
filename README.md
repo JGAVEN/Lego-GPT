@@ -39,6 +39,7 @@ real-life building via a built-in Three.js viewer.
 | 🧹 **Cleanup script** (`lego-gpt-cleanup`) | Remove old asset directories (use `--dry-run` to preview) |
 | 🆕 **Offline queue + settings** | Requests made offline are queued and cached results can be cleared in the settings page |
 | 📱 **Install prompt & touch controls** | Add to Home Screen button and smoother mobile controls |
+| 🖼️ **Community example gallery** | Browse shared prompts and load them with one click |
 
 &nbsp;
 
@@ -146,6 +147,7 @@ pnpm --dir frontend run dev    # http://localhost:5173
 # The PWA caches generated models in IndexedDB and preview images via a
 # service worker so previously viewed results remain available offline.
 # Requests made while offline are queued and processed once connectivity returns.
+# Browse shared prompts in the Examples page and load them with one click.
 # Lint UI code (skips if dependencies are missing)
 pnpm --dir frontend run lint
 # Lint backend code
