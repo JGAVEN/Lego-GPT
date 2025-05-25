@@ -23,7 +23,7 @@ This project is developed by a **human owner (Jeff) plus ChatGPT‑4o “dev age
 brew install git gh docker --cask docker docker-compose node@20 pnpm
 git clone git@github.com:JGAVEN/Lego-GPT.git
 cd Lego-GPT && git submodule update --init
-pnpm fetch --dir frontend && pnpm install --offline --dir frontend \
+./scripts/setup_frontend.sh \
   # run automatically in the dev container's setup script
   # installs React and linting packages used by scripts/lint_frontend.js
 python -m pip install --editable ./backend[test]  # backend + worker deps (incl. fakeredis for tests)

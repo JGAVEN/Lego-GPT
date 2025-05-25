@@ -41,8 +41,11 @@ real-life building via a built-in Three.js viewer.
 | 🆕 **Offline queue + settings** | Requests made offline are queued and cached results can be cleared in the settings page |
 | 🔔 **Push notifications** | Service worker shows notifications when collaborators edit a build |
 | 📨 **Offline edit queue** | Collaboration messages are stored offline and synced on reconnect |
+| ↩️ **Undo/redo support** | Collaborative sessions track history with `/undo` and `/redo` |
+| 🔕 **Push toggle in settings** | Enable or disable Web Push with one click |
 | 📱 **Install prompt & touch controls** | Add to Home Screen button and smoother mobile controls |
 | 🖼️ **Community example gallery** | Browse shared prompts and load them with one click |
+| ➕ **Expanded examples** | New sample prompts showcase model capabilities (see [docs/EXAMPLES.md](docs/EXAMPLES.md)) |
 
 &nbsp;
 
