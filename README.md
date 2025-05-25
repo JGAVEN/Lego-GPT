@@ -41,7 +41,9 @@ real-life building via a built-in Three.js viewer.
 | 🆕 **Offline queue + settings** | Requests made offline are queued and cached results can be cleared in the settings page |
 | 📱 **Install prompt & touch controls** | Add to Home Screen button and smoother mobile controls |
 | 🖼️ **Community example gallery** | Browse shared prompts and load them with one click |
-| 🌐 **Multi-language support** | Switch between English and Spanish in the Settings |
+| 🌐 **Multi-language support** | Switch between English, Spanish, and French in the Settings |
+| 🔔 **Push notifications** | Alerts when collaborators edit a build |
+| 📶 **Offline edit queue** | Collaboration edits are queued offline and synced on reconnect |
 
 &nbsp;
 

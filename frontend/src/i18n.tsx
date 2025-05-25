@@ -21,6 +21,10 @@ const en = {
   clearCache: "Clear Cache",
   clearQueue: "Clear Queue",
   language: "Language:",
+  collaboration: "Collaboration",
+  send: "Send",
+  room: "Room",
+  collabEdit: "New edit received",
 };
 
 const es: typeof en = {
@@ -44,9 +48,40 @@ const es: typeof en = {
   clearCache: "Limpiar Caché",
   clearQueue: "Vaciar Cola",
   language: "Idioma:",
+  collaboration: "Colaboración",
+  send: "Enviar",
+  room: "Sala",
+  collabEdit: "Nueva edición recibida",
 };
 
-const messages = { en, es };
+const fr: typeof en = {
+  title: "Démo Lego GPT",
+  installApp: "Installer l'application",
+  settings: "Paramètres",
+  examples: "Exemples",
+  prompt: "Invite",
+  seedOptional: "Graine (optionnel)",
+  inventoryPhoto: "Photo d'inventaire",
+  detecting: "Détection…",
+  detectedInventory: "Inventaire détecté :",
+  generate: "Générer",
+  generating: "Génération…",
+  viewInAR: "Voir en AR",
+  communityExamples: "Exemples de la communauté",
+  usePrompt: "Utiliser l'invite",
+  back: "Retour",
+  cachedResults: "Résultats en cache :",
+  queuedRequests: "Requêtes en attente :",
+  clearCache: "Vider le cache",
+  clearQueue: "Vider la file",
+  language: "Langue :",
+  collaboration: "Collaboration",
+  send: "Envoyer",
+  room: "Salle",
+  collabEdit: "Nouvelle modification reçue",
+};
+
+const messages = { en, es, fr };
 export type Lang = keyof typeof messages;
 export type TransKey = keyof typeof en;
 

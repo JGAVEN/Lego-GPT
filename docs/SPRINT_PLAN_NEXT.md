@@ -2,11 +2,11 @@
 
 This plan outlines the upcoming sprints after completing the community example library.
 
-## Sprint 1 – Offline mode enhancements
-* Queue edits offline and sync when reconnected.
-## Sprint 2 – Push notifications
-* Notify users when collaboration partners edit a build.
+## Sprint 1 – Collaboration UI polish
+* Improve the editing interface and message formatting.
+## Sprint 2 – Social sharing
+* Allow sharing generated models via a shareable URL.
 
-## Sprint 3 – Additional language support
-* Add French translations to the PWA.
+## Sprint 3 – Accessibility follow-ups
+* Audit the new collaboration page for screen reader usability.
 

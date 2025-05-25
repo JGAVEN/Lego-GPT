@@ -1,9 +1,10 @@
 import type { GenerateResponse } from "../api/lego";
 
 const DB_NAME = "lego-gpt";
-const DB_VERSION = 2;
+const DB_VERSION = 3;
 const GEN_STORE = "generate";
 const PENDING_STORE = "pending";
+const EDIT_STORE = "pendingEdits";
 
 function openDb(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
@@ -15,6 +16,9 @@ function openDb(): Promise<IDBDatabase> {
       }
       if (!db.objectStoreNames.contains(PENDING_STORE)) {
         db.createObjectStore(PENDING_STORE, { autoIncrement: true });
+      }
+      if (!db.objectStoreNames.contains(EDIT_STORE)) {
+        db.createObjectStore(EDIT_STORE, { autoIncrement: true });
       }
     };
     req.onsuccess = () => resolve(req.result);
@@ -56,6 +60,11 @@ export interface PendingRequest {
   inventory_filter: Record<string, number> | null;
 }
 
+export interface PendingEdit {
+  room: string;
+  data: string;
+}
+
 export async function addPendingGenerate(req: PendingRequest): Promise<void> {
   const db = await openDb();
   return new Promise((resolve, reject) => {
@@ -89,6 +98,50 @@ export async function getPendingGenerates(): Promise<
   });
 }
 
+export async function addPendingEdit(edit: PendingEdit): Promise<void> {
+  const db = await openDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(EDIT_STORE, "readwrite");
+    const store = tx.objectStore(EDIT_STORE);
+    const r = store.add(edit);
+    r.onsuccess = () => resolve();
+    r.onerror = () => reject(r.error);
+  });
+}
+
+export async function getPendingEdits(): Promise<
+  Array<{ id: number; edit: PendingEdit }>
+> {
+  const db = await openDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(EDIT_STORE, "readonly");
+    const store = tx.objectStore(EDIT_STORE);
+    const results: Array<{ id: number; edit: PendingEdit }> = [];
+    const req = store.openCursor();
+    req.onsuccess = () => {
+      const cursor = req.result;
+      if (cursor) {
+        results.push({ id: cursor.key as number, edit: cursor.value });
+        cursor.continue();
+      } else {
+        resolve(results);
+      }
+    };
+    req.onerror = () => reject(req.error);
+  });
+}
+
+export async function deletePendingEdit(id: number): Promise<void> {
+  const db = await openDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(EDIT_STORE, "readwrite");
+    const store = tx.objectStore(EDIT_STORE);
+    const req = store.delete(id);
+    req.onsuccess = () => resolve();
+    req.onerror = () => reject(req.error);
+  });
+}
+
 export async function deletePendingGenerate(id: number): Promise<void> {
   const db = await openDb();
   return new Promise((resolve, reject) => {
@@ -113,6 +166,7 @@ async function countStore(name: string): Promise<number> {
 
 export const countCachedGenerates = () => countStore(GEN_STORE);
 export const countPendingGenerates = () => countStore(PENDING_STORE);
+export const countPendingEdits = () => countStore(EDIT_STORE);
 
 export async function clearCachedGenerates(): Promise<void> {
   const db = await openDb();
@@ -130,6 +184,17 @@ export async function clearPendingGenerates(): Promise<void> {
   return new Promise((resolve, reject) => {
     const tx = db.transaction(PENDING_STORE, "readwrite");
     const store = tx.objectStore(PENDING_STORE);
+    const req = store.clear();
+    req.onsuccess = () => resolve();
+    req.onerror = () => reject(req.error);
+  });
+}
+
+export async function clearPendingEdits(): Promise<void> {
+  const db = await openDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(EDIT_STORE, "readwrite");
+    const store = tx.objectStore(EDIT_STORE);
     const req = store.clear();
     req.onsuccess = () => resolve();
     req.onerror = () => reject(req.error);

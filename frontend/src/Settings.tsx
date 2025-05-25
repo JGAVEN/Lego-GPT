@@ -33,6 +33,7 @@ export default function Settings({ onBack }: { onBack: () => void }) {
         >
           <option value="en">English</option>
           <option value="es">Español</option>
+          <option value="fr">Français</option>
         </select>
       </div>
       <p>{t("cachedResults")} {cacheCount}</p>
