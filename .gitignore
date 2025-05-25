@@ -41,3 +41,10 @@ backend/static/
 # Local environment
 .env
 
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+terraform.tfvars
+

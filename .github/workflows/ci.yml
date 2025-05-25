@@ -50,6 +50,37 @@ jobs:
 
       - name: Run front-end lint
         run: pnpm --dir frontend run lint
+
+      - name: Start Redis
+        run: docker run -d -p 6379:6379 --name redis redis:7
+
+      - name: Start API server
+        env:
+          JWT_SECRET: benchmark
+        run: |
+          python backend/gateway.py --jwt-secret $JWT_SECRET &
+          echo $! > server.pid
+
+      - name: Start worker
+        env:
+          JWT_SECRET: benchmark
+        run: |
+          python backend/worker.py --redis-url redis://localhost:6379/0 &
+          echo $! > worker.pid
+
+      - name: Run scalability benchmark
+        run: |
+          sleep 5
+          token=$(python scripts/generate_jwt.py --secret benchmark --exp 60)
+          python scripts/benchmark_scalability.py --token $token --requests 4 --concurrency 2
+
+      - name: Stop services
+        if: always()
+        run: |
+          kill $(cat server.pid) || true
+          kill $(cat worker.pid) || true
+          docker stop redis
+          docker rm redis
       # 6. (Optional) Build dev Docker image
       # - name: Build Docker image
       #   run: docker build -f Dockerfile.dev -t lego-gpt-dev .

@@ -1,3 +1,11 @@
+## [0.5.40] – 2025-06-25
+### Added
+* Terraform templates for AWS, GCP and Azure.
+* CI step runs scalability benchmark.
+* Deployment guide and sprint plan archive.
+### Changed
+* Backend package version bumped to 0.5.40.
+
 ## [0.5.39] – 2025-06-24
 ### Changed
 * `lint_frontend.js` no longer tries to install packages offline; it simply

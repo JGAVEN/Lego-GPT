@@ -4,7 +4,7 @@
 import argparse
 import os
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -30,7 +30,7 @@ def main() -> None:
         help="Token lifetime in seconds (default: 3600)",
     )
     args = parser.parse_args()
-    exp_ts = int((datetime.utcnow() + timedelta(seconds=args.exp)).timestamp())
+    exp_ts = int((datetime.now(timezone.utc) + timedelta(seconds=args.exp)).timestamp())
     token = encode({"sub": args.sub}, args.secret, exp=exp_ts)
     print(token)
 
