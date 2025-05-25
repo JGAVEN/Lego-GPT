@@ -37,6 +37,7 @@ real-life building via a built-in Three.js viewer.
 | 🆕 **`--inventory` & `.env` support** | CLI loads env vars from `.env` and accepts `--inventory` JSON |
 | 🆕 **Batch generation & progress** | Use `--file prompts.txt` and watch progress dots while waiting |
 | 🧹 **Cleanup script** (`lego-gpt-cleanup`) | Remove old asset directories (use `--dry-run` to preview) |
+| 🌐 **Collaboration server** (`lego-gpt-collab`) | WebSocket endpoint for real-time shared editing |
 | 🆕 **Offline queue + settings** | Requests made offline are queued and cached results can be cleared in the settings page |
 | 📱 **Install prompt & touch controls** | Add to Home Screen button and smoother mobile controls |
 | 🖼️ **Community example gallery** | Browse shared prompts and load them with one click |
@@ -98,6 +99,7 @@ lego-detect-worker --redis-url "$REDIS_URL" --queue "$QUEUE_NAME" \
 export JWT_SECRET=mysecret         # auth secret
 export BRICK_INVENTORY=backend/inventory.json  # optional inventory
 export DETECTOR_MODEL=detector/model.pt       # optional YOLOv8 weights (or pass --model)
+export LEGOGPT_MODEL=/path/to/checkpoint     # optional larger LegoGPT model
 # ``--jwt-secret``, ``--redis-url`` and ``--rate-limit`` override the
 # corresponding environment variables. Use ``--log-level`` or ``LOG_LEVEL``
 # to control verbosity for server and workers.
@@ -125,6 +127,9 @@ lego-gpt-server \
 # Set ``CORS_ORIGINS`` or pass ``--cors-origins <origins>`` to control the
 # ``Access-Control-Allow-Origin`` header.
 # Set ``S3_BUCKET`` and optional ``S3_URL_PREFIX`` to upload assets to S3/R2.
+
+# Start the collaboration server for shared editing
+lego-gpt-collab --host 0.0.0.0 --port 8765
 
 # Generate a JWT for requests
 lego-gpt-token --secret mysecret --sub dev > token.txt
@@ -204,14 +209,14 @@ Release tags trigger a workflow that builds CPU and GPU images and publishes
 them to GitHub Container Registry.  You can pull the latest versioned images:
 
 ```bash
-docker pull ghcr.io/<owner>/lego-gpt:v0.5.40        # CPU
-docker pull ghcr.io/<owner>/lego-gpt:gpu-v0.5.40    # GPU
+docker pull ghcr.io/<owner>/lego-gpt:v0.5.41        # CPU
+docker pull ghcr.io/<owner>/lego-gpt:gpu-v0.5.41    # GPU
 ```
 
 Run the API server with:
 
 ```bash
-docker run -p 8000:8000 ghcr.io/<owner>/lego-gpt:v0.5.40
+docker run -p 8000:8000 ghcr.io/<owner>/lego-gpt:v0.5.41
 ```
 
 Override the command to start a worker or the detector worker as needed.
@@ -224,7 +229,7 @@ followed by `terraform apply`:
 
 ```bash
 cd infra/aws
-export TF_VAR_api_image=ghcr.io/<owner>/lego-gpt:v0.5.40
+export TF_VAR_api_image=ghcr.io/<owner>/lego-gpt:v0.5.41
 export TF_VAR_redis_url=redis://hostname:6379/0
 export TF_VAR_jwt_secret=$(openssl rand -hex 32)
 terraform init

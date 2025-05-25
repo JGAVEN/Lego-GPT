@@ -8,6 +8,7 @@ so the pipeline uses our open-source ILP backend.
 from __future__ import annotations
 
 import uuid
+import os
 from backend import STATIC_ROOT
 
 from backend.export import ldr_to_gltf
@@ -26,9 +27,12 @@ def load_model():
     global MODEL
     if MODEL is None:
         from legogpt.models.legogpt import LegoGPT, LegoGPTConfig
-
-        config = LegoGPTConfig()  # customise here if needed
-        MODEL = LegoGPT(config)
+        model_path = os.getenv("LEGOGPT_MODEL")
+        if model_path and hasattr(LegoGPT, "from_pretrained"):
+            MODEL = LegoGPT.from_pretrained(model_path)
+        else:
+            config = LegoGPTConfig()  # customise here if needed
+            MODEL = LegoGPT(config)
     return MODEL
 
 

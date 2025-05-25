@@ -27,5 +27,14 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 7 – Multi-language support (completed)
 * Introduced a language switcher and Spanish translations in the PWA.
 
+## Sprint 8 – Real-time collaboration (completed)
+* Added a simple WebSocket server and CLI (`lego-gpt-collab`).
+
+## Sprint 9 – Model quality improvements (completed)
+* Backend can load custom checkpoints via the `LEGOGPT_MODEL` env var.
+
+## Sprint 10 – Accessibility polish (completed)
+* Added ARIA labels and improved keyboard navigation in the PWA.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.

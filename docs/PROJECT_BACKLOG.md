@@ -63,6 +63,9 @@
 | F-10 | **C**  | Multi-language support                                | **Done** | Spanish translations and language switcher |
 | B-33 | **S**  | Cloud infrastructure templates                       | **Done** | Terraform sample for AWS App Runner |
 | B-34 | **S**  | Automated UI regression tests                        | **Done** | Cypress setup and basic PWA flow test |
+| F-11 | **C**  | Real-time collaboration via WebSocket                | **Done** | `lego-gpt-collab` server |
+| B-35 | **S**  | Custom model checkpoint support                      | **Done** | `LEGOGPT_MODEL` env var |
+| F-12 | **C**  | Accessibility polish                                 | **Done** | ARIA labels & keyboard nav |
 
 
 
@@ -70,4 +73,4 @@
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.
 
-_Last updated 2025-07-01_
+_Last updated 2025-07-02_

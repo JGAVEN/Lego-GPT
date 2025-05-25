@@ -44,6 +44,7 @@ export default function Settings({ onBack }: { onBack: () => void }) {
             await clearCachedGenerates();
             refresh();
           }}
+          aria-label="clear cache"
         >
           {t("clearCache")}
         </button>
@@ -53,11 +54,12 @@ export default function Settings({ onBack }: { onBack: () => void }) {
             await clearPendingGenerates();
             refresh();
           }}
+          aria-label="clear queue"
         >
           {t("clearQueue")}
         </button>
       </div>
-      <button className="mt-6 text-blue-600 underline" onClick={onBack}>
+      <button className="mt-6 text-blue-600 underline" onClick={onBack} aria-label="back">
         {t("back")}
       </button>
     </main>
