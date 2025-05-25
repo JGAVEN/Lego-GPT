@@ -36,6 +36,7 @@ lego-gpt-token = "backend.token_cli:main"
 lego-gpt-export = "backend.export:main"
 lego-gpt-collab = "backend.collab:main"
 lego-gpt-review = "backend.review_cli:main"
+lego-gpt-metrics = "backend.metrics_ws:main"
 
 [build-system]
 requires = ["setuptools>=64", "wheel"]

@@ -8,11 +8,13 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from redis import Redis
 from rq import Queue, Job
 from backend.api import health
-from backend import STATIC_ROOT, SUBMISSIONS_ROOT, COMMENTS_ROOT
+from backend import STATIC_ROOT, SUBMISSIONS_ROOT, COMMENTS_ROOT, HISTORY_ROOT
 from backend.worker import QUEUE_NAME as DEFAULT_QUEUE, generate_job, detect_job
 from backend.auth import decode as decode_jwt
 from backend import __version__
 from backend.logging_config import setup_logging
+from urllib.request import urlopen
+from urllib.parse import urlsplit, parse_qs
 
 
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
@@ -28,11 +30,30 @@ CORS_ORIGINS = os.getenv("CORS_ORIGINS", "*")
 _TOKEN_USAGE: dict[str, tuple[int, int]] = {}
 
 # Simple in-memory metrics
-METRICS = {
+METRICS: dict[str, int] = {
     "generate_requests": 0,
     "detect_requests": 0,
     "example_submissions": 0,
 }
+
+# Base URLs of other Lego GPT instances for federated search
+FEDERATED_INSTANCES = [u for u in os.getenv("FEDERATED_INSTANCES", "").split(",") if u]
+
+
+def _local_examples() -> list[dict]:
+    path = Path(__file__).resolve().parents[1] / "frontend/public/examples.json"
+    try:
+        return json.loads(path.read_text())
+    except Exception:
+        return []
+
+
+def _fetch_examples(base: str) -> list[dict]:
+    try:
+        with urlopen(base.rstrip("/") + "/examples.json", timeout=3) as res:
+            return json.loads(res.read().decode())
+    except Exception:
+        return []
 
 
 def _check_auth(headers) -> None:
@@ -51,6 +72,17 @@ def _check_auth(headers) -> None:
     if count >= RATE_LIMIT:
         raise RuntimeError("rate_limit")
     _TOKEN_USAGE[token] = (count + 1, win)
+
+
+def _check_admin(headers) -> None:
+    """Ensure JWT token has ``role`` set to ``admin``."""
+    auth = headers.get("Authorization", "")
+    if not auth.startswith("Bearer "):
+        raise PermissionError
+    token = auth.split(" ", 1)[1]
+    payload = decode_jwt(token, JWT_SECRET)
+    if payload.get("role") != "admin":
+        raise PermissionError
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -152,6 +184,11 @@ class Handler(BaseHTTPRequestHandler):
                 time.sleep(1)
             return
         if self.path == "/submissions":
+            try:
+                _check_admin(self.headers)
+            except PermissionError:
+                self.send_error(401)
+                return
             SUBMISSIONS_ROOT.mkdir(parents=True, exist_ok=True)
             items = []
             for item in sorted(SUBMISSIONS_ROOT.glob("*.json")):
@@ -178,7 +215,36 @@ class Handler(BaseHTTPRequestHandler):
             self._send_json({"comments": comments[-10:]})
             return
         if self.path == "/metrics":
+            try:
+                _check_admin(self.headers)
+            except PermissionError:
+                self.send_error(401)
+                return
             self._send_json(METRICS)
+            return
+        if self.path.startswith("/federated_search"):
+            query = parse_qs(urlsplit(self.path).query).get("q", [""])[0].lower()
+            results = []
+            for ex in _local_examples():
+                text = f"{ex.get('title','')} {ex.get('prompt','')}".lower()
+                if query in text:
+                    results.append(ex)
+            for base in FEDERATED_INSTANCES:
+                for ex in _fetch_examples(base):
+                    text = f"{ex.get('title','')} {ex.get('prompt','')}".lower()
+                    if query in text:
+                        results.append(ex)
+            self._send_json({"examples": results})
+            return
+        if self.path == "/history":
+            try:
+                _check_auth(self.headers)
+            except PermissionError:
+                self.send_error(401)
+                return
+            from backend.history import load
+
+            self._send_json({"history": load()})
             return
         if self.path.startswith("/static/"):
             base = STATIC_ROOT.resolve()
@@ -257,6 +323,11 @@ class Handler(BaseHTTPRequestHandler):
             self._send_json({"ok": True})
             return
         if self.path == "/submissions/approve":
+            try:
+                _check_admin(self.headers)
+            except PermissionError:
+                self.send_error(401)
+                return
             length = int(self.headers.get("Content-Length", 0))
             body = self.rfile.read(length)
             try:
@@ -279,6 +350,11 @@ class Handler(BaseHTTPRequestHandler):
             self._send_json({"ok": True})
             return
         if self.path == "/submissions/reject":
+            try:
+                _check_admin(self.headers)
+            except PermissionError:
+                self.send_error(401)
+                return
             length = int(self.headers.get("Content-Length", 0))
             body = self.rfile.read(length)
             try:

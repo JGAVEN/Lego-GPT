@@ -11,6 +11,25 @@ function authHeaders() {
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
+export function isAdmin(): boolean {
+  const token = localStorage.getItem("jwt") || import.meta.env.VITE_JWT;
+  if (!token) return false;
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    return payload.role === "admin";
+  } catch {
+    return false;
+  }
+}
+
+export interface Example {
+  id: string;
+  title: string;
+  prompt: string;
+  image: string;
+  tags?: string[];
+}
+
 export interface GenerateResponse {
   png_url: string;
   ldr_url: string | null;
@@ -25,6 +44,12 @@ export interface DetectRequest {
 
 export interface DetectResponse {
   brick_counts: Record<string, number>;
+}
+
+export interface HistoryEntry {
+  prompt: string;
+  seed: number | null;
+  result: GenerateResponse;
 }
 
 export async function generateLego(
@@ -77,4 +102,16 @@ export async function postComment(exampleId: string, comment: string) {
     body: JSON.stringify({ comment }),
   });
   if (!res.ok) throw new Error("Failed");
+}
+
+export async function federatedSearch(query: string): Promise<{ examples: Example[] }> {
+  const res = await fetch(`${API_BASE}/federated_search?q=${encodeURIComponent(query)}`);
+  if (!res.ok) throw new Error("Failed");
+  return (await res.json()) as { examples: Example[] };
+}
+
+export async function fetchHistory(): Promise<{ history: HistoryEntry[] }> {
+  const res = await fetch(`${API_BASE}/history`, { headers: authHeaders() });
+  if (!res.ok) throw new Error("Failed");
+  return (await res.json()) as { history: HistoryEntry[] };
 }

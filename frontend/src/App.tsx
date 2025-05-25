@@ -14,6 +14,7 @@ import { processPending } from "./lib/offlineQueue";
 import CollabDemo from "./CollabDemo";
 import Moderation from "./Moderation";
 import Analytics from "./Analytics";
+import { isAdmin } from "./api/lego";
 
 export default function App() {
   const { t } = useI18n();
@@ -174,20 +175,24 @@ export default function App() {
       >
         {t("collabDemo")}
       </button>
-      <button
-        className="text-sm underline mb-4 ml-4"
-        onClick={() => setPage("moderation")}
-        aria-label="moderation"
-      >
-        {t("moderation")}
-      </button>
-      <button
-        className="text-sm underline mb-4 ml-4"
-        onClick={() => setPage("analytics")}
-        aria-label="analytics"
-      >
-        Analytics
-      </button>
+      {isAdmin() && (
+        <>
+          <button
+            className="text-sm underline mb-4 ml-4"
+            onClick={() => setPage("moderation")}
+            aria-label="moderation"
+          >
+            {t("moderation")}
+          </button>
+          <button
+            className="text-sm underline mb-4 ml-4"
+            onClick={() => setPage("analytics")}
+            aria-label="analytics"
+          >
+            Analytics
+          </button>
+        </>
+      )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
