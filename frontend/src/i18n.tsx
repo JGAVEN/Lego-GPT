@@ -16,6 +16,8 @@ const en = {
   communityExamples: "Community Examples",
   usePrompt: "Use Prompt",
   back: "Back",
+  searchExamples: "Search examples",
+  allTags: "All tags",
   cachedResults: "Cached results:",
   queuedRequests: "Queued requests:",
   clearCache: "Clear Cache",

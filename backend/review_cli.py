@@ -4,9 +4,55 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 from pathlib import Path
 
 from backend import SUBMISSIONS_ROOT
+
+# Common words ignored when generating tags
+STOP_WORDS = {
+    "the",
+    "and",
+    "for",
+    "with",
+    "from",
+    "this",
+    "that",
+    "these",
+    "those",
+    "make",
+    "build",
+    "create",
+    "lego",
+    "your",
+    "you",
+    "small",
+    "large",
+    "big",
+    "model",
+    "a",
+    "an",
+    "of",
+    "to",
+    "in",
+    "on",
+    "at",
+    "by",
+}
+
+
+def generate_tags(title: str, prompt: str) -> list[str]:
+    """Return up to five keyword tags from the title and prompt."""
+    text = f"{title} {prompt}".lower()
+    words = re.findall(r"[a-zA-Z]{3,}", text)
+    tags: list[str] = []
+    for word in words:
+        if word in STOP_WORDS or word in tags:
+            continue
+        tags.append(word)
+        if len(tags) == 5:
+            break
+    return tags
 
 
 def list_submissions(path: Path) -> None:
@@ -23,7 +69,7 @@ def list_submissions(path: Path) -> None:
 
 
 def approve_submission(path: Path, file_name: str, examples: Path) -> None:
-    """Move submission into the examples list."""
+    """Move submission into the examples list with auto generated tags."""
     file_path = path / file_name
     data = json.loads(file_path.read_text())
     examples_data = json.loads(examples.read_text()) if examples.is_file() else []
@@ -33,6 +79,7 @@ def approve_submission(path: Path, file_name: str, examples: Path) -> None:
         "title": data["title"],
         "prompt": data["prompt"],
     }
+    entry["tags"] = generate_tags(entry["title"], entry["prompt"])
     if "image" in data:
         entry["image"] = data["image"]
     examples_data.append(entry)
