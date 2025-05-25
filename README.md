@@ -206,6 +206,25 @@ docker run -p 8000:8000 ghcr.io/<owner>/lego-gpt:v0.5.38
 
 Override the command to start a worker or the detector worker as needed.
 
+### Cloud Deployment with Terraform
+
+Sample Terraform templates are available under [`infra/`](infra/README.md) for
+deploying the API to AWS. Export the required variables and run `terraform init`
+followed by `terraform apply`:
+
+```bash
+cd infra/aws
+export TF_VAR_api_image=ghcr.io/<owner>/lego-gpt:v0.5.38
+export TF_VAR_redis_url=redis://hostname:6379/0
+export TF_VAR_jwt_secret=$(openssl rand -hex 32)
+terraform init
+terraform apply
+```
+
+Secrets are provided via environment variables (`TF_VAR_*`) so they are not
+committed to version control. The example deploys the API using AWS App Runner
+and assumes a Redis instance is already available.
+
 ### Train the Brick Detector
 
 Fine‑tune the YOLOv8 model when you have a labelled dataset. The

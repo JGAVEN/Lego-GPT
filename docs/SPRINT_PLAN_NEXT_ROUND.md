@@ -2,9 +2,9 @@
 
 With the advanced front-end features completed, the following sprints continue the roadmap.
 
-## Sprint 1 – Cloud infrastructure templates
-* Provide Terraform samples for common cloud providers.
-* Offer environment variables for secret management.
+## Sprint 1 – Cloud infrastructure templates (completed)
+* Added `infra/aws` Terraform sample.
+* Secrets loaded from environment variables.
 
 ## Sprint 2 – Mobile PWA polish (completed)
 * Fine‑tune touch controls in the 3‑D viewer.
