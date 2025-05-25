@@ -24,3 +24,8 @@ It expects a container image published to a registry such as GitHub Container Re
 
 Secrets are provided via `TF_VAR_` environment variables so they do not need to be committed to version control.
 You can also create a `terraform.tfvars` file if preferred.
+For team usage configure remote state (for example via an S3 backend) so each
+`terraform apply` uses the same state file. Adjust the variables in
+[`variables.tf`](variables.tf) to customise the App Runner service name or
+region. Refer to the Terraform documentation for tuning memory and CPU
+requirements.
