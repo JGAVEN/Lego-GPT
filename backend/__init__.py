@@ -22,7 +22,7 @@ except Exception:  # pragma: no cover - ignore if missing
 try:  # pragma: no cover - during editable installs
     __version__ = version("lego-gpt-backend")
 except PackageNotFoundError:  # pragma: no cover - fallback for tests
-    __version__ = "0.5.49"
+    __version__ = "0.5.50"
 
 PACKAGE_DIR = Path(__file__).parent
 _env_static = os.getenv("STATIC_ROOT")
@@ -41,6 +41,14 @@ COMMENTS_ROOT = (
 )
 COMMENTS_ROOT = COMMENTS_ROOT.resolve()
 
+# Email notification settings
+SMTP_HOST = os.getenv("SMTP_HOST")
+SMTP_PORT = int(os.getenv("SMTP_PORT", "25"))
+SMTP_USER = os.getenv("SMTP_USER")
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
+SMTP_FROM = os.getenv("SMTP_FROM", "lego-gpt@localhost")
+COMMENT_NOTIFY_EMAIL = os.getenv("COMMENT_NOTIFY_EMAIL")
+
 # URL prefix returned for generated assets
 STATIC_URL_PREFIX = os.getenv("STATIC_URL_PREFIX", "/static")
 
@@ -50,4 +58,10 @@ __all__ = [
     "STATIC_URL_PREFIX",
     "SUBMISSIONS_ROOT",
     "COMMENTS_ROOT",
+    "SMTP_HOST",
+    "SMTP_PORT",
+    "SMTP_USER",
+    "SMTP_PASSWORD",
+    "SMTP_FROM",
+    "COMMENT_NOTIFY_EMAIL",
 ]

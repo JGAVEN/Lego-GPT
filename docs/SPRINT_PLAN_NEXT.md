@@ -2,9 +2,6 @@
 
 These upcoming sprints continue improving community and admin features.
 
-## Sprint 35 – Comment notifications
-* Send an email notification when an example receives a new comment.
-
 ## Sprint 36 – Federated example search
 * Allow searching approved examples from multiple instances via a simple API.
 
@@ -16,3 +13,6 @@ These upcoming sprints continue improving community and admin features.
 
 ## Sprint 39 – Live metrics stream
 * Provide a WebSocket endpoint streaming metrics updates in real time.
+
+## Sprint 40 – Build history export
+* Users can download a JSON archive of their generated models.
