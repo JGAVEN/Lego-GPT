@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useI18n } from "./i18n";
 import {
   countCachedGenerates,
   countPendingGenerates,
@@ -7,6 +8,7 @@ import {
 } from "./lib/db";
 
 export default function Settings({ onBack }: { onBack: () => void }) {
+  const { t, lang, setLang } = useI18n();
   const [cacheCount, setCacheCount] = useState(0);
   const [queueCount, setQueueCount] = useState(0);
 
@@ -21,9 +23,20 @@ export default function Settings({ onBack }: { onBack: () => void }) {
 
   return (
     <main className="p-6 max-w-xl mx-auto font-sans">
-      <h1 className="text-2xl font-bold mb-4">Settings</h1>
-      <p>Cached results: {cacheCount}</p>
-      <p>Queued requests: {queueCount}</p>
+      <h1 className="text-2xl font-bold mb-4">{t("settings")}</h1>
+      <div className="mb-4">
+        <label className="mr-2">{t("language")}</label>
+        <select
+          className="border rounded px-2 py-1"
+          value={lang}
+          onChange={(e) => setLang(e.target.value as typeof lang)}
+        >
+          <option value="en">English</option>
+          <option value="es">Español</option>
+        </select>
+      </div>
+      <p>{t("cachedResults")} {cacheCount}</p>
+      <p>{t("queuedRequests")} {queueCount}</p>
       <div className="mt-4 space-x-2">
         <button
           className="bg-gray-200 px-3 py-1 rounded"
@@ -32,7 +45,7 @@ export default function Settings({ onBack }: { onBack: () => void }) {
             refresh();
           }}
         >
-          Clear Cache
+          {t("clearCache")}
         </button>
         <button
           className="bg-gray-200 px-3 py-1 rounded"
@@ -41,11 +54,11 @@ export default function Settings({ onBack }: { onBack: () => void }) {
             refresh();
           }}
         >
-          Clear Queue
+          {t("clearQueue")}
         </button>
       </div>
       <button className="mt-6 text-blue-600 underline" onClick={onBack}>
-        Back
+        {t("back")}
       </button>
     </main>
   );
