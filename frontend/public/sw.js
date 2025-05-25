@@ -20,3 +20,17 @@ self.addEventListener('fetch', (event) => {
     );
   }
 });
+
+self.addEventListener('push', (event) => {
+  const data = event.data ? event.data.json() : {};
+  const title = data.title || 'Lego GPT';
+  const options = { body: data.body || 'A collaborator edited the build.' };
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'collab_update') {
+    const body = event.data.body || 'A collaborator edited the build.';
+    self.registration.showNotification('Lego GPT', { body });
+  }
+});

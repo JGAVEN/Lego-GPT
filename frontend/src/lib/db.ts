@@ -1,9 +1,10 @@
 import type { GenerateResponse } from "../api/lego";
 
 const DB_NAME = "lego-gpt";
-const DB_VERSION = 2;
+const DB_VERSION = 3;
 const GEN_STORE = "generate";
 const PENDING_STORE = "pending";
+const COLLAB_STORE = "pending-collab";
 
 function openDb(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
@@ -15,6 +16,9 @@ function openDb(): Promise<IDBDatabase> {
       }
       if (!db.objectStoreNames.contains(PENDING_STORE)) {
         db.createObjectStore(PENDING_STORE, { autoIncrement: true });
+      }
+      if (!db.objectStoreNames.contains(COLLAB_STORE)) {
+        db.createObjectStore(COLLAB_STORE, { autoIncrement: true });
       }
     };
     req.onsuccess = () => resolve(req.result);
@@ -130,6 +134,66 @@ export async function clearPendingGenerates(): Promise<void> {
   return new Promise((resolve, reject) => {
     const tx = db.transaction(PENDING_STORE, "readwrite");
     const store = tx.objectStore(PENDING_STORE);
+    const req = store.clear();
+    req.onsuccess = () => resolve();
+    req.onerror = () => reject(req.error);
+  });
+}
+
+export interface PendingCollab {
+  room: string;
+  data: string;
+}
+
+export async function addPendingCollab(msg: PendingCollab): Promise<void> {
+  const db = await openDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(COLLAB_STORE, "readwrite");
+    const store = tx.objectStore(COLLAB_STORE);
+    const r = store.add(msg);
+    r.onsuccess = () => resolve();
+    r.onerror = () => reject(r.error);
+  });
+}
+
+export async function getPendingCollabs(): Promise<Array<{ id: number; msg: PendingCollab }>> {
+  const db = await openDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(COLLAB_STORE, "readonly");
+    const store = tx.objectStore(COLLAB_STORE);
+    const results: Array<{ id: number; msg: PendingCollab }> = [];
+    const req = store.openCursor();
+    req.onsuccess = () => {
+      const cursor = req.result;
+      if (cursor) {
+        results.push({ id: cursor.key as number, msg: cursor.value });
+        cursor.continue();
+      } else {
+        resolve(results);
+      }
+    };
+    req.onerror = () => reject(req.error);
+  });
+}
+
+export async function deletePendingCollab(id: number): Promise<void> {
+  const db = await openDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(COLLAB_STORE, "readwrite");
+    const store = tx.objectStore(COLLAB_STORE);
+    const req = store.delete(id);
+    req.onsuccess = () => resolve();
+    req.onerror = () => reject(req.error);
+  });
+}
+
+export const countPendingCollabs = () => countStore(COLLAB_STORE);
+
+export async function clearPendingCollabs(): Promise<void> {
+  const db = await openDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(COLLAB_STORE, "readwrite");
+    const store = tx.objectStore(COLLAB_STORE);
     const req = store.clear();
     req.onsuccess = () => resolve();
     req.onerror = () => reject(req.error);

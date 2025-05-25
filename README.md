@@ -14,7 +14,7 @@ real-life building via a built-in Three.js viewer.
 
 &nbsp;
 
-## 2. What’s New (2025-06-13)
+## 2. What’s New (2025-07-01)
 | Change | Impact |
 |--------|--------|
 | 🔄 **Open-source solver** – switched to **OR-Tools 9.10 + HiGHS**. | Runs licence-free everywhere (local dev, CI, containers). |
@@ -39,6 +39,8 @@ real-life building via a built-in Three.js viewer.
 | 🧹 **Cleanup script** (`lego-gpt-cleanup`) | Remove old asset directories (use `--dry-run` to preview) |
 | 🌐 **Collaboration server** (`lego-gpt-collab`) | WebSocket endpoint for real-time shared editing |
 | 🆕 **Offline queue + settings** | Requests made offline are queued and cached results can be cleared in the settings page |
+| 🔔 **Push notifications** | Service worker shows notifications when collaborators edit a build |
+| 📨 **Offline edit queue** | Collaboration messages are stored offline and synced on reconnect |
 | 📱 **Install prompt & touch controls** | Add to Home Screen button and smoother mobile controls |
 | 🖼️ **Community example gallery** | Browse shared prompts and load them with one click |
 
@@ -130,6 +132,9 @@ lego-gpt-server \
 # Start the collaboration server for shared editing
 lego-gpt-collab --host 0.0.0.0 --port 8765
 
+# Access the collaboration demo
+Open the PWA and choose **Collaboration Demo** from the main page to try real-time editing.
+
 # Generate a JWT for requests
 lego-gpt-token --secret mysecret --sub dev > token.txt
 
@@ -207,14 +212,14 @@ Release tags trigger a workflow that builds CPU and GPU images and publishes
 them to GitHub Container Registry.  You can pull the latest versioned images:
 
 ```bash
-docker pull ghcr.io/<owner>/lego-gpt:v0.5.41        # CPU
-docker pull ghcr.io/<owner>/lego-gpt:gpu-v0.5.41    # GPU
+docker pull ghcr.io/<owner>/lego-gpt:v0.5.42        # CPU
+docker pull ghcr.io/<owner>/lego-gpt:gpu-v0.5.42    # GPU
 ```
 
 Run the API server with:
 
 ```bash
-docker run -p 8000:8000 ghcr.io/<owner>/lego-gpt:v0.5.41
+docker run -p 8000:8000 ghcr.io/<owner>/lego-gpt:v0.5.42
 ```
 
 Override the command to start a worker or the detector worker as needed.
@@ -227,7 +232,7 @@ followed by `terraform apply`:
 
 ```bash
 cd infra/aws
-export TF_VAR_api_image=ghcr.io/<owner>/lego-gpt:v0.5.41
+export TF_VAR_api_image=ghcr.io/<owner>/lego-gpt:v0.5.42
 export TF_VAR_redis_url=redis://hostname:6379/0
 export TF_VAR_jwt_secret=$(openssl rand -hex 32)
 terraform init

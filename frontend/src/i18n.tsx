@@ -20,7 +20,13 @@ const en = {
   queuedRequests: "Queued requests:",
   clearCache: "Clear Cache",
   clearQueue: "Clear Queue",
-}; 
+  pendingEdits: "Queued edits:",
+  clearEdits: "Clear Edits",
+  collabDemo: "Collaboration Demo",
+  roomId: "Room ID",
+  message: "Message",
+  send: "Send",
+};
 
 export type Lang = "en";
 export type TransKey = keyof typeof en;

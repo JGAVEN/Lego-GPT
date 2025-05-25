@@ -1,3 +1,9 @@
+## [0.5.42] – 2025-07-15
+### Added
+* Offline collaboration queue with IndexedDB.
+* Push notifications triggered by collaboration events.
+* Demo page showcasing real-time editing.
+
 ## [0.5.41] – 2025-07-02
 ### Added
 * `lego-gpt-collab` WebSocket server for real-time collaboration.

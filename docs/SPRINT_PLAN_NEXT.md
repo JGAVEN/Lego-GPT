@@ -2,11 +2,11 @@
 
 This plan outlines the upcoming sprints after completing the community example library.
 
-## Sprint 1 – Offline mode enhancements
-* Queue edits offline and sync when reconnected.
-## Sprint 2 – Push notifications
-* Notify users when collaboration partners edit a build.
+## Sprint 1 – Collaborative undo/redo
+* Track edit history and broadcast changes to peers.
+## Sprint 2 – Push subscription management
+* Allow users to enable or disable Web Push notifications.
 
-## Sprint 3 – Interface polish
-* No additional languages are planned; the PWA remains English only.
+## Sprint 3 – Expand example library
+* Accept community submissions and curate featured builds.
 
