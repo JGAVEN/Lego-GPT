@@ -59,6 +59,7 @@
 | D-22 | **S**  | Deployment automation (CPU & GPU images)               | **Done** | Release workflow builds and pushes Docker images |
 | D-23 | **S**  | Scalability benchmarking                              | **Done** | Benchmark script and tuning docs |
 | F-08 | **C**  | Advanced front-end features                            | **Done** | Offline queue + settings page |
+| D-24 | **S**  | Cloud infrastructure templates                      | **Done** | Terraform samples for AWS, GCP and Azure |
 
 
 
@@ -66,4 +67,4 @@
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.
 
-_Last updated 2025-06-22_
+_Last updated 2025-06-25_

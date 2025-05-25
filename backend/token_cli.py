@@ -3,14 +3,14 @@ from __future__ import annotations
 
 import argparse
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from backend.auth import encode
 
 
 def generate_token(secret: str, sub: str, lifetime: int) -> str:
     """Return a JWT token signed with ``secret``."""
-    exp_ts = int((datetime.utcnow() + timedelta(seconds=lifetime)).timestamp())
+    exp_ts = int((datetime.now(timezone.utc) + timedelta(seconds=lifetime)).timestamp())
     return encode({"sub": sub}, secret, exp=exp_ts)
 
 
