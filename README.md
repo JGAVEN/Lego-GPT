@@ -152,6 +152,8 @@ pnpm --dir frontend run dev    # http://localhost:5173
 pnpm --dir frontend run lint
 # Lint backend code
 ruff check backend detector
+# Run UI tests (requires the dev server on another terminal)
+pnpm --dir frontend run test:e2e
 # Remove assets older than 7 days (preview with --dry-run)
 lego-gpt-cleanup --days 7 --dry-run
 # Convert an existing .ldr model to glTF
@@ -168,6 +170,7 @@ Install hooks with `pre-commit install` to automatically run `ruff` on each
 commit. The configuration lives in `.pre-commit-config.yaml`.
 
 Run `./scripts/run_tests.sh` to lint and test in one step.
+The script runs Cypress UI tests if the dependencies are available.
 CI runs the same tests under `coverage` and uploads the report to Codecov.
 CI also executes a lightweight scalability benchmark via
 `scripts/benchmark_ci.py` to detect performance regressions.
@@ -339,10 +342,12 @@ Default rate limit is `5` generate requests per token per minute (configurable v
    `@eslint/js`, `@types/react`, `@types/react-dom`, `@vitejs/plugin-react`,
    `eslint`, `eslint-config-prettier`, `eslint-plugin-react-hooks`,
    `eslint-plugin-react-refresh`, `globals`, `prettier`, `typescript`,
-   `typescript-eslint` and `vite`. Running the setup script offline before the
+   `typescript-eslint`, `vite` and `cypress`. Running the setup script offline before the
    store is populated prints a short message explaining the missing packages.
    Run `pnpm --dir frontend run lint` after editing UI code; the command skips if
    dependencies are missing.
+   Run `pnpm --dir frontend run test:e2e` to execute Cypress tests when
+   the Vite dev server is running.
 4. Run `python -m unittest discover -v` before pushing. The test suite uses
    Python's built-in `unittest` module. `pytest` is optional and works too.
 5. Update `docs/CHANGELOG.md` after each merge to `main`.
