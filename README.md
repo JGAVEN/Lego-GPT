@@ -1,7 +1,7 @@
 
 # Lego GPT ![Coverage](https://codecov.io/gh/JGAVEN/Lego-GPT/branch/main/graph/badge.svg)
 
-Generate buildable **LEGO®** creations directly from your browser.
+Generate buildable **LEGO®** creations directly from your browser. All interface text and prompts are in English only.
 
 ---
 
@@ -41,7 +41,6 @@ real-life building via a built-in Three.js viewer.
 | 🆕 **Offline queue + settings** | Requests made offline are queued and cached results can be cleared in the settings page |
 | 📱 **Install prompt & touch controls** | Add to Home Screen button and smoother mobile controls |
 | 🖼️ **Community example gallery** | Browse shared prompts and load them with one click |
-| 🌐 **Multi-language support** | Switch between English and Spanish in the Settings |
 
 &nbsp;
 
@@ -155,7 +154,6 @@ pnpm --dir frontend run dev    # http://localhost:5173
 # service worker so previously viewed results remain available offline.
 # Requests made while offline are queued and processed once connectivity returns.
 # Browse shared prompts in the Examples page and load them with one click.
-# Use the Settings page to change the interface language.
 # Lint UI code (skips if dependencies are missing)
 pnpm --dir frontend run lint
 # Lint backend code

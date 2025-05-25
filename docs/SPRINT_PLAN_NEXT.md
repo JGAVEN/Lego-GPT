@@ -7,6 +7,6 @@ This plan outlines the upcoming sprints after completing the community example l
 ## Sprint 2 – Push notifications
 * Notify users when collaboration partners edit a build.
 
-## Sprint 3 – Additional language support
-* Add French translations to the PWA.
+## Sprint 3 – Interface polish
+* No additional languages are planned; the PWA remains English only.
 

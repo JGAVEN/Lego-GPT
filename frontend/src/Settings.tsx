@@ -8,7 +8,7 @@ import {
 } from "./lib/db";
 
 export default function Settings({ onBack }: { onBack: () => void }) {
-  const { t, lang, setLang } = useI18n();
+  const { t } = useI18n();
   const [cacheCount, setCacheCount] = useState(0);
   const [queueCount, setQueueCount] = useState(0);
 
@@ -24,17 +24,6 @@ export default function Settings({ onBack }: { onBack: () => void }) {
   return (
     <main className="p-6 max-w-xl mx-auto font-sans">
       <h1 className="text-2xl font-bold mb-4">{t("settings")}</h1>
-      <div className="mb-4">
-        <label className="mr-2">{t("language")}</label>
-        <select
-          className="border rounded px-2 py-1"
-          value={lang}
-          onChange={(e) => setLang(e.target.value as typeof lang)}
-        >
-          <option value="en">English</option>
-          <option value="es">Español</option>
-        </select>
-      </div>
       <p>{t("cachedResults")} {cacheCount}</p>
       <p>{t("queuedRequests")} {queueCount}</p>
       <div className="mt-4 space-x-2">

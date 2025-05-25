@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, ReactNode } from "react";
 
 const en = {
   title: "Lego GPT Demo",
@@ -20,60 +20,23 @@ const en = {
   queuedRequests: "Queued requests:",
   clearCache: "Clear Cache",
   clearQueue: "Clear Queue",
-  language: "Language:",
-};
+}; 
 
-const es: typeof en = {
-  title: "Demostración de Lego GPT",
-  installApp: "Instalar Aplicación",
-  settings: "Configuración",
-  examples: "Ejemplos",
-  prompt: "Solicitud",
-  seedOptional: "Semilla (opcional)",
-  inventoryPhoto: "Foto de Inventario",
-  detecting: "Detectando…",
-  detectedInventory: "Inventario Detectado:",
-  generate: "Generar",
-  generating: "Generando…",
-  viewInAR: "Ver en AR",
-  communityExamples: "Ejemplos de la Comunidad",
-  usePrompt: "Usar Solicitud",
-  back: "Atrás",
-  cachedResults: "Resultados en caché:",
-  queuedRequests: "Solicitudes en cola:",
-  clearCache: "Limpiar Caché",
-  clearQueue: "Vaciar Cola",
-  language: "Idioma:",
-};
-
-const messages = { en, es };
-export type Lang = keyof typeof messages;
+export type Lang = "en";
 export type TransKey = keyof typeof en;
 
 interface I18nContext {
-  lang: Lang;
-  setLang: (l: Lang) => void;
   t: (k: TransKey) => string;
 }
 
 const I18nContext = createContext<I18nContext>({
-  lang: "en",
-  setLang: () => {},
   t: (k: TransKey) => en[k],
 });
 
 export function I18nProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>(() => {
-    const stored = localStorage.getItem("lang") as Lang | null;
-    return stored ?? "en";
-  });
-  function setLang(l: Lang) {
-    setLangState(l);
-    localStorage.setItem("lang", l);
-  }
-  const t = (k: TransKey) => messages[lang][k] ?? en[k];
+  const t = (k: TransKey) => en[k];
   return (
-    <I18nContext.Provider value={{ lang, setLang, t }}>
+    <I18nContext.Provider value={{ t }}>
       {children}
     </I18nContext.Provider>
   );
