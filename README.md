@@ -63,6 +63,7 @@ npm install -g pnpm@10.5.2
 # Running it offline before the store is populated prints a brief message and
 # skips linting. The script requires `pnpm` to be installed.
 ./scripts/setup_frontend.sh
+# The script also verifies the Cypress binary so UI tests can run offline.
 
 # Install backend dependencies and dev tools (includes `ruff` for linting)
 # Add the `[env]` extra to enable `.env` configuration support
