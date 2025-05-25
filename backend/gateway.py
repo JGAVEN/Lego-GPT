@@ -8,7 +8,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from redis import Redis
 from rq import Queue, Job
 from backend.api import health
-from backend import STATIC_ROOT
+from backend import STATIC_ROOT, SUBMISSIONS_ROOT
 from backend.worker import QUEUE_NAME as DEFAULT_QUEUE, generate_job, detect_job
 from backend.auth import decode as decode_jwt
 from backend import __version__
@@ -121,6 +121,29 @@ class Handler(BaseHTTPRequestHandler):
                 self._add_cors()
                 self.end_headers()
             return
+        if self.path.startswith("/progress/"):
+            job_id = self.path.split("/", 2)[-1]
+            self.send_response(200)
+            self.send_header("Content-Type", "text/event-stream")
+            self.send_header("Cache-Control", "no-cache")
+            self._add_cors()
+            self.end_headers()
+            last = None
+            while True:
+                try:
+                    job_obj = Job.fetch(job_id, connection=redis_conn)
+                except Exception:
+                    break
+                prog = job_obj.meta.get("progress")
+                if prog != last and prog is not None:
+                    data = json.dumps({"progress": prog}).encode()
+                    self.wfile.write(b"data: " + data + b"\n\n")
+                    self.wfile.flush()
+                    last = prog
+                if job_obj.is_finished or job_obj.is_failed:
+                    break
+                time.sleep(1)
+            return
         if self.path.startswith("/static/"):
             base = STATIC_ROOT.resolve()
             rel = self.path[len("/static/") :]
@@ -169,6 +192,31 @@ class Handler(BaseHTTPRequestHandler):
                 return
             job_obj = queue.enqueue(generate_job, prompt, seed, inventory)
             self._send_json({"job_id": job_obj.id})
+            return
+        if self.path == "/submit_example":
+            length = int(self.headers.get("Content-Length", 0))
+            body = self.rfile.read(length)
+            try:
+                payload = json.loads(body.decode() or "{}")
+            except json.JSONDecodeError:
+                self.send_error(400, "Invalid JSON")
+                return
+            title = payload.get("title")
+            prompt_text = payload.get("prompt")
+            if not title or not prompt_text:
+                self.send_error(400, "title and prompt required")
+                return
+            image = payload.get("image")
+            SUBMISSIONS_ROOT.mkdir(parents=True, exist_ok=True)
+            from uuid import uuid4
+
+            submission = {"title": title, "prompt": prompt_text}
+            if image:
+                submission["image"] = image
+            (SUBMISSIONS_ROOT / f"{uuid4()}.json").write_text(
+                json.dumps(submission, indent=2)
+            )
+            self._send_json({"ok": True})
             return
         if self.path == "/detect_inventory":
             try:

@@ -71,6 +71,8 @@
 | F-15 | **C**  | Expanded example library                             | **Done** | More sample prompts |
 | F-16 | **C**  | Automated front-end setup                           | **Done** | Dev container installs packages via setup script |
 | F-17 | **C**  | Presence indicator in collaboration demo            | **Done** | Server broadcasts peer count; UI shows connected collaborators |
+| B-36 | **S**  | Example submission pipeline                        | **Done** | `/submit_example` endpoint stores community prompts |
+| B-37 | **S**  | Build progress events                              | **Done** | SSE endpoint `/progress/<job_id>` |
 
 
 
@@ -78,4 +80,4 @@
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.
 
-_Last updated 2025-07-27_
+_Last updated 2025-07-28_

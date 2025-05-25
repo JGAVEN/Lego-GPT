@@ -62,5 +62,11 @@ This plan outlines the next five logical sprints after completing the advanced f
 * Collaboration server broadcasts the number of peers in each room.
 * Demo page displays connected collaborator count.
 
+## Sprint 19 – Example submission pipeline (completed)
+* Added `/submit_example` endpoint storing community prompts for review.
+
+## Sprint 20 – Build progress events (completed)
+* Worker updates job meta and `/progress/<job_id>` streams progress via SSE.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.

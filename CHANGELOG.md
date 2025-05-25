@@ -1,3 +1,10 @@
+## [0.5.46] – 2025-07-28
+### Added
+* Example submission endpoint `/submit_example`.
+* SSE progress streaming via `/progress/<job_id>`.
+### Changed
+* Backend version bumped to 0.5.46.
+
 ## [0.5.45] – 2025-07-27
 ### Added
 * Presence indicator shows connected collaborators in real time.

@@ -200,6 +200,54 @@ class ServerTests(unittest.TestCase):
         self.assertEqual(headers.get("Content-Type"), "model/gltf+json")
         shutil.rmtree(tmp)
 
+    def test_submit_example_post(self):
+        import tempfile
+        import shutil
+        from pathlib import Path
+
+        tmp = Path(tempfile.mkdtemp())
+        self.server.SUBMISSIONS_ROOT = tmp
+        payload = {"title": "x", "prompt": "y"}
+        status, data = self._request(
+            "POST", "/submit_example", body=json.dumps(payload).encode()
+        )
+        self.assertEqual(status, 200)
+        files = list(tmp.glob("*.json"))
+        self.assertEqual(len(files), 1)
+        obj = json.loads(files[0].read_text())
+        self.assertEqual(obj["title"], "x")
+        shutil.rmtree(tmp)
+
+    def test_submit_example_missing(self):
+        status, _ = self._request(
+            "POST", "/submit_example", body=b"{}"
+        )
+        self.assertEqual(status, 400)
+
+    @patch("backend.gateway.Job.fetch")
+    def test_progress_events(self, mock_fetch):
+        state = {"calls": 0}
+
+        def fake_fetch(job_id, connection=None):
+            class Dummy:
+                pass
+
+            obj = Dummy()
+
+            call = state["calls"]
+            state["calls"] += 1
+
+            obj.meta = {"progress": 0 if call == 0 else 100}
+            obj.is_failed = False
+            obj.is_finished = call > 0
+            return obj
+
+        mock_fetch.side_effect = fake_fetch
+        status, data, headers = self._request_full("GET", "/progress/1")
+        self.assertEqual(status, 200)
+        self.assertEqual(headers.get("Content-Type"), "text/event-stream")
+        self.assertIn(b"progress", data)
+
 
 if __name__ == "__main__":  # pragma: no cover
     unittest.main()

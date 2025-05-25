@@ -16,7 +16,20 @@ def generate_job(
     inventory_filter: dict[str, int] | None = None,
 ) -> dict:
     """Background job that runs the model and returns file URLs."""
-    return generate_lego_model(prompt, seed, inventory_filter)
+    try:
+        from rq import get_current_job
+
+        job = get_current_job()
+    except Exception:
+        job = None
+    if job:
+        job.meta["progress"] = 0
+        job.save_meta()
+    result = generate_lego_model(prompt, seed, inventory_filter)
+    if job:
+        job.meta["progress"] = 100
+        job.save_meta()
+    return result
 
 
 def detect_job(image_b64: str) -> dict:
