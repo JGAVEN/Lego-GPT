@@ -2,9 +2,9 @@
 
 This plan outlines the upcoming sprints after completing the community example library.
 
-## Sprint 1 – Example rating system
-* Allow users to rate community examples and store the rating in `examples.json`.
+## Sprint 1 – Automatic example tagging
+* Generate keyword tags when approving submissions.
 
-## Sprint 2 – Tag editing tools
-* Improve the review CLI to edit or add tags before approval.
+## Sprint 2 – Example search and filter
+* Front-end gallery can filter examples by tag or search text.
 
