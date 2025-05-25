@@ -6,7 +6,7 @@ With the advanced front-end features completed, the following sprints continue t
 * Provide Terraform samples for common cloud providers.
 * Offer environment variables for secret management.
 
-## Sprint 2 – Mobile PWA polish
+## Sprint 2 – Mobile PWA polish (completed)
 * Fine‑tune touch controls in the 3‑D viewer.
 * Add install prompts and home‑screen icons.
 

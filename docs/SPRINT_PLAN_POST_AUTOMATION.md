@@ -14,7 +14,7 @@ This plan lists the next five logical sprints after completing the deployment au
 * Provide Terraform samples for common cloud providers.
 * Offer environment variables for secret management.
 
-## Sprint 4 – Mobile PWA polish
+## Sprint 4 – Mobile PWA polish (completed)
 * Fine‑tune touch controls in the 3‑D viewer.
 * Add install prompts and home-screen icons.
 

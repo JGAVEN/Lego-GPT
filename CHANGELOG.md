@@ -1,3 +1,9 @@
+## [0.5.38] – 2025-06-23
+### Added
+* Install prompt and touch-friendly viewer.
+### Changed
+* Backend package version bumped to 0.5.38.
+
 ## [0.5.37] – 2025-06-22
 ### Added
 * Offline request queue with automatic processing when back online.
