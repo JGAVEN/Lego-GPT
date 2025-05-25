@@ -224,6 +224,34 @@ class ServerTests(unittest.TestCase):
         )
         self.assertEqual(status, 400)
 
+    def test_comments_post_and_get(self):
+        import tempfile
+        from pathlib import Path
+
+        tmp = Path(tempfile.mkdtemp())
+        self.server.COMMENTS_ROOT = tmp
+        status, _ = self._request(
+            "POST",
+            "/comments/1",
+            body=b'{"comment":"nice"}',
+            token=self.token,
+        )
+        self.assertEqual(status, 200)
+        status, data = self._request("GET", "/comments/1")
+        self.assertEqual(status, 200)
+        payload = json.loads(data)
+        self.assertEqual(payload["comments"][0]["text"], "nice")
+
+    def test_metrics_endpoint(self):
+        with patch("backend.gateway.queue.enqueue") as mock_q:
+            mock_q.return_value.id = "j"
+            self._request("POST", "/generate", body=b"{}", token=self.token)
+            self._request("POST", "/detect_inventory", body=b'{"image":"d"}', token=self.token)
+        status, data = self._request("GET", "/metrics")
+        self.assertEqual(status, 200)
+        payload = json.loads(data)
+        self.assertGreaterEqual(payload.get("generate_requests", 0), 1)
+
     @patch("backend.gateway.Job.fetch")
     def test_progress_events(self, mock_fetch):
         state = {"calls": 0}

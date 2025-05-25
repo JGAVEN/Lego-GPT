@@ -8,7 +8,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from redis import Redis
 from rq import Queue, Job
 from backend.api import health
-from backend import STATIC_ROOT, SUBMISSIONS_ROOT
+from backend import STATIC_ROOT, SUBMISSIONS_ROOT, COMMENTS_ROOT
 from backend.worker import QUEUE_NAME as DEFAULT_QUEUE, generate_job, detect_job
 from backend.auth import decode as decode_jwt
 from backend import __version__
@@ -26,6 +26,13 @@ RATE_LIMIT = int(os.getenv("RATE_LIMIT", "5"))
 CORS_ORIGINS = os.getenv("CORS_ORIGINS", "*")
 # token -> (count, window_epoch_minute)
 _TOKEN_USAGE: dict[str, tuple[int, int]] = {}
+
+# Simple in-memory metrics
+METRICS = {
+    "generate_requests": 0,
+    "detect_requests": 0,
+    "example_submissions": 0,
+}
 
 
 def _check_auth(headers) -> None:
@@ -158,6 +165,21 @@ class Handler(BaseHTTPRequestHandler):
                 items.append({"file": item.name, "title": title, "prompt": prompt})
             self._send_json({"submissions": items})
             return
+        if self.path.startswith("/comments/"):
+            ex_id = self.path.rsplit("/", 1)[-1]
+            file_path = COMMENTS_ROOT / f"{ex_id}.json"
+            if file_path.is_file():
+                try:
+                    comments = json.loads(file_path.read_text())
+                except Exception:
+                    comments = []
+            else:
+                comments = []
+            self._send_json({"comments": comments[-10:]})
+            return
+        if self.path == "/metrics":
+            self._send_json(METRICS)
+            return
         if self.path.startswith("/static/"):
             base = STATIC_ROOT.resolve()
             rel = self.path[len("/static/") :]
@@ -205,6 +227,7 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_error(400, "Invalid inventory_filter")
                 return
             job_obj = queue.enqueue(generate_job, prompt, seed, inventory)
+            METRICS["generate_requests"] += 1
             self._send_json({"job_id": job_obj.id})
             return
         if self.path == "/submit_example":
@@ -230,6 +253,7 @@ class Handler(BaseHTTPRequestHandler):
             (SUBMISSIONS_ROOT / f"{uuid4()}.json").write_text(
                 json.dumps(submission, indent=2)
             )
+            METRICS["example_submissions"] += 1
             self._send_json({"ok": True})
             return
         if self.path == "/submissions/approve":
@@ -273,6 +297,43 @@ class Handler(BaseHTTPRequestHandler):
             else:
                 self.send_error(404, "file not found")
             return
+        if self.path.startswith("/comments/"):
+            try:
+                _check_auth(self.headers)
+            except PermissionError:
+                self.send_error(401)
+                return
+            except RuntimeError:
+                self.send_error(429, "Rate limit exceeded")
+                return
+            ex_id = self.path.rsplit("/", 1)[-1]
+            length = int(self.headers.get("Content-Length", 0))
+            body = self.rfile.read(length)
+            try:
+                payload = json.loads(body.decode() or "{}")
+            except json.JSONDecodeError:
+                self.send_error(400, "Invalid JSON")
+                return
+            text = payload.get("comment")
+            if not text:
+                self.send_error(400, "comment required")
+                return
+            COMMENTS_ROOT.mkdir(parents=True, exist_ok=True)
+            file_path = COMMENTS_ROOT / f"{ex_id}.json"
+            try:
+                comments = json.loads(file_path.read_text()) if file_path.is_file() else []
+            except Exception:
+                comments = []
+            try:
+                user = decode_jwt(
+                    self.headers.get("Authorization", "").split(" ", 1)[1], JWT_SECRET
+                ).get("sub", "user")
+            except Exception:
+                user = "user"
+            comments.append({"user": user, "text": text, "ts": int(time.time())})
+            file_path.write_text(json.dumps(comments, indent=2))
+            self._send_json({"ok": True})
+            return
         if self.path == "/detect_inventory":
             try:
                 _check_auth(self.headers)
@@ -299,6 +360,7 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_error(400, "Invalid image data")
                 return
             job_obj = queue.enqueue(detect_job, image_b64)
+            METRICS["detect_requests"] += 1
             self._send_json({"job_id": job_obj.id})
             return
         self.send_error(404)
@@ -312,12 +374,13 @@ def run(
     jwt_secret: str = JWT_SECRET,
     rate_limit: int = RATE_LIMIT,
     static_root: str | None = None,
+    comments_root: str | None = None,
     log_level: str | None = None,
     log_file: str | None = None,
     cors_origins: str = CORS_ORIGINS,
 ) -> None:
     """Start the HTTP API server."""
-    global queue, redis_conn, JWT_SECRET, RATE_LIMIT, CORS_ORIGINS
+    global queue, redis_conn, JWT_SECRET, RATE_LIMIT, CORS_ORIGINS, COMMENTS_ROOT
     redis_conn = Redis.from_url(redis_url)
     queue = Queue(queue_name, connection=redis_conn)
     JWT_SECRET = jwt_secret
@@ -326,6 +389,10 @@ def run(
         import backend as backend_pkg
 
         backend_pkg.STATIC_ROOT = Path(static_root).resolve()
+    if comments_root:
+        import backend as backend_pkg
+
+        backend_pkg.COMMENTS_ROOT = Path(comments_root).resolve()
     CORS_ORIGINS = cors_origins
     setup_logging(log_level, log_file)
     server = HTTPServer((host, port), Handler)
@@ -384,6 +451,11 @@ def main() -> None:
         ),
     )
     parser.add_argument(
+        "--comments-root",
+        default=os.getenv("COMMENTS_ROOT", str(COMMENTS_ROOT)),
+        help="Directory for example comments (default: env COMMENTS_ROOT)",
+    )
+    parser.add_argument(
         "--log-level",
         default=os.getenv("LOG_LEVEL", "INFO"),
         help="Logging level (default: env LOG_LEVEL or INFO)",
@@ -412,6 +484,7 @@ def main() -> None:
         args.jwt_secret,
         args.rate_limit,
         args.static_root,
+        args.comments_root,
         args.log_level,
         args.log_file,
         args.cors_origins,

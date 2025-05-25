@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useI18n } from "./i18n";
+import { fetchComments, postComment } from "./api/lego";
 
 interface Example {
   id: string;
@@ -29,6 +30,7 @@ export default function Examples({
     return f ? JSON.parse(f) : [];
   });
   const [viewFavs, setViewFavs] = useState(false);
+  const [comments, setComments] = useState<Record<string, { user: string; text: string }[]>>({});
 
   useEffect(() => {
     fetch("/examples.json")
@@ -66,6 +68,45 @@ export default function Examples({
     }
     setFavs(next);
     localStorage.setItem("favs", JSON.stringify(next));
+  }
+
+  function Comments({ id }: { id: string }) {
+    const [list, setList] = useState<{ user: string; text: string }[]>([]);
+    const [text, setText] = useState("");
+
+    useEffect(() => {
+      fetchComments(id)
+        .then((c) => setList(c))
+        .catch(() => setList([]));
+    }, [id]);
+
+    async function submit() {
+      if (!text) return;
+      await postComment(id, text);
+      setList((l) => [...l, { user: "you", text }]);
+      setText("");
+    }
+
+    return (
+      <div className="mt-2">
+        {list.map((c, i) => (
+          <p key={i} className="text-xs">
+            {c.user}: {c.text}
+          </p>
+        ))}
+        <div className="flex mt-1 gap-1">
+          <input
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            className="border rounded px-1 text-xs flex-1"
+            aria-label="comment"
+          />
+          <button onClick={submit} className="text-xs underline" aria-label="send comment">
+            Send
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -109,8 +150,8 @@ export default function Examples({
           <div key={ex.id} className="border p-2 rounded">
             <img src={ex.image} alt={ex.title} className="w-full h-auto mb-2" />
             <h2 className="font-semibold">{ex.title}</h2>
-            <p className="text-sm mb-2">{ex.prompt}</p>
-            <div className="mb-2 flex items-center gap-2">
+          <p className="text-sm mb-2">{ex.prompt}</p>
+          <div className="mb-2 flex items-center gap-2">
               {[1, 2, 3, 4, 5].map((n) => (
                 <button
                   key={n}
@@ -124,25 +165,42 @@ export default function Examples({
               <button onClick={() => toggleFav(ex.id)} aria-label="favourite">
                 {favs.includes(ex.id) ? "♥" : "♡"}
               </button>
-            </div>
-            {ratings[ex.id] && (
-              <p className="text-xs mb-1">{t("rating")}: {ratings[ex.id]}/5</p>
-            )}
-            {ex.tags && (
-              <p className="text-xs mb-2">{ex.tags.join(", ")}</p>
-            )}
-            <button
-              className="bg-blue-600 text-white px-3 py-1 rounded"
-              onClick={() => {
-                onSelect(ex.prompt);
-                onBack();
-              }}
-              aria-label="use prompt"
-            >
-              {t("usePrompt")}
-            </button>
           </div>
-        ))}
+          {ratings[ex.id] && (
+            <p className="text-xs mb-1">{t("rating")}: {ratings[ex.id]}/5</p>
+          )}
+          {ex.tags && (
+            <p className="text-xs mb-2">{ex.tags.join(", ")}</p>
+          )}
+          <button
+            onClick={() => {
+              if (navigator.share) {
+                navigator.share({ title: ex.title, text: ex.prompt, url: location.href });
+              } else {
+                window.open(
+                  `https://twitter.com/intent/tweet?text=${encodeURIComponent(ex.prompt)}`,
+                  "_blank"
+                );
+              }
+            }}
+            className="text-xs underline mr-2"
+            aria-label="share"
+          >
+            Share
+          </button>
+          <button
+            className="bg-blue-600 text-white px-3 py-1 rounded"
+            onClick={() => {
+              onSelect(ex.prompt);
+              onBack();
+            }}
+            aria-label="use prompt"
+          >
+            {t("usePrompt")}
+          </button>
+          <Comments id={ex.id} />
+        </div>
+      ))}
       </div>
       <button
         className="mt-6 text-blue-600 underline"

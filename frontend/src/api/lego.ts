@@ -6,6 +6,11 @@ export interface GenerateRequest {
 
 export const API_BASE = import.meta.env.VITE_API_URL ?? "";
 
+function authHeaders() {
+  const token = localStorage.getItem("jwt") || import.meta.env.VITE_JWT;
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
 export interface GenerateResponse {
   png_url: string;
   ldr_url: string | null;
@@ -28,7 +33,7 @@ export async function generateLego(
 ): Promise<GenerateResponse> {
   const res = await fetch(`${API_BASE}/generate`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...authHeaders() },
     body: JSON.stringify(body),
     signal: abortSignal,
   });
@@ -48,7 +53,7 @@ export async function detectInventory(
 ): Promise<DetectResponse> {
   const res = await fetch(`${API_BASE}/detect_inventory`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...authHeaders() },
     body: JSON.stringify(body),
     signal: abortSignal,
   });
@@ -56,4 +61,20 @@ export async function detectInventory(
     throw new Error(`Request failed (${res.status})`);
   }
   return (await res.json()) as DetectResponse;
+}
+
+export async function fetchComments(exampleId: string) {
+  const res = await fetch(`${API_BASE}/comments/${exampleId}`);
+  if (!res.ok) throw new Error("Failed");
+  const data = (await res.json()) as { comments: Array<{ user: string; text: string }> };
+  return data.comments;
+}
+
+export async function postComment(exampleId: string, comment: string) {
+  const res = await fetch(`${API_BASE}/comments/${exampleId}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ comment }),
+  });
+  if (!res.ok) throw new Error("Failed");
 }
