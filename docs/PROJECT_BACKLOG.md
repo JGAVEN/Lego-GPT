@@ -70,6 +70,7 @@
 | F-14 | **C**  | Push subscription toggle                             | **Done** | Settings page button |
 | F-15 | **C**  | Expanded example library                             | **Done** | More sample prompts |
 | F-16 | **C**  | Automated front-end setup                           | **Done** | Dev container installs packages via setup script |
+| F-17 | **C**  | Presence indicator in collaboration demo            | **Done** | Server broadcasts peer count; UI shows connected collaborators |
 
 
 
@@ -77,4 +78,4 @@
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.
 
-_Last updated 2025-07-03_
+_Last updated 2025-07-27_

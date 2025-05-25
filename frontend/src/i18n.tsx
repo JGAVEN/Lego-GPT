@@ -30,6 +30,7 @@ const en = {
   redo: "Redo",
   pushEnabled: "Push notifications enabled",
   togglePush: "Toggle Push",
+  connectedPeers: "Connected collaborators",
 };
 
 export type Lang = "en";

@@ -58,5 +58,9 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 17 – Automated front-end setup (completed)
 * Dev container calls `scripts/setup_frontend.sh` to install packages.
 
+## Sprint 18 – Presence indicator (completed)
+* Collaboration server broadcasts the number of peers in each room.
+* Demo page displays connected collaborator count.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.

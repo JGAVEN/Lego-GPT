@@ -12,6 +12,7 @@ export default function CollabDemo({ onBack }: Props) {
   const [message, setMessage] = useState("");
   const [log, setLog] = useState<string[]>([]);
   const [ws, setWs] = useState<WebSocket | null>(null);
+  const [peers, setPeers] = useState(1);
 
   useEffect(() => {
     if (!room) return;
@@ -22,6 +23,10 @@ export default function CollabDemo({ onBack }: Props) {
       });
     };
     socket.onmessage = (ev) => {
+      if (ev.data.startsWith("PEERS ")) {
+        setPeers(parseInt(ev.data.slice(6), 10));
+        return;
+      }
       setLog((l) => [...l, ev.data]);
       if (navigator.serviceWorker.controller) {
         navigator.serviceWorker.controller.postMessage({
@@ -79,6 +84,7 @@ export default function CollabDemo({ onBack }: Props) {
   return (
     <main className="p-6 max-w-xl mx-auto font-sans">
       <h1 className="text-2xl font-bold mb-4">{t("collabDemo")}</h1>
+      <p className="mb-2">{t("connectedPeers")}: {peers}</p>
       <div className="mb-4">
         <input
           className="border rounded w-full px-2 py-1"

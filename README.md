@@ -42,6 +42,7 @@ real-life building via a built-in Three.js viewer.
 | 🔔 **Push notifications** | Service worker shows notifications when collaborators edit a build |
 | 📨 **Offline edit queue** | Collaboration messages are stored offline and synced on reconnect |
 | ↩️ **Undo/redo support** | Collaborative sessions track history with `/undo` and `/redo` |
+| 👥 **Presence indicator** | Shows connected collaborators in real time |
 | 🔕 **Push toggle in settings** | Enable or disable Web Push with one click |
 | 📱 **Install prompt & touch controls** | Add to Home Screen button and smoother mobile controls |
 | 🖼️ **Community example gallery** | Browse shared prompts and load them with one click |
@@ -136,7 +137,7 @@ lego-gpt-server \
 lego-gpt-collab --host 0.0.0.0 --port 8765
 
 # Access the collaboration demo
-Open the PWA and choose **Collaboration Demo** from the main page to try real-time editing.
+Open the PWA and choose **Collaboration Demo** from the main page to try real-time editing. A banner shows how many collaborators are connected.
 
 # Generate a JWT for requests
 lego-gpt-token --secret mysecret --sub dev > token.txt

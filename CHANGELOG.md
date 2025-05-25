@@ -1,3 +1,9 @@
+## [0.5.45] – 2025-07-27
+### Added
+* Presence indicator shows connected collaborators in real time.
+### Changed
+* Backend version bumped to 0.5.45.
+
 ## [0.5.42] – 2025-07-15
 ### Added
 * Offline collaboration queue with IndexedDB.
