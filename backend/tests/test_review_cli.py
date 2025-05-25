@@ -20,7 +20,7 @@ class ReviewCLITests(unittest.TestCase):
             ex_file = Path(tmpdir) / "examples.json"
             ex_file.write_text("[]")
             sub_file = sub_dir / "a.json"
-            sub_file.write_text(json.dumps({"title": "T", "prompt": "P"}))
+            sub_file.write_text(json.dumps({"title": "Cool Castle", "prompt": "build a cool castle"}))
 
             with unittest.mock.patch.object(sys, "argv", [
                 "review", "--submissions", str(sub_dir), "--examples", str(ex_file), "list"
@@ -36,7 +36,9 @@ class ReviewCLITests(unittest.TestCase):
 
             data = json.loads(ex_file.read_text())
             self.assertEqual(len(data), 1)
-            self.assertEqual(data[0]["title"], "T")
+            self.assertEqual(data[0]["title"], "Cool Castle")
+            self.assertIn("cool", data[0]["tags"])
+            self.assertIn("castle", data[0]["tags"])
             self.assertFalse(sub_file.exists())
 
 
