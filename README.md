@@ -222,8 +222,12 @@ terraform apply
 ```
 
 Secrets are provided via environment variables (`TF_VAR_*`) so they are not
-committed to version control. The example deploys the API using AWS App Runner
-and assumes a Redis instance is already available.
+committed to version control. Create a `terraform.tfvars` file if you prefer
+to keep them on disk. Consider configuring remote state (for example an S3
+bucket) so team members share the same Terraform state. The example deploys
+the API using AWS App Runner and assumes a Redis instance is already
+available. Adjust the `region` variable or other parameters in
+[`variables.tf`](infra/aws/variables.tf) to suit your environment.
 
 ### Train the Brick Detector
 
