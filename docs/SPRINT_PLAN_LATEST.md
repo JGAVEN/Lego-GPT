@@ -24,8 +24,8 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 6 – Automated UI regression tests (completed)
 * Added Cypress setup and a basic end-to-end test for the PWA.
 
-## Sprint 7 – Multi-language support (completed)
-* Introduced a language switcher and Spanish translations in the PWA.
+## Sprint 7 – UI text cleanup (completed)
+* Removed the language switcher; the interface is now English only.
 
 ## Sprint 8 – Real-time collaboration (completed)
 * Added a simple WebSocket server and CLI (`lego-gpt-collab`).
