@@ -13,11 +13,12 @@ import Settings from "./Settings";
 import { processPending } from "./lib/offlineQueue";
 import CollabDemo from "./CollabDemo";
 import Moderation from "./Moderation";
+import Analytics from "./Analytics";
 
 export default function App() {
   const { t } = useI18n();
   const [page, setPage] = useState<
-    "main" | "settings" | "examples" | "collab" | "moderation"
+    "main" | "settings" | "examples" | "collab" | "moderation" | "analytics"
   >("main");
     "main"
   );
@@ -30,6 +31,7 @@ export default function App() {
   );
   const [installEvent, setInstallEvent] = useState<BeforeInstallPromptEvent | null>(null);
   const [showInstall, setShowInstall] = useState(false);
+  const [showPush, setShowPush] = useState(false);
 
   const detect = useDetectInventory(photo);
 
@@ -50,6 +52,16 @@ export default function App() {
     };
     window.addEventListener("beforeinstallprompt", handler);
     return () => window.removeEventListener("beforeinstallprompt", handler);
+  }, []);
+
+  useEffect(() => {
+    if (
+      "Notification" in window &&
+      Notification.permission === "default" &&
+      !localStorage.getItem("pushPrompted")
+    ) {
+      setShowPush(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -90,6 +102,13 @@ export default function App() {
     });
   }
 
+  function handlePushAccept() {
+    Notification.requestPermission().finally(() => {
+      localStorage.setItem("pushPrompted", "1");
+      setShowPush(false);
+    });
+  }
+
   if (page === "settings") {
     return <Settings onBack={() => setPage("main")} />;
   }
@@ -111,6 +130,10 @@ export default function App() {
     return <Moderation onBack={() => setPage("main")} />;
   }
 
+  if (page === "analytics") {
+    return <Analytics onBack={() => setPage("main")} />;
+  }
+
   return (
     <main className="p-6 max-w-xl mx-auto font-sans">
       <h1 className="text-2xl font-bold mb-4">{t("title")}</h1>
@@ -121,6 +144,15 @@ export default function App() {
           className="mb-4 mr-4 bg-green-600 text-white px-3 py-1 rounded"
         >
           {t("installApp")}
+        </button>
+      )}
+      {showPush && (
+        <button
+          onClick={handlePushAccept}
+          aria-label="enable push"
+          className="mb-4 mr-4 bg-blue-600 text-white px-3 py-1 rounded"
+        >
+          Enable Notifications
         </button>
       )}
       <button
@@ -150,6 +182,13 @@ export default function App() {
         aria-label="moderation"
       >
         {t("moderation")}
+      </button>
+      <button
+        className="text-sm underline mb-4 ml-4"
+        onClick={() => setPage("analytics")}
+        aria-label="analytics"
+      >
+        Analytics
       </button>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -239,6 +278,24 @@ export default function App() {
               </a>
             </div>
           )}
+          <div className="mt-2">
+            <button
+              onClick={() => {
+                if (navigator.share) {
+                  navigator.share({ title: "Lego build", url: data.png_url });
+                } else {
+                  window.open(
+                    `https://twitter.com/intent/tweet?url=${encodeURIComponent(data.png_url)}`,
+                    "_blank"
+                  );
+                }
+              }}
+              className="text-blue-600 underline"
+              aria-label="share build"
+            >
+              Share
+            </button>
+          </div>
         </>
       )}
     </main>

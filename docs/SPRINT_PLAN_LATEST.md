@@ -98,5 +98,21 @@ This plan outlines the next five logical sprints after completing the advanced f
 * Worker outputs placeholder PDF instructions alongside the model files.
 * CLI and PWA provide a download link for the PDF.
 
+## Sprint 30 – Example comments (completed)
+* Signed-in users can comment on community examples.
+* Recent comments are displayed below each example.
+
+## Sprint 31 – Social sharing links (completed)
+* Share buttons allow posting examples or builds to social media.
+
+## Sprint 32 – Advanced build instructions (completed)
+* PDF export includes basic part lists instead of a placeholder.
+
+## Sprint 33 – Mobile push opt-in prompt (completed)
+* A one-time prompt explains push notifications and lets users enable them.
+
+## Sprint 34 – Admin analytics dashboard (completed)
+* Simple metrics dashboard shows request and submission counts.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.

@@ -1,19 +1,18 @@
 # Next Sprint Plan
 
-The following sprints extend the community example library with more community features.
+These upcoming sprints continue improving community and admin features.
 
-## Sprint 30 – Example comments
-* Allow signed-in users to leave short comments on community examples.
-* Display recent comments below each example.
+## Sprint 35 – Comment notifications
+* Send an email notification when an example receives a new comment.
 
-## Sprint 31 – Social sharing links
-* Add buttons to share examples or generated models on social media.
+## Sprint 36 – Federated example search
+* Allow searching approved examples from multiple instances via a simple API.
 
-## Sprint 32 – Advanced build instructions
-* Replace placeholder PDF with step-by-step instructions and part lists.
+## Sprint 37 – Mobile UI polish
+* Tweak layouts for small screens and improve touch targets.
 
-## Sprint 33 – Mobile push opt-in prompt
-* Provide a one-time prompt explaining push notifications and privacy.
+## Sprint 38 – Admin roles
+* Add basic user roles so only admins can access moderation and analytics pages.
 
-## Sprint 34 – Admin analytics dashboard
-* Basic charts showing daily usage, submissions, and popular examples.
+## Sprint 39 – Live metrics stream
+* Provide a WebSocket endpoint streaming metrics updates in real time.

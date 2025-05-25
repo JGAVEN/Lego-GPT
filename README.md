@@ -54,6 +54,10 @@ real-life building via a built-in Three.js viewer.
 | 🆕 **Automatic example tagging** | Submissions gain keyword tags during approval |
 | 🆕 **Search & tag filter** | Gallery filters examples by text or tag |
 | ⭐ **Rate & favourite examples** | Gallery stores star ratings and favourites locally |
+| 💬 **Example comments** | Signed-in users can comment on community examples |
+| 🔗 **Share buttons** | Share examples or generated builds via Web Share API |
+| 📲 **Push opt-in** | One-time prompt to enable push notifications |
+| 📊 **Admin analytics** | Simple dashboard with usage metrics |
 | 📝 **Moderation dashboard** | Web interface to approve or reject community submissions |
 | 💬 **Collaboration chat** | WebSocket chat messages in the collaboration demo |
 | 📄 **PDF instructions** | Download simple build instructions with each model |
@@ -69,7 +73,8 @@ cd Lego-GPT
 
 # Optional: copy ``.env.example`` to ``.env`` and adjust settings.
 # Front-end builds can also read ``frontend/.env``. Copy ``frontend/.env.example``
-# and set ``VITE_API_URL`` if the API runs elsewhere.
+# and set ``VITE_API_URL`` if the API runs elsewhere. ``VITE_JWT`` can hold
+# a JWT token for commenting and API access.
 
 # Install pnpm (requires Node.js)
 npm install -g pnpm@10.5.2
