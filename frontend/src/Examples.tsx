@@ -40,13 +40,14 @@ export default function Examples({
                 onSelect(ex.prompt);
                 onBack();
               }}
+              aria-label="use prompt"
             >
               {t("usePrompt")}
             </button>
           </div>
         ))}
       </div>
-      <button className="mt-6 text-blue-600 underline" onClick={onBack}>
+      <button className="mt-6 text-blue-600 underline" onClick={onBack} aria-label="back">
         {t("back")}
       </button>
     </main>

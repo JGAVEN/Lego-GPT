@@ -103,6 +103,7 @@ export default function App() {
       {showInstall && (
         <button
           onClick={handleInstall}
+          aria-label="install"
           className="mb-4 mr-4 bg-green-600 text-white px-3 py-1 rounded"
         >
           {t("installApp")}
@@ -111,12 +112,14 @@ export default function App() {
       <button
         className="text-sm underline mb-4"
         onClick={() => setPage("settings")}
+        aria-label="settings"
       >
         {t("settings")}
       </button>
       <button
         className="text-sm underline mb-4 ml-4"
         onClick={() => setPage("examples")}
+        aria-label="examples"
       >
         {t("examples")}
       </button>
@@ -145,9 +148,11 @@ export default function App() {
 
         <div>
           <label className="block font-semibold mb-1">{t("inventoryPhoto")}</label>
-          <input type="file" accept="image/*" onChange={handleFile} />
+          <input type="file" accept="image/*" onChange={handleFile} aria-label="inventory photo" />
           {detect.loading && <p className="text-sm">{t("detecting")}</p>}
-          {detect.error && <p className="text-red-600 text-sm">{detect.error}</p>}
+          {detect.error && (
+            <p className="text-red-600 text-sm" role="alert">{detect.error}</p>
+          )}
         </div>
 
         {inventory && (
@@ -172,7 +177,9 @@ export default function App() {
         </button>
       </form>
 
-      {error && <p className="mt-4 text-red-600">{error}</p>}
+      {error && (
+        <p className="mt-4 text-red-600" role="alert">{error}</p>
+      )}
 
       {data?.png_url && !loading && (
         <>

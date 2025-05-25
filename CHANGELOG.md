@@ -1,3 +1,9 @@
+## [0.5.41] – 2025-07-02
+### Added
+* `lego-gpt-collab` WebSocket server for real-time collaboration.
+* Environment variable `LEGOGPT_MODEL` to load custom checkpoints.
+* Additional ARIA labels improve accessibility in the PWA.
+
 ## [0.5.40] – 2025-06-25
 ### Added
 * CI now runs a lightweight scalability benchmark using a stub server.
