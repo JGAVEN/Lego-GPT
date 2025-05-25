@@ -1,8 +1,18 @@
 import { useEffect, useState } from "react";
-import { API_BASE } from "./api/lego";
+import { API_BASE, isAdmin } from "./api/lego";
 
 export default function Analytics({ onBack }: { onBack: () => void }) {
   const [data, setData] = useState<{ [k: string]: number }>({});
+  if (!isAdmin()) {
+    return (
+      <main className="p-6 max-w-xl mx-auto font-sans">
+        <p>Admin only</p>
+        <button className="underline" onClick={onBack} aria-label="back">
+          Back
+        </button>
+      </main>
+    );
+  }
   useEffect(() => {
     fetch(`${API_BASE}/metrics`)
       .then((res) => res.json())

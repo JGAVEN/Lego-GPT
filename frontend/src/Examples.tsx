@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useI18n } from "./i18n";
-import { fetchComments, postComment } from "./api/lego";
+import { fetchComments, postComment, federatedSearch } from "./api/lego";
 
 interface Example {
   id: string;
@@ -30,6 +30,8 @@ export default function Examples({
     return f ? JSON.parse(f) : [];
   });
   const [viewFavs, setViewFavs] = useState(false);
+  const [searchNet, setSearchNet] = useState(false);
+  const [netResults, setNetResults] = useState<Example[]>([]);
 
   useEffect(() => {
     fetch("/examples.json")
@@ -38,11 +40,21 @@ export default function Examples({
       .catch(() => setExamples([]));
   }, []);
 
+  useEffect(() => {
+    if (!searchNet || search.length < 3) {
+      setNetResults([]);
+      return;
+    }
+    federatedSearch(search)
+      .then((res) => setNetResults(res.examples))
+      .catch(() => setNetResults([]));
+  }, [search, searchNet]);
+
   const tags = Array.from(
     new Set(examples.flatMap((e) => e.tags ?? []))
   );
 
-  const filtered = examples.filter((ex) => {
+  const localFiltered = examples.filter((ex) => {
     if (viewFavs && !favs.includes(ex.id)) return false;
     const matchesTag = tagFilter ? ex.tags?.includes(tagFilter) : true;
     const text = `${ex.title} ${ex.prompt}`.toLowerCase();
@@ -51,6 +63,7 @@ export default function Examples({
       : true;
     return matchesTag && matchesSearch;
   });
+  const filtered = searchNet && search.length >= 3 ? netResults : localFiltered;
 
   function setRating(id: string, value: number) {
     const next = { ...ratings, [id]: value };
@@ -135,6 +148,10 @@ export default function Examples({
             ))}
           </select>
         )}
+        <label className="text-sm flex items-center gap-1">
+          <input type="checkbox" checked={searchNet} onChange={(e) => setSearchNet(e.target.checked)} />
+          Net
+        </label>
         <button
           onClick={() => setViewFavs((v) => !v)}
           className="border rounded px-2 py-1"
