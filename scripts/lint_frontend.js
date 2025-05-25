@@ -10,16 +10,8 @@ process.chdir(frontendDir);
 
 const eslintBin = join('node_modules', '.bin', 'eslint');
 if (!existsSync(eslintBin)) {
-  try {
-    execSync('pnpm install --offline', { stdio: 'inherit' });
-  } catch {
-    console.error('Front-end dependencies missing. Run scripts/setup_frontend.sh with network access.');
-    process.exit(0);
-  }
-  if (!existsSync(eslintBin)) {
-    console.error('Front-end dependencies missing. Run scripts/setup_frontend.sh with network access.');
-    process.exit(0);
-  }
+  console.error('Front-end dependencies missing. Run scripts/setup_frontend.sh with network access.');
+  process.exit(0);
 }
 
 try {

@@ -1,3 +1,8 @@
+## [0.5.39] – 2025-06-24
+### Changed
+* `lint_frontend.js` no longer tries to install packages offline; it simply
+  prints a brief message when dependencies are missing.
+
 ## [0.5.38] – 2025-06-23
 ### Added
 * Install prompt and touch-friendly viewer.
