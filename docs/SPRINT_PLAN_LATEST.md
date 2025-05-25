@@ -36,5 +36,14 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 10 – Accessibility polish (completed)
 * Added ARIA labels and improved keyboard navigation in the PWA.
 
+## Sprint 11 – Offline mode enhancements (completed)
+* Queued collaboration edits offline and synced them when reconnected.
+
+## Sprint 12 – Push notifications (completed)
+* Service worker displays notifications when collaborators edit a build.
+
+## Sprint 13 – Interface polish (completed)
+* The PWA remains English only and includes a collaboration demo page.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.

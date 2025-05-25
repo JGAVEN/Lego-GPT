@@ -10,7 +10,7 @@ It expects a container image published to a registry such as GitHub Container Re
 ## Usage
 1. Export the required variables:
    ```bash
-   export TF_VAR_api_image=ghcr.io/<owner>/lego-gpt:v0.5.41
+   export TF_VAR_api_image=ghcr.io/<owner>/lego-gpt:v0.5.42
    export TF_VAR_redis_url=redis://hostname:6379/0
    export TF_VAR_jwt_secret=$(openssl rand -hex 32)
    # Optional: region, defaults to us-east-1

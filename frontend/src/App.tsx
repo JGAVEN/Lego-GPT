@@ -11,10 +11,13 @@ import useDetectInventory from "./api/useDetectInventory";
 import LDrawViewer from "./LDrawViewer";
 import Settings from "./Settings";
 import { processPending } from "./lib/offlineQueue";
+import CollabDemo from "./CollabDemo";
 
 export default function App() {
   const { t } = useI18n();
-  const [page, setPage] = useState<"main" | "settings" | "examples">("main");
+  const [page, setPage] = useState<"main" | "settings" | "examples" | "collab">(
+    "main"
+  );
   const [prompt, setPrompt] = useState("");
   const [seed, setSeed] = useState("");
   const [photo, setPhoto] = useState<string | null>(null);
@@ -97,6 +100,10 @@ export default function App() {
     );
   }
 
+  if (page === "collab") {
+    return <CollabDemo onBack={() => setPage("main")} />;
+  }
+
   return (
     <main className="p-6 max-w-xl mx-auto font-sans">
       <h1 className="text-2xl font-bold mb-4">{t("title")}</h1>
@@ -122,6 +129,13 @@ export default function App() {
         aria-label="examples"
       >
         {t("examples")}
+      </button>
+      <button
+        className="text-sm underline mb-4 ml-4"
+        onClick={() => setPage("collab")}
+        aria-label="collaboration demo"
+      >
+        {t("collabDemo")}
       </button>
 
       <form onSubmit={handleSubmit} className="space-y-4">
