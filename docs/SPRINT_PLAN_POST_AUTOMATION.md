@@ -10,9 +10,9 @@ This plan lists the next five logical sprints after completing the deployment au
 * Offline requests are queued and processed when connectivity returns.
 * New settings page allows clearing cached results and queued jobs.
 
-## Sprint 3 – Cloud infrastructure templates
-* Provide Terraform samples for common cloud providers.
-* Offer environment variables for secret management.
+## Sprint 3 – Cloud infrastructure templates (completed)
+* Added Terraform templates for AWS in `infra/`.
+* Secrets passed via environment variables.
 
 ## Sprint 4 – Mobile PWA polish (completed)
 * Fine‑tune touch controls in the 3‑D viewer.

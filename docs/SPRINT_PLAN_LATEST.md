@@ -2,9 +2,9 @@
 
 This plan outlines the next five logical sprints after completing the advanced front-end features.
 
-## Sprint 1 – Cloud infrastructure templates
-* Provide Terraform samples for common cloud providers.
-* Offer environment variables for secret management.
+## Sprint 1 – Cloud infrastructure templates (completed)
+* Added `infra/aws` sample using Terraform and App Runner.
+* Secrets are supplied via `TF_VAR_*` environment variables.
 
 ## Sprint 2 – Mobile PWA polish (completed)
 * Fine‑tune touch controls in the 3‑D viewer.

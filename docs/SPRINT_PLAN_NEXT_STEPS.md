@@ -6,9 +6,8 @@ This plan outlines the following sprints after completing the scalability benchm
 * Offline requests are queued and processed when connectivity returns.
 * New settings page allows clearing cached results and queued jobs.
 
-## Sprint 2 – Cloud infrastructure templates
-* Provide Terraform samples for common cloud providers.
-* Offer environment variables for secret management.
+## Sprint 2 – Cloud infrastructure templates (completed)
+* Added AWS Terraform sample with environment-based secrets.
 
 ## Sprint 3 – Mobile PWA polish (completed)
 * Fine‑tune touch controls in the 3‑D viewer.
