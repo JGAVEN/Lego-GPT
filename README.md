@@ -53,6 +53,10 @@ real-life building via a built-in Three.js viewer.
 | 🆕 **CLI progress streaming** | `lego-gpt-cli` shows live build progress via SSE |
 | 🆕 **Automatic example tagging** | Submissions gain keyword tags during approval |
 | 🆕 **Search & tag filter** | Gallery filters examples by text or tag |
+| ⭐ **Rate & favourite examples** | Gallery stores star ratings and favourites locally |
+| 📝 **Moderation dashboard** | Web interface to approve or reject community submissions |
+| 💬 **Collaboration chat** | WebSocket chat messages in the collaboration demo |
+| 📄 **PDF instructions** | Download simple build instructions with each model |
 
 &nbsp;
 

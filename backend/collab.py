@@ -23,6 +23,7 @@ except Exception:  # pragma: no cover - missing optional dep
 _rooms: Dict[str, Set[WebSocketServerProtocol]] = defaultdict(set)  # type: ignore
 _history: Dict[str, List[str]] = defaultdict(list)
 _redo: Dict[str, List[str]] = defaultdict(list)
+_chat: Dict[str, List[str]] = defaultdict(list)
 
 
 async def _broadcast_peers(room: str) -> None:
@@ -49,6 +50,8 @@ async def _handler(ws: WebSocketServerProtocol, path: str) -> None:
     # Send existing history to the new peer
     for item in _history[room]:
         await ws.send(item)
+    for chat in _chat[room]:
+        await ws.send(f"CHAT: {chat}")
     try:
         async for msg in ws:
             broadcast = None
@@ -62,6 +65,10 @@ async def _handler(ws: WebSocketServerProtocol, path: str) -> None:
                     item = _redo[room].pop()
                     _history[room].append(item)
                     broadcast = f"REDO: {item}"
+            elif msg.startswith("/chat "):
+                chat = msg.split(" ", 1)[1]
+                _chat[room].append(chat)
+                broadcast = f"CHAT: {chat}"
             else:
                 _history[room].append(msg)
                 _redo[room].clear()
@@ -78,6 +85,7 @@ async def _handler(ws: WebSocketServerProtocol, path: str) -> None:
             del _rooms[room]
             _history.pop(room, None)
             _redo.pop(room, None)
+            _chat.pop(room, None)
 
 
 async def run_server(host: str = "0.0.0.0", port: int = 8765) -> None:

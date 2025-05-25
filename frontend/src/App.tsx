@@ -12,10 +12,13 @@ import LDrawViewer from "./LDrawViewer";
 import Settings from "./Settings";
 import { processPending } from "./lib/offlineQueue";
 import CollabDemo from "./CollabDemo";
+import Moderation from "./Moderation";
 
 export default function App() {
   const { t } = useI18n();
-  const [page, setPage] = useState<"main" | "settings" | "examples" | "collab">(
+  const [page, setPage] = useState<
+    "main" | "settings" | "examples" | "collab" | "moderation"
+  >("main");
     "main"
   );
   const [prompt, setPrompt] = useState("");
@@ -104,6 +107,10 @@ export default function App() {
     return <CollabDemo onBack={() => setPage("main")} />;
   }
 
+  if (page === "moderation") {
+    return <Moderation onBack={() => setPage("main")} />;
+  }
+
   return (
     <main className="p-6 max-w-xl mx-auto font-sans">
       <h1 className="text-2xl font-bold mb-4">{t("title")}</h1>
@@ -136,6 +143,13 @@ export default function App() {
         aria-label="collaboration demo"
       >
         {t("collabDemo")}
+      </button>
+      <button
+        className="text-sm underline mb-4 ml-4"
+        onClick={() => setPage("moderation")}
+        aria-label="moderation"
+      >
+        {t("moderation")}
       </button>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -215,6 +229,13 @@ export default function App() {
                 className="text-blue-600 underline"
               >
                 {t("viewInAR")}
+              </a>
+            </div>
+          )}
+          {data.instructions_url && (
+            <div className="mt-2">
+              <a href={data.instructions_url} className="text-blue-600 underline">
+                PDF Instructions
               </a>
             </div>
           )}

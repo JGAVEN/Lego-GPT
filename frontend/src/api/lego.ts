@@ -10,6 +10,7 @@ export interface GenerateResponse {
   png_url: string;
   ldr_url: string | null;
   gltf_url: string | null;
+  instructions_url: string | null;
   brick_counts: Record<string, number>;
 }
 

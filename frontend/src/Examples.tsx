@@ -20,6 +20,15 @@ export default function Examples({
   const [examples, setExamples] = useState<Example[]>([]);
   const [search, setSearch] = useState("");
   const [tagFilter, setTagFilter] = useState("");
+  const [ratings, setRatings] = useState<Record<string, number>>(() => {
+    const r = localStorage.getItem("ratings");
+    return r ? JSON.parse(r) : {};
+  });
+  const [favs, setFavs] = useState<string[]>(() => {
+    const f = localStorage.getItem("favs");
+    return f ? JSON.parse(f) : [];
+  });
+  const [viewFavs, setViewFavs] = useState(false);
 
   useEffect(() => {
     fetch("/examples.json")
@@ -33,6 +42,7 @@ export default function Examples({
   );
 
   const filtered = examples.filter((ex) => {
+    if (viewFavs && !favs.includes(ex.id)) return false;
     const matchesTag = tagFilter ? ex.tags?.includes(tagFilter) : true;
     const text = `${ex.title} ${ex.prompt}`.toLowerCase();
     const matchesSearch = search
@@ -40,6 +50,23 @@ export default function Examples({
       : true;
     return matchesTag && matchesSearch;
   });
+
+  function setRating(id: string, value: number) {
+    const next = { ...ratings, [id]: value };
+    setRatings(next);
+    localStorage.setItem("ratings", JSON.stringify(next));
+  }
+
+  function toggleFav(id: string) {
+    let next;
+    if (favs.includes(id)) {
+      next = favs.filter((f) => f !== id);
+    } else {
+      next = [...favs, id];
+    }
+    setFavs(next);
+    localStorage.setItem("favs", JSON.stringify(next));
+  }
 
   return (
     <main className="p-6 max-w-xl mx-auto font-sans">
@@ -68,6 +95,13 @@ export default function Examples({
             ))}
           </select>
         )}
+        <button
+          onClick={() => setViewFavs((v) => !v)}
+          className="border rounded px-2 py-1"
+          aria-label="toggle favourites"
+        >
+          {viewFavs ? t("allExamples") : t("favourites")}
+        </button>
       </div>
 
       <div className="space-y-4">
@@ -76,6 +110,24 @@ export default function Examples({
             <img src={ex.image} alt={ex.title} className="w-full h-auto mb-2" />
             <h2 className="font-semibold">{ex.title}</h2>
             <p className="text-sm mb-2">{ex.prompt}</p>
+            <div className="mb-2 flex items-center gap-2">
+              {[1, 2, 3, 4, 5].map((n) => (
+                <button
+                  key={n}
+                  onClick={() => setRating(ex.id, n)}
+                  className={n <= (ratings[ex.id] ?? 0) ? "text-yellow-500" : "text-gray-300"}
+                  aria-label={`rate ${n}`}
+                >
+                  ★
+                </button>
+              ))}
+              <button onClick={() => toggleFav(ex.id)} aria-label="favourite">
+                {favs.includes(ex.id) ? "♥" : "♡"}
+              </button>
+            </div>
+            {ratings[ex.id] && (
+              <p className="text-xs mb-1">{t("rating")}: {ratings[ex.id]}/5</p>
+            )}
             {ex.tags && (
               <p className="text-xs mb-2">{ex.tags.join(", ")}</p>
             )}

@@ -27,11 +27,14 @@ export default function CollabDemo({ onBack }: Props) {
         setPeers(parseInt(ev.data.slice(6), 10));
         return;
       }
-      setLog((l) => [...l, ev.data]);
+      const msg = ev.data.startsWith("CHAT: ")
+        ? ev.data.slice(6)
+        : ev.data;
+      setLog((l) => [...l, msg]);
       if (navigator.serviceWorker.controller) {
         navigator.serviceWorker.controller.postMessage({
           type: "collab_update",
-          body: ev.data,
+          body: msg,
         });
       }
     };
@@ -42,9 +45,9 @@ export default function CollabDemo({ onBack }: Props) {
   async function send() {
     if (!message) return;
     if (ws && ws.readyState === WebSocket.OPEN) {
-      ws.send(message);
+      ws.send(`/chat ${message}`);
     } else if (room) {
-      await queueCollab({ room, data: message });
+      await queueCollab({ room, data: `/chat ${message}` });
     }
     setLog((l) => [...l, `You: ${message}`]);
     setMessage("");

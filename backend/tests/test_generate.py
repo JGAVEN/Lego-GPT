@@ -22,6 +22,7 @@ class GenerateTests(unittest.TestCase):
             "backend/static/x/preview.png",
             "backend/static/x/model.ldr",
             "backend/static/x/model.gltf",
+            "backend/static/x/instructions.pdf",
             {"Brick": 1},
         )
 
@@ -32,6 +33,7 @@ class GenerateTests(unittest.TestCase):
         self.assertIn("ldr_url", data)
         self.assertTrue(data["ldr_url"].endswith("model.ldr"))
         self.assertTrue(data["gltf_url"].endswith("model.gltf"))
+        self.assertTrue(data["instructions_url"].endswith("instructions.pdf"))
         mock_generate.assert_called_once_with("blue cube", 42, inv)
         self.assertIsInstance(data["brick_counts"], dict)
 

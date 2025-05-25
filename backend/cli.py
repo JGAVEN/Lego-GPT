@@ -119,7 +119,7 @@ def cmd_generate(args: argparse.Namespace) -> None:
         if args.out_dir:
             out = Path(args.out_dir)
             out.mkdir(parents=True, exist_ok=True)
-            for key in ["png_url", "ldr_url", "gltf_url"]:
+            for key in ["png_url", "ldr_url", "gltf_url", "instructions_url"]:
                 url = result.get(key)
                 if url:
                     dest = out / Path(url).name
