@@ -74,11 +74,11 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 22 – CLI progress streaming (completed)
 * `lego-gpt-cli` now streams live progress from `/progress/<job_id>` via SSE.
 
-## Sprint 23 – Automatic example tagging (planned)
-* Generate keyword tags when approving submissions.
+## Sprint 23 – Automatic example tagging (completed)
+* `lego-gpt-review` automatically generates keyword tags when approving submissions.
 
-## Sprint 24 – Example search and filter (planned)
-* Gallery UI can filter community examples by tag or search text.
+## Sprint 24 – Example search and filter (completed)
+* Gallery UI can filter community examples by tag or free‑text search.
 
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.

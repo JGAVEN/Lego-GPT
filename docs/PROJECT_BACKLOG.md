@@ -73,8 +73,8 @@
 | F-17 | **C**  | Presence indicator in collaboration demo            | **Done** | Server broadcasts peer count; UI shows connected collaborators |
 | B-36 | **S**  | Example submission pipeline                        | **Done** | `/submit_example` endpoint stores community prompts |
 | B-37 | **S**  | Build progress events                              | **Done** | SSE endpoint `/progress/<job_id>` |
-| F-18 | **S**  | Automatic example tagging                         | Open | Generate keyword tags when approving submissions |
-| F-19 | **S**  | Example search and filter                        | Open | Gallery can filter examples by tag or search text |
+| F-18 | **S**  | Automatic example tagging                         | **Done** | Tags are generated when approving submissions |
+| F-19 | **S**  | Example search and filter                        | **Done** | Gallery filters examples by tag or search text |
 
 
 
@@ -82,4 +82,4 @@
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.
 
-_Last updated 2025-07-29_
+_Last updated 2025-08-01_
