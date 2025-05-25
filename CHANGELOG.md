@@ -1,3 +1,7 @@
+## [0.5.40] – 2025-06-25
+### Added
+* CI now runs a lightweight scalability benchmark using a stub server.
+
 ## [0.5.39] – 2025-06-24
 ### Changed
 * `lint_frontend.js` no longer tries to install packages offline; it simply
