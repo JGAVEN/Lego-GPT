@@ -20,8 +20,11 @@ dist/
 node_modules/
 npm-debug.log*
 pnpm-debug.log*
-dist/
 coverage/
+
+# Cypress output
+frontend/cypress/screenshots/
+frontend/cypress/videos/
 
 # Test artefacts
 out/
