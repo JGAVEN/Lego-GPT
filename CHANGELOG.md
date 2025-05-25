@@ -17,6 +17,15 @@
 ### Changed
 * Backend version bumped to 0.5.48.
 
+## [0.5.49] – 2025-08-02
+### Added
+* Example comments and social sharing buttons in the PWA.
+* PDF export now lists used parts.
+* Push notification opt-in prompt.
+* Admin metrics dashboard and `/metrics` endpoint.
+### Changed
+* Backend version bumped to 0.5.49.
+
 ## [0.5.45] – 2025-07-27
 ### Added
 * Presence indicator shows connected collaborators in real time.
