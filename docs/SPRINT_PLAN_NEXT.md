@@ -2,9 +2,9 @@
 
 This plan outlines the upcoming sprints after completing the community example library.
 
-## Sprint 1 – Submission review CLI
-* Provide a command-line tool to list and approve submitted examples.
+## Sprint 1 – Automatic example tagging
+* Generate keyword tags when approving submissions.
 
-## Sprint 2 – CLI progress streaming
-* Update `lego-gpt-cli` to display live SSE progress instead of polling.
+## Sprint 2 – Example search and filter
+* Front-end gallery can filter examples by tag or text search.
 

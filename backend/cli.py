@@ -73,6 +73,18 @@ def _poll(url: str, token: str, progress: bool = False) -> dict:
         time.sleep(1)
 
 
+def _stream_progress(url: str) -> None:
+    """Print progress dots from a Server-Sent Events endpoint."""
+    try:
+        with request.urlopen(url) as resp:
+            for line in resp:
+                if line.startswith(b"data:"):
+                    print(".", end="", file=sys.stderr, flush=True)
+    except Exception:  # pragma: no cover - best effort
+        pass
+    print("", file=sys.stderr)
+
+
 def cmd_generate(args: argparse.Namespace) -> None:
     prompts: list[str] = []
     if args.file:
@@ -98,7 +110,8 @@ def cmd_generate(args: argparse.Namespace) -> None:
             print(f"[{idx}/{len(prompts)}] Generating '{prompt}'", file=sys.stderr)
             res = _post(f"{args.url}/generate", args.token, payload)
             job_id = res["job_id"]
-            result = _poll(f"{args.url}/generate/{job_id}", args.token, progress=True)
+            _stream_progress(f"{args.url}/progress/{job_id}")
+            result = _poll(f"{args.url}/generate/{job_id}", args.token)
         except Exception as exc:
             print(f"Error: {exc}", file=sys.stderr)
             continue
@@ -120,8 +133,9 @@ def cmd_detect(args: argparse.Namespace) -> None:
     try:
         res = _post(f"{args.url}/detect_inventory", args.token, {"image": img_b64})
         job_id = res["job_id"]
+        _stream_progress(f"{args.url}/progress/{job_id}")
         result = _poll(
-            f"{args.url}/detect_inventory/{job_id}", args.token, progress=True
+            f"{args.url}/detect_inventory/{job_id}", args.token
         )
     except Exception as exc:
         print(f"Error: {exc}", file=sys.stderr)

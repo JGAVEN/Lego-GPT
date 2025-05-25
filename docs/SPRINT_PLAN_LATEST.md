@@ -68,5 +68,11 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 20 – Build progress events (completed)
 * Worker updates job meta and `/progress/<job_id>` streams progress via SSE.
 
+## Sprint 21 – Submission review CLI (completed)
+* Added `lego-gpt-review` for listing and approving community examples.
+
+## Sprint 22 – CLI progress streaming (completed)
+* `lego-gpt-cli` now streams live progress from `/progress/<job_id>` via SSE.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.

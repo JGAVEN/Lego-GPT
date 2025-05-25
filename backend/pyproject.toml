@@ -35,6 +35,7 @@ lego-gpt-cleanup = "backend.cleanup:main"
 lego-gpt-token = "backend.token_cli:main"
 lego-gpt-export = "backend.export:main"
 lego-gpt-collab = "backend.collab:main"
+lego-gpt-review = "backend.review_cli:main"
 
 [build-system]
 requires = ["setuptools>=64", "wheel"]
