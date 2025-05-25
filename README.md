@@ -38,6 +38,7 @@ real-life building via a built-in Three.js viewer.
 | 🆕 **Batch generation & progress** | Use `--file prompts.txt` and watch progress dots while waiting |
 | 🧹 **Cleanup script** (`lego-gpt-cleanup`) | Remove old asset directories (use `--dry-run` to preview) |
 | 🆕 **Offline queue + settings** | Requests made offline are queued and cached results can be cleared in the settings page |
+| 📱 **Install prompt & touch controls** | Add to Home Screen button and smoother mobile controls |
 
 &nbsp;
 
@@ -193,14 +194,14 @@ Release tags trigger a workflow that builds CPU and GPU images and publishes
 them to GitHub Container Registry.  You can pull the latest versioned images:
 
 ```bash
-docker pull ghcr.io/<owner>/lego-gpt:v0.5.37        # CPU
-docker pull ghcr.io/<owner>/lego-gpt:gpu-v0.5.37    # GPU
+docker pull ghcr.io/<owner>/lego-gpt:v0.5.38        # CPU
+docker pull ghcr.io/<owner>/lego-gpt:gpu-v0.5.38    # GPU
 ```
 
 Run the API server with:
 
 ```bash
-docker run -p 8000:8000 ghcr.io/<owner>/lego-gpt:v0.5.37
+docker run -p 8000:8000 ghcr.io/<owner>/lego-gpt:v0.5.38
 ```
 
 Override the command to start a worker or the detector worker as needed.

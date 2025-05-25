@@ -10,7 +10,7 @@ This plan outlines the following sprints after completing the scalability benchm
 * Provide Terraform samples for common cloud providers.
 * Offer environment variables for secret management.
 
-## Sprint 3 – Mobile PWA polish
+## Sprint 3 – Mobile PWA polish (completed)
 * Fine‑tune touch controls in the 3‑D viewer.
 * Add install prompts and home‑screen icons.
 

@@ -1,4 +1,9 @@
 import { useState, useEffect, FormEvent, ChangeEvent } from "react";
+
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
+}
 import useGenerate from "./api/useGenerate";
 import useDetectInventory from "./api/useDetectInventory";
 import LDrawViewer from "./LDrawViewer";
@@ -14,6 +19,8 @@ export default function App() {
   const [request, setRequest] = useState<{ p: string; s: number | null } | null>(
     null
   );
+  const [installEvent, setInstallEvent] = useState<BeforeInstallPromptEvent | null>(null);
+  const [showInstall, setShowInstall] = useState(false);
 
   const detect = useDetectInventory(photo);
 
@@ -24,6 +31,16 @@ export default function App() {
     processPending();
     window.addEventListener("online", handleOnline);
     return () => window.removeEventListener("online", handleOnline);
+  }, []);
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      e.preventDefault();
+      setInstallEvent(e as BeforeInstallPromptEvent);
+      setShowInstall(true);
+    };
+    window.addEventListener("beforeinstallprompt", handler);
+    return () => window.removeEventListener("beforeinstallprompt", handler);
   }, []);
 
   useEffect(() => {
@@ -55,6 +72,15 @@ export default function App() {
     reader.readAsDataURL(file);
   }
 
+  function handleInstall() {
+    if (!installEvent) return;
+    installEvent.prompt();
+    installEvent.userChoice.finally(() => {
+      setShowInstall(false);
+      setInstallEvent(null);
+    });
+  }
+
   if (page === "settings") {
     return <Settings onBack={() => setPage("main")} />;
   }
@@ -62,6 +88,14 @@ export default function App() {
   return (
     <main className="p-6 max-w-xl mx-auto font-sans">
       <h1 className="text-2xl font-bold mb-4">Lego GPT Demo</h1>
+      {showInstall && (
+        <button
+          onClick={handleInstall}
+          className="mb-4 mr-4 bg-green-600 text-white px-3 py-1 rounded"
+        >
+          Install App
+        </button>
+      )}
       <button
         className="text-sm underline mb-4"
         onClick={() => setPage("settings")}

@@ -1,23 +1,21 @@
 # Latest Sprint Plan
 
-This plan outlines the next five logical sprints after completing the offline mode improvements.
+This plan outlines the next five logical sprints after completing the advanced front-end features.
 
-## Sprint 1 – Enhanced CLI options (completed)
-* Support batch generation via a file of prompts.
-* Add progress indicators and richer error messages.
+## Sprint 1 – Cloud infrastructure templates
+* Provide Terraform samples for common cloud providers.
+* Offer environment variables for secret management.
 
-## Sprint 2 – CLI integration tests (completed)
-* Cover new batch and progress features end-to-end.
-* Maintain fast execution with mocked API responses.
+## Sprint 2 – Mobile PWA polish (completed)
+* Fine‑tune touch controls in the 3‑D viewer.
+* Add install prompts and home-screen icons.
 
-## Sprint 3 – Deployment automation (completed)
-* Build production Docker images for CPU and GPU targets.
-* Publish versioned images to the registry.
+## Sprint 3 – Documentation cleanup
+* Consolidate older sprint plans.
+* Expand deployment instructions with best practices.
 
-## Sprint 4 – Scalability benchmarking (completed)
-* Added `benchmark_scalability.py` script to measure throughput.
-* Documented tuning guidelines in `docs/SCALABILITY_BENCHMARKING.md`.
+## Sprint 4 – Continuous benchmarking
+* Automate the scalability benchmark in CI for regressions.
 
-## Sprint 5 – Advanced front-end features (completed)
-* Offline requests are queued and processed when connectivity returns.
-* New settings page allows clearing cached results and queued jobs.
+## Sprint 5 – Community example library
+* Curate a gallery of example builds and shareable prompts.

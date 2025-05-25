@@ -20,6 +20,7 @@ export default function LDrawViewer({ url }: Props) {
     }
 
     let renderer: SimpleRenderer | null = null;
+    let controls: { update: () => void; dispose: () => void } | null = null;
     let animationId: number;
 
     async function init() {
@@ -42,9 +43,17 @@ export default function LDrawViewer({ url }: Props) {
       camera.position.set(200, 200, 200);
       camera.lookAt(0, 0, 0);
 
+      const { OrbitControls } = await import(
+        /* @vite-ignore */
+        "https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js?module"
+      );
+
       renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setSize(mountRef.current!.clientWidth, 400);
       mountRef.current!.appendChild(renderer.domElement);
+
+      controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
 
       const loader = new LDrawLoader();
       loader.load(url, (group: unknown) => {
@@ -55,20 +64,20 @@ export default function LDrawViewer({ url }: Props) {
 
       function animate() {
         animationId = requestAnimationFrame(animate);
+        controls?.update();
         renderer.render(scene, camera);
       }
     }
 
       init();
       return () => {
+        controls?.dispose();
         if (renderer) {
           renderer.dispose();
+          mount.removeChild(renderer.domElement);
         }
         if (animationId) {
           cancelAnimationFrame(animationId);
-        }
-        if (renderer) {
-          mount.removeChild(renderer.domElement);
         }
       };
   }, [url]);
