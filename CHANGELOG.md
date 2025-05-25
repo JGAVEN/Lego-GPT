@@ -26,6 +26,12 @@
 ### Changed
 * Backend version bumped to 0.5.49.
 
+## [0.5.50] – 2025-08-03
+### Added
+* Email notifications for new example comments.
+### Changed
+* Backend version bumped to 0.5.50.
+
 ## [0.5.45] – 2025-07-27
 ### Added
 * Presence indicator shows connected collaborators in real time.

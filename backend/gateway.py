@@ -332,6 +332,12 @@ class Handler(BaseHTTPRequestHandler):
                 user = "user"
             comments.append({"user": user, "text": text, "ts": int(time.time())})
             file_path.write_text(json.dumps(comments, indent=2))
+            try:
+                from backend.notify import send_comment_notification
+
+                send_comment_notification(ex_id, user, text)
+            except Exception:
+                pass
             self._send_json({"ok": True})
             return
         if self.path == "/detect_inventory":

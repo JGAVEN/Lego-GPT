@@ -80,6 +80,7 @@
 | F-22 | **S**  | Advanced build instructions                     | **Done** | PDF export lists used parts |
 | F-23 | **S**  | Push notification opt-in                        | **Done** | One-time prompt on first visit |
 | F-24 | **S**  | Admin analytics dashboard                        | **Done** | Metrics endpoint and dashboard page |
+| F-25 | **S**  | Comment notifications                             | **Done** | Email sent on new example comments |
 
 
 
@@ -87,4 +88,4 @@
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.
 
-_Last updated 2025-08-02_
+_Last updated 2025-08-03_
