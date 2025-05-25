@@ -11,6 +11,8 @@ export default function CollabDemo({ onBack }: Props) {
   const [room, setRoom] = useState("");
   const [message, setMessage] = useState("");
   const [log, setLog] = useState<string[]>([]);
+  const [history, setHistory] = useState<string[]>([]);
+  const [redo, setRedo] = useState<string[]>([]);
   const [ws, setWs] = useState<WebSocket | null>(null);
 
   useEffect(() => {
@@ -22,7 +24,32 @@ export default function CollabDemo({ onBack }: Props) {
       });
     };
     socket.onmessage = (ev) => {
-      setLog((l) => [...l, ev.data]);
+      if (ev.data === "__undo__") {
+        setHistory((h) => {
+          if (h.length === 0) return h;
+          setRedo((r) => [h[h.length - 1], ...r]);
+          const next = h.slice(0, -1);
+          setLog(next);
+          return next;
+        });
+      } else if (ev.data === "__redo__") {
+        setRedo((r) => {
+          if (r.length === 0) return r;
+          const [restored, ...rest] = r;
+          setHistory((h) => {
+            const next = [...h, restored];
+            setLog(next);
+            return next;
+          });
+          return rest;
+        });
+      } else {
+        setHistory((h) => {
+          const next = [...h, ev.data];
+          setLog(next);
+          return next;
+        });
+      }
       if (navigator.serviceWorker.controller) {
         navigator.serviceWorker.controller.postMessage({
           type: "collab_update",
@@ -41,8 +68,46 @@ export default function CollabDemo({ onBack }: Props) {
     } else if (room) {
       await queueCollab({ room, data: message });
     }
-    setLog((l) => [...l, `You: ${message}`]);
+    setHistory((h) => {
+      const next = [...h, `You: ${message}`];
+      setLog(next);
+      return next;
+    });
+    setRedo([]);
     setMessage("");
+  }
+
+  async function sendUndo() {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send("__undo__");
+    } else if (room) {
+      await queueCollab({ room, data: "__undo__" });
+    }
+    setHistory((h) => {
+      if (h.length === 0) return h;
+      setRedo((r) => [h[h.length - 1], ...r]);
+      const next = h.slice(0, -1);
+      setLog(next);
+      return next;
+    });
+  }
+
+  async function sendRedo() {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send("__redo__");
+    } else if (room) {
+      await queueCollab({ room, data: "__redo__" });
+    }
+    setRedo((r) => {
+      if (r.length === 0) return r;
+      const [restored, ...rest] = r;
+      setHistory((h) => {
+        const next = [...h, restored];
+        setLog(next);
+        return next;
+      });
+      return rest;
+    });
   }
 
   if (!room) {
@@ -84,6 +149,20 @@ export default function CollabDemo({ onBack }: Props) {
           onClick={send}
         >
           {t("send")}
+        </button>
+        <button
+          className="ml-2 bg-gray-200 px-3 py-1 rounded mt-2"
+          onClick={sendUndo}
+          aria-label="undo"
+        >
+          {t("undo")}
+        </button>
+        <button
+          className="ml-2 bg-gray-200 px-3 py-1 rounded mt-2"
+          onClick={sendRedo}
+          aria-label="redo"
+        >
+          {t("redo")}
         </button>
       </div>
       <ul className="border p-2 h-40 overflow-auto mb-4">

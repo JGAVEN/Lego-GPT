@@ -26,6 +26,14 @@ const en = {
   roomId: "Room ID",
   message: "Message",
   send: "Send",
+  undo: "Undo",
+  redo: "Redo",
+  pushEnabled: "Push notifications enabled",
+  togglePush: "Toggle Push",
+  addExample: "Add Example",
+  exampleTitle: "Title",
+  examplePrompt: "Prompt",
+  exampleImage: "Image URL",
 };
 
 export type Lang = "en";

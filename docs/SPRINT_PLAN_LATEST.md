@@ -45,5 +45,10 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 13 – Interface polish (completed)
 * The PWA remains English only and includes a collaboration demo page.
 
+## Sprint 14 – Collaboration refinements (completed)
+* Added collaborative undo/redo history syncing.
+* Push notifications can be enabled or disabled in the settings page.
+* Example library accepts community submissions stored locally.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.

@@ -43,6 +43,9 @@ real-life building via a built-in Three.js viewer.
 | 📨 **Offline edit queue** | Collaboration messages are stored offline and synced on reconnect |
 | 📱 **Install prompt & touch controls** | Add to Home Screen button and smoother mobile controls |
 | 🖼️ **Community example gallery** | Browse shared prompts and load them with one click |
+| ↩️ **Collaborative undo/redo** | Peers can revert edits across sessions |
+| 🔕 **Push subscription toggle** | Enable or disable Web Push in settings |
+| ➕ **Add your own examples** | Submit prompts to the community gallery |
 
 &nbsp;
 
