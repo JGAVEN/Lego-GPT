@@ -5,6 +5,11 @@
 ### Changed
 * Backend version bumped to 0.5.46.
 
+## [0.5.47] – 2025-07-29
+### Added
+* `lego-gpt-review` CLI for approving community examples.
+* `lego-gpt-cli` streams build progress via SSE.
+
 ## [0.5.45] – 2025-07-27
 ### Added
 * Presence indicator shows connected collaborators in real time.

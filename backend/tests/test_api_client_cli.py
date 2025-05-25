@@ -26,6 +26,7 @@ class APIClientCLITests(unittest.TestCase):
         argv = ["cli", "--token", "tok", "generate", "hello"]
         with patch.object(sys, "argv", argv), \
              patch("backend.cli._post", return_value={"job_id": "1"}) as mock_post, \
+             patch("backend.cli._stream_progress"), \
              patch("backend.cli._poll", return_value={"ok": True}) as mock_poll, \
              patch("sys.stdout", new=io.StringIO()):
             cli.main()
@@ -46,6 +47,7 @@ class APIClientCLITests(unittest.TestCase):
         with patch.object(sys, "argv", argv), \
              patch("backend.cli.open", mock_open(read_data=json.dumps(inv)), create=True), \
              patch("backend.cli._post", return_value={"job_id": "1"}) as mock_post, \
+             patch("backend.cli._stream_progress"), \
              patch("backend.cli._poll", return_value={"ok": True}) as mock_poll, \
              patch("sys.stdout", new=io.StringIO()):
             cli.main()
@@ -67,6 +69,7 @@ class APIClientCLITests(unittest.TestCase):
         result = {"png_url": "/static/a/preview.png", "ldr_url": None, "gltf_url": None}
         with patch.object(sys, "argv", argv), \
              patch("backend.cli._post", return_value={"job_id": "1"}) as mock_post, \
+             patch("backend.cli._stream_progress"), \
              patch("backend.cli._poll", return_value=result) as mock_poll, \
              patch("backend.cli.request.urlopen") as mock_urlopen, \
              patch("sys.stdout", new=io.StringIO()):
@@ -81,6 +84,7 @@ class APIClientCLITests(unittest.TestCase):
         with patch.object(sys, "argv", argv), \
              patch("backend.cli.open", mock_open(read_data=b"img"), create=True), \
              patch("backend.cli._post", return_value={"job_id": "1"}) as mock_post, \
+             patch("backend.cli._stream_progress"), \
              patch("backend.cli._poll", return_value={"ok": True}) as mock_poll, \
              patch("sys.stdout", new=io.StringIO()):
             cli.main()
@@ -93,6 +97,7 @@ class APIClientCLITests(unittest.TestCase):
         with patch.object(sys, "argv", argv), \
              patch("backend.cli.open", mock_open(read_data=prompts), create=True), \
              patch("backend.cli._post", return_value={"job_id": "1"}) as mock_post, \
+             patch("backend.cli._stream_progress"), \
              patch("backend.cli._poll", return_value={"ok": True}) as mock_poll, \
              patch("sys.stdout", new=io.StringIO()):
             cli.main()

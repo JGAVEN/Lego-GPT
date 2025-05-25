@@ -72,6 +72,7 @@ clusters not connected to the ground.
 
 Community members can post new prompt ideas via ``POST /submit_example``. Each
 submission is stored under ``backend/submissions/`` for manual curation.
+Use the ``lego-gpt-review`` CLI to list and approve these submissions.
 
 ---
 

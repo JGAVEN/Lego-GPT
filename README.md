@@ -49,6 +49,8 @@ real-life building via a built-in Three.js viewer.
 | ➕ **Expanded examples** | New sample prompts showcase model capabilities (see [docs/EXAMPLES.md](docs/EXAMPLES.md)) |
 | ✉️ **Example submissions** | `/submit_example` endpoint stores community prompts |
 | 📶 **Progress events** | `/progress/<job_id>` streams build updates via SSE |
+| 🆕 **Submission review CLI** (`lego-gpt-review`) | Approve community examples from the command line |
+| 🆕 **CLI progress streaming** | `lego-gpt-cli` shows live build progress via SSE |
 
 &nbsp;
 
