@@ -18,8 +18,8 @@ This plan outlines the next five logical sprints after completing the advanced f
 * Automate the scalability benchmark in CI for regressions.
 * Added a stub server benchmark step in CI.
 
-## Sprint 5 – Community example library
-* Curate a gallery of example builds and shareable prompts.
+## Sprint 5 – Community example library (completed)
+* Added a gallery of example builds and shareable prompts in the PWA.
 
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.
