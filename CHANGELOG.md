@@ -10,6 +10,13 @@
 * `lego-gpt-review` CLI for approving community examples.
 * `lego-gpt-cli` streams build progress via SSE.
 
+## [0.5.48] – 2025-08-01
+### Added
+* Automatic example tagging when approving submissions.
+* Gallery search box and tag filter for community examples.
+### Changed
+* Backend version bumped to 0.5.48.
+
 ## [0.5.45] – 2025-07-27
 ### Added
 * Presence indicator shows connected collaborators in real time.
