@@ -75,6 +75,11 @@
 | B-37 | **S**  | Build progress events                              | **Done** | SSE endpoint `/progress/<job_id>` |
 | F-18 | **S**  | Automatic example tagging                         | **Done** | Tags are generated when approving submissions |
 | F-19 | **S**  | Example search and filter                        | **Done** | Gallery filters examples by tag or search text |
+| F-20 | **S**  | Example comments                                | **Done** | Users can post comments via the API |
+| F-21 | **S**  | Social sharing links                            | **Done** | Share buttons on examples and builds |
+| F-22 | **S**  | Advanced build instructions                     | **Done** | PDF export lists used parts |
+| F-23 | **S**  | Push notification opt-in                        | **Done** | One-time prompt on first visit |
+| F-24 | **S**  | Admin analytics dashboard                        | **Done** | Metrics endpoint and dashboard page |
 
 
 
@@ -82,4 +87,4 @@
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.
 
-_Last updated 2025-08-01_
+_Last updated 2025-08-02_

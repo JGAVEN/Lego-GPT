@@ -22,7 +22,7 @@ except Exception:  # pragma: no cover - ignore if missing
 try:  # pragma: no cover - during editable installs
     __version__ = version("lego-gpt-backend")
 except PackageNotFoundError:  # pragma: no cover - fallback for tests
-    __version__ = "0.5.48"
+    __version__ = "0.5.49"
 
 PACKAGE_DIR = Path(__file__).parent
 _env_static = os.getenv("STATIC_ROOT")
@@ -34,7 +34,20 @@ _env_sub = os.getenv("SUBMISSIONS_ROOT")
 SUBMISSIONS_ROOT = Path(_env_sub) if _env_sub else PACKAGE_DIR / "submissions"
 SUBMISSIONS_ROOT = SUBMISSIONS_ROOT.resolve()
 
+# Directory where example comments are stored
+_env_comments = os.getenv("COMMENTS_ROOT")
+COMMENTS_ROOT = (
+    Path(_env_comments) if _env_comments else PACKAGE_DIR / "comments"
+)
+COMMENTS_ROOT = COMMENTS_ROOT.resolve()
+
 # URL prefix returned for generated assets
 STATIC_URL_PREFIX = os.getenv("STATIC_URL_PREFIX", "/static")
 
-__all__ = ["__version__", "STATIC_ROOT", "STATIC_URL_PREFIX", "SUBMISSIONS_ROOT"]
+__all__ = [
+    "__version__",
+    "STATIC_ROOT",
+    "STATIC_URL_PREFIX",
+    "SUBMISSIONS_ROOT",
+    "COMMENTS_ROOT",
+]
