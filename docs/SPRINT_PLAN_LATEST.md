@@ -21,5 +21,9 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 5 – Community example library (completed)
 * Added a gallery of example builds and shareable prompts in the PWA.
 
+## Sprint 6 – Automated UI regression tests (completed)
+* Cypress suite added for the front-end and integrated into CI.
+* CI install step updated with `--no-frozen-lockfile` to handle lockfile changes.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.

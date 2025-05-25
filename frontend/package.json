@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "node ../scripts/lint_frontend.js",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:e2e": "cypress run"
   },
   "dependencies": {
     "react": "^19.1.0",
@@ -27,7 +28,8 @@
     "prettier": "^3.5.3",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.30.1",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "cypress": "^13.7.3"
   },
   "packageManager": "pnpm@10.5.2"
 }

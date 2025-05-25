@@ -171,6 +171,9 @@ Run `./scripts/run_tests.sh` to lint and test in one step.
 CI runs the same tests under `coverage` and uploads the report to Codecov.
 CI also executes a lightweight scalability benchmark via
 `scripts/benchmark_ci.py` to detect performance regressions.
+End-to-end UI tests are written with Cypress. Run them locally with
+`pnpm --dir frontend run build` followed by `pnpm --dir frontend run test:e2e`.
+CI builds the front-end and executes the Cypress suite in headless mode.
 
 The Vite dev server proxies `/generate`, `/detect_inventory`, and `/static`
 requests to `http://localhost:8000` so the PWA works against your local backend
@@ -198,14 +201,14 @@ Release tags trigger a workflow that builds CPU and GPU images and publishes
 them to GitHub Container Registry.  You can pull the latest versioned images:
 
 ```bash
-docker pull ghcr.io/<owner>/lego-gpt:v0.5.40        # CPU
-docker pull ghcr.io/<owner>/lego-gpt:gpu-v0.5.40    # GPU
+docker pull ghcr.io/<owner>/lego-gpt:v0.5.41        # CPU
+docker pull ghcr.io/<owner>/lego-gpt:gpu-v0.5.41    # GPU
 ```
 
 Run the API server with:
 
 ```bash
-docker run -p 8000:8000 ghcr.io/<owner>/lego-gpt:v0.5.40
+docker run -p 8000:8000 ghcr.io/<owner>/lego-gpt:v0.5.41
 ```
 
 Override the command to start a worker or the detector worker as needed.
@@ -218,7 +221,7 @@ followed by `terraform apply`:
 
 ```bash
 cd infra/aws
-export TF_VAR_api_image=ghcr.io/<owner>/lego-gpt:v0.5.40
+export TF_VAR_api_image=ghcr.io/<owner>/lego-gpt:v0.5.41
 export TF_VAR_redis_url=redis://hostname:6379/0
 export TF_VAR_jwt_secret=$(openssl rand -hex 32)
 terraform init
@@ -335,14 +338,16 @@ Default rate limit is `5` generate requests per token per minute (configurable v
    The script attempts an offline install and fetches from the registry if needed.
    Run it once with network access (`pnpm install --dir frontend` works too) so
    future lints and dev builds work offline. The script installs runtime React
-   packages plus the linting/dev tools required by `lint_frontend.js`:
-   `@eslint/js`, `@types/react`, `@types/react-dom`, `@vitejs/plugin-react`,
-   `eslint`, `eslint-config-prettier`, `eslint-plugin-react-hooks`,
-   `eslint-plugin-react-refresh`, `globals`, `prettier`, `typescript`,
-   `typescript-eslint` and `vite`. Running the setup script offline before the
-   store is populated prints a short message explaining the missing packages.
-   Run `pnpm --dir frontend run lint` after editing UI code; the command skips if
-   dependencies are missing.
+  packages plus the linting/dev tools required by `lint_frontend.js`:
+  `@eslint/js`, `@types/react`, `@types/react-dom`, `@vitejs/plugin-react`,
+  `eslint`, `eslint-config-prettier`, `eslint-plugin-react-hooks`,
+  `eslint-plugin-react-refresh`, `globals`, `prettier`, `typescript`,
+  `typescript-eslint`, `vite`, and `cypress`. Running the setup script offline before the
+  store is populated prints a short message explaining the missing packages.
+  Run `pnpm --dir frontend run lint` after editing UI code; the command skips if
+  dependencies are missing.
+  CI installs these packages with `pnpm install --no-frozen-lockfile --dir frontend`
+  so a stale lockfile doesn't fail the build.
 4. Run `python -m unittest discover -v` before pushing. The test suite uses
    Python's built-in `unittest` module. `pytest` is optional and works too.
 5. Update `docs/CHANGELOG.md` after each merge to `main`.
