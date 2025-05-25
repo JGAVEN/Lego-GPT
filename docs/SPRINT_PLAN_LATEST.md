@@ -80,5 +80,23 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 24 – Example search and filter (completed)
 * Gallery UI can filter community examples by tag or free‑text search.
 
+## Sprint 25 – Example rating system (completed)
+* Users can rate community examples with 1–5 stars stored locally.
+* Average rating is shown in the gallery.
+
+## Sprint 26 – Favourite examples (completed)
+* Gallery allows bookmarking favourites locally and toggling a favourites view.
+
+## Sprint 27 – Submission moderation dashboard (completed)
+* Web dashboard lists pending submissions with approve/reject actions.
+
+## Sprint 28 – Collaboration chat messages (completed)
+* WebSocket server broadcasts `/chat` messages.
+* Demo page shows a simple chat panel.
+
+## Sprint 29 – Build instructions export (completed)
+* Worker outputs placeholder PDF instructions alongside the model files.
+* CLI and PWA provide a download link for the PDF.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.

@@ -67,6 +67,7 @@ def generate(prompt: str, seed: int | None = None, inventory_filter: dict[str, i
     png_path = output_dir / "preview.png"
     ldr_path = output_dir / "model.ldr"
     gltf_path = output_dir / "model.gltf"
+    pdf_path = output_dir / "instructions.pdf"
 
     # Always save PNG
     png_path.write_bytes(result["png"])
@@ -76,11 +77,19 @@ def generate(prompt: str, seed: int | None = None, inventory_filter: dict[str, i
         ldr_path.write_text(result["ldr"])
         ldr_path_str: str | None = str(ldr_path)
         ldr_to_gltf(ldr_path, gltf_path)
+        try:
+            from backend.export import ldr_to_pdf
+
+            ldr_to_pdf(ldr_path, pdf_path)
+            pdf_path_str: str | None = str(pdf_path)
+        except Exception:
+            pdf_path_str = None
         gltf_path_str: str | None = str(gltf_path)
     else:
         ldr_path_str = None
         gltf_path_str = None
+        pdf_path_str = None
 
     counts = result.get("brick_counts", {})
     counts = filter_counts(counts, inventory_filter)
-    return str(png_path), ldr_path_str, gltf_path_str, counts
+    return str(png_path), ldr_path_str, gltf_path_str, pdf_path_str, counts

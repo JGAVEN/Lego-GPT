@@ -144,6 +144,20 @@ class Handler(BaseHTTPRequestHandler):
                     break
                 time.sleep(1)
             return
+        if self.path == "/submissions":
+            SUBMISSIONS_ROOT.mkdir(parents=True, exist_ok=True)
+            items = []
+            for item in sorted(SUBMISSIONS_ROOT.glob("*.json")):
+                try:
+                    data = json.loads(item.read_text())
+                    title = data.get("title", "?")
+                    prompt = data.get("prompt", "")
+                except Exception:
+                    title = "?"
+                    prompt = ""
+                items.append({"file": item.name, "title": title, "prompt": prompt})
+            self._send_json({"submissions": items})
+            return
         if self.path.startswith("/static/"):
             base = STATIC_ROOT.resolve()
             rel = self.path[len("/static/") :]
@@ -217,6 +231,47 @@ class Handler(BaseHTTPRequestHandler):
                 json.dumps(submission, indent=2)
             )
             self._send_json({"ok": True})
+            return
+        if self.path == "/submissions/approve":
+            length = int(self.headers.get("Content-Length", 0))
+            body = self.rfile.read(length)
+            try:
+                payload = json.loads(body.decode() or "{}")
+            except json.JSONDecodeError:
+                self.send_error(400, "Invalid JSON")
+                return
+            file_name = payload.get("file")
+            if not file_name:
+                self.send_error(400, "file required")
+                return
+            examples = Path(__file__).resolve().parents[1] / "frontend/public/examples.json"
+            from backend.review_cli import approve_submission
+
+            try:
+                approve_submission(SUBMISSIONS_ROOT, file_name, examples)
+            except Exception:
+                self.send_error(400, "invalid submission")
+                return
+            self._send_json({"ok": True})
+            return
+        if self.path == "/submissions/reject":
+            length = int(self.headers.get("Content-Length", 0))
+            body = self.rfile.read(length)
+            try:
+                payload = json.loads(body.decode() or "{}")
+            except json.JSONDecodeError:
+                self.send_error(400, "Invalid JSON")
+                return
+            file_name = payload.get("file")
+            if not file_name:
+                self.send_error(400, "file required")
+                return
+            file_path = SUBMISSIONS_ROOT / file_name
+            if file_path.is_file():
+                file_path.unlink()
+                self._send_json({"ok": True})
+            else:
+                self.send_error(404, "file not found")
             return
         if self.path == "/detect_inventory":
             try:
