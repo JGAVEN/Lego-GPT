@@ -194,15 +194,18 @@ Release tags trigger a workflow that builds CPU and GPU images and publishes
 them to GitHub Container Registry.  You can pull the latest versioned images:
 
 ```bash
-docker pull ghcr.io/<owner>/lego-gpt:v0.5.38        # CPU
-docker pull ghcr.io/<owner>/lego-gpt:gpu-v0.5.38    # GPU
+docker pull ghcr.io/<owner>/lego-gpt:v0.5.40        # CPU
+docker pull ghcr.io/<owner>/lego-gpt:gpu-v0.5.40    # GPU
 ```
 
 Run the API server with:
 
 ```bash
-docker run -p 8000:8000 ghcr.io/<owner>/lego-gpt:v0.5.38
+docker run -p 8000:8000 ghcr.io/<owner>/lego-gpt:v0.5.40
 ```
+
+### Deployment Guide
+For production deployment and Terraform samples see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 Override the command to start a worker or the detector worker as needed.
 
@@ -246,6 +249,7 @@ detector/           Brick-detector micro-service worker
 docker-compose.yml  Dev stack (server + workers)
 ```
 
+Example prompts and builds live under `examples/`.
 &nbsp;
 
 ## 5. API Contract
