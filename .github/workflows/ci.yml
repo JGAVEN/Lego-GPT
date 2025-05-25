@@ -50,6 +50,8 @@ jobs:
 
       - name: Run front-end lint
         run: pnpm --dir frontend run lint
+      - name: Run scalability benchmark
+        run: python scripts/benchmark_ci.py
       # 6. (Optional) Build dev Docker image
       # - name: Build Docker image
       #   run: docker build -f Dockerfile.dev -t lego-gpt-dev .

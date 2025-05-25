@@ -14,8 +14,9 @@ This plan outlines the next five logical sprints after completing the advanced f
 * Consolidate older sprint plans.
 * Expand deployment instructions with best practices.
 
-## Sprint 4 – Continuous benchmarking
+## Sprint 4 – Continuous benchmarking (completed)
 * Automate the scalability benchmark in CI for regressions.
+* Added a stub server benchmark step in CI.
 
 ## Sprint 5 – Community example library
 * Curate a gallery of example builds and shareable prompts.
