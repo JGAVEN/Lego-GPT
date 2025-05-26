@@ -132,5 +132,20 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 40 – Build history export (completed)
 * `/history` endpoint returns per-user JSON build history.
 
+## Sprint 41 – Distributed moderation queue (completed)
+* Submissions are stored in Redis so multiple instances share the queue.
+
+## Sprint 42 – Account linking (completed)
+* Users generate a one-time link code to sync tokens across devices.
+
+## Sprint 43 – Notification preferences (completed)
+* `/preferences` endpoint stores per-user email and push settings.
+
+## Sprint 44 – Example import/export (completed)
+* New `lego-gpt-examples` CLI can export and import `examples.json`.
+
+## Sprint 45 – Resilience improvements (completed)
+* Worker jobs retry automatically and `/health` checks Redis status.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.

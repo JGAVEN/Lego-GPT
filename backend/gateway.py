@@ -6,10 +6,16 @@ import time
 from pathlib import Path
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from redis import Redis
-from rq import Queue, Job
+from rq import Queue, Job, Retry
 from backend.api import health
-from backend import STATIC_ROOT, SUBMISSIONS_ROOT, COMMENTS_ROOT
-from backend import HISTORY_ROOT
+from backend import (
+    STATIC_ROOT,
+    SUBMISSIONS_ROOT,
+    SUBMISSIONS_REDIS_URL,
+    COMMENTS_ROOT,
+    HISTORY_ROOT,
+    PREFERENCES_ROOT,
+)
 from backend.worker import QUEUE_NAME as DEFAULT_QUEUE, generate_job, detect_job
 from backend.auth import decode as decode_jwt
 from backend import __version__
@@ -18,8 +24,10 @@ from backend.logging_config import setup_logging
 
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
 redis_conn = Redis.from_url(REDIS_URL)
+submissions_redis = Redis.from_url(SUBMISSIONS_REDIS_URL) if SUBMISSIONS_REDIS_URL else None
 QUEUE_NAME = os.getenv("QUEUE_NAME", DEFAULT_QUEUE)
 queue = Queue(QUEUE_NAME, connection=redis_conn)
+DEFAULT_RETRY = Retry(max=3, interval=[10, 30, 60])
 
 JWT_SECRET = os.getenv("JWT_SECRET", "secret")
 RATE_LIMIT = int(os.getenv("RATE_LIMIT", "5"))
@@ -27,6 +35,8 @@ RATE_LIMIT = int(os.getenv("RATE_LIMIT", "5"))
 CORS_ORIGINS = os.getenv("CORS_ORIGINS", "*")
 # token -> (count, window_epoch_minute)
 _TOKEN_USAGE: dict[str, tuple[int, int]] = {}
+# one-time link codes -> (token, expiry_ts)
+_LINK_CODES: dict[str, tuple[str, float]] = {}
 
 # Simple in-memory metrics
 METRICS = {
@@ -218,8 +228,16 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_error(401)
                 return
             SUBMISSIONS_ROOT.mkdir(parents=True, exist_ok=True)
+            if submissions_redis:
+                try:
+                    names = [n.decode() for n in submissions_redis.lrange("submissions", 0, -1)]
+                except Exception:
+                    names = []
+            else:
+                names = [p.name for p in sorted(SUBMISSIONS_ROOT.glob("*.json"))]
             items = []
-            for item in sorted(SUBMISSIONS_ROOT.glob("*.json")):
+            for fname in names:
+                item = SUBMISSIONS_ROOT / fname
                 try:
                     data = json.loads(item.read_text())
                     title = data.get("title", "?")
@@ -272,6 +290,36 @@ class Handler(BaseHTTPRequestHandler):
                 entries = []
             self._send_json({"history": entries})
             return
+        if self.path.startswith("/link_account"):
+            code = self.path.split("?code=", 1)[-1] if "?code=" in self.path else ""
+            token = None
+            if code and code in _LINK_CODES:
+                t, exp = _LINK_CODES.pop(code)
+                if time.time() < exp:
+                    token = t
+            if token:
+                self._send_json({"token": token})
+            else:
+                self.send_error(404)
+            return
+        if self.path == "/preferences":
+            try:
+                _check_auth(self.headers)
+            except PermissionError:
+                self.send_error(401)
+                return
+            token = self.headers.get("Authorization", "").split(" ", 1)[1]
+            user = decode_jwt(token, JWT_SECRET).get("sub", "user")
+            pref_path = PREFERENCES_ROOT / f"{user}.json"
+            if pref_path.is_file():
+                try:
+                    data = json.loads(pref_path.read_text())
+                except Exception:
+                    data = {}
+            else:
+                data = {}
+            self._send_json({"preferences": data})
+            return
         if self.path.startswith("/static/"):
             base = STATIC_ROOT.resolve()
             rel = self.path[len("/static/") :]
@@ -296,6 +344,40 @@ class Handler(BaseHTTPRequestHandler):
         self.send_error(404)
 
     def do_POST(self):
+        if self.path == "/link_code":
+            try:
+                _check_auth(self.headers)
+            except PermissionError:
+                self.send_error(401)
+                return
+            token = self.headers.get("Authorization", "").split(" ", 1)[1]
+            import random
+            import string
+
+            code = "".join(random.choices(string.digits, k=6))
+            _LINK_CODES[code] = (token, time.time() + 600)
+            self._send_json({"code": code})
+            return
+        if self.path == "/preferences":
+            try:
+                _check_auth(self.headers)
+            except PermissionError:
+                self.send_error(401)
+                return
+            length = int(self.headers.get("Content-Length", 0))
+            body = self.rfile.read(length)
+            try:
+                payload = json.loads(body.decode() or "{}")
+            except json.JSONDecodeError:
+                self.send_error(400, "Invalid JSON")
+                return
+            token = self.headers.get("Authorization", "").split(" ", 1)[1]
+            user = decode_jwt(token, JWT_SECRET).get("sub", "user")
+            pref_path = PREFERENCES_ROOT / f"{user}.json"
+            PREFERENCES_ROOT.mkdir(parents=True, exist_ok=True)
+            pref_path.write_text(json.dumps(payload, indent=2))
+            self._send_json({"ok": True})
+            return
         if self.path == "/generate":
             try:
                 _check_auth(self.headers)
@@ -320,7 +402,9 @@ class Handler(BaseHTTPRequestHandler):
                 return
             token = self.headers.get("Authorization", "").split(" ", 1)[1]
             payload = decode_jwt(token, JWT_SECRET)
-            job_obj = queue.enqueue(generate_job, prompt, seed, inventory)
+            job_obj = queue.enqueue(
+                generate_job, prompt, seed, inventory, retry=DEFAULT_RETRY
+            )
             job_obj.meta["user"] = payload.get("sub", "user")
             job_obj.meta["prompt"] = prompt
             job_obj.meta["seed"] = seed
@@ -348,9 +432,15 @@ class Handler(BaseHTTPRequestHandler):
             submission = {"title": title, "prompt": prompt_text}
             if image:
                 submission["image"] = image
-            (SUBMISSIONS_ROOT / f"{uuid4()}.json").write_text(
+            file_name = f"{uuid4()}.json"
+            (SUBMISSIONS_ROOT / file_name).write_text(
                 json.dumps(submission, indent=2)
             )
+            if submissions_redis:
+                try:
+                    submissions_redis.rpush("submissions", file_name)
+                except Exception:
+                    pass
             METRICS["example_submissions"] += 1
             self._send_json({"ok": True})
             return
@@ -379,6 +469,11 @@ class Handler(BaseHTTPRequestHandler):
             except Exception:
                 self.send_error(400, "invalid submission")
                 return
+            if submissions_redis:
+                try:
+                    submissions_redis.lrem("submissions", 0, file_name)
+                except Exception:
+                    pass
             self._send_json({"ok": True})
             return
         if self.path == "/submissions/reject":
@@ -401,6 +496,11 @@ class Handler(BaseHTTPRequestHandler):
             file_path = SUBMISSIONS_ROOT / file_name
             if file_path.is_file():
                 file_path.unlink()
+                if submissions_redis:
+                    try:
+                        submissions_redis.lrem("submissions", 0, file_name)
+                    except Exception:
+                        pass
                 self._send_json({"ok": True})
             else:
                 self.send_error(404, "file not found")
@@ -473,7 +573,7 @@ class Handler(BaseHTTPRequestHandler):
             except Exception:
                 self.send_error(400, "Invalid image data")
                 return
-            job_obj = queue.enqueue(detect_job, image_b64)
+            job_obj = queue.enqueue(detect_job, image_b64, retry=DEFAULT_RETRY)
             METRICS["detect_requests"] += 1
             self._send_json({"job_id": job_obj.id})
             return
@@ -489,12 +589,14 @@ def run(
     rate_limit: int = RATE_LIMIT,
     static_root: str | None = None,
     comments_root: str | None = None,
+    submissions_redis_url: str | None = None,
+    preferences_root: str | None = None,
     log_level: str | None = None,
     log_file: str | None = None,
     cors_origins: str = CORS_ORIGINS,
 ) -> None:
     """Start the HTTP API server."""
-    global queue, redis_conn, JWT_SECRET, RATE_LIMIT, CORS_ORIGINS, COMMENTS_ROOT
+    global queue, redis_conn, JWT_SECRET, RATE_LIMIT, CORS_ORIGINS, COMMENTS_ROOT, submissions_redis, PREFERENCES_ROOT
     redis_conn = Redis.from_url(redis_url)
     queue = Queue(queue_name, connection=redis_conn)
     JWT_SECRET = jwt_secret
@@ -507,6 +609,12 @@ def run(
         import backend as backend_pkg
 
         backend_pkg.COMMENTS_ROOT = Path(comments_root).resolve()
+    if submissions_redis_url:
+        submissions_redis = Redis.from_url(submissions_redis_url)
+    if preferences_root:
+        import backend as backend_pkg
+
+        backend_pkg.PREFERENCES_ROOT = Path(preferences_root).resolve()
     CORS_ORIGINS = cors_origins
     setup_logging(log_level, log_file)
     server = HTTPServer((host, port), Handler)
@@ -570,6 +678,16 @@ def main() -> None:
         help="Directory for example comments (default: env COMMENTS_ROOT)",
     )
     parser.add_argument(
+        "--submissions-redis",
+        default=os.getenv("SUBMISSIONS_REDIS_URL", SUBMISSIONS_REDIS_URL or ""),
+        help="Redis URL for moderation queue (default: env SUBMISSIONS_REDIS_URL)",
+    )
+    parser.add_argument(
+        "--preferences-root",
+        default=os.getenv("PREFERENCES_ROOT", str(PREFERENCES_ROOT)),
+        help="Directory for user preferences (default: env PREFERENCES_ROOT)",
+    )
+    parser.add_argument(
         "--log-level",
         default=os.getenv("LOG_LEVEL", "INFO"),
         help="Logging level (default: env LOG_LEVEL or INFO)",
@@ -599,6 +717,8 @@ def main() -> None:
         args.rate_limit,
         args.static_root,
         args.comments_root,
+        args.submissions_redis,
+        args.preferences_root,
         args.log_level,
         args.log_file,
         args.cors_origins,

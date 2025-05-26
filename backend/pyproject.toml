@@ -1,6 +1,6 @@
 [project]
 name = "lego-gpt-backend"
-version = "0.5.50"
+version = "0.5.51"
 requires-python = ">=3.11"
 dependencies = [
     "redis>=5",
@@ -37,6 +37,7 @@ lego-gpt-export = "backend.export:main"
 lego-gpt-collab = "backend.collab:main"
 lego-gpt-review = "backend.review_cli:main"
 lego-gpt-metrics = "backend.metrics_ws:main"
+lego-gpt-examples = "backend.examples_cli:main"
 
 [build-system]
 requires = ["setuptools>=64", "wheel"]

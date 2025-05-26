@@ -40,6 +40,13 @@ class Queue:
         self.jobs.append(job)
         return job
 
+
+class Retry:
+    """Placeholder for rq Retry settings."""
+    def __init__(self, max: int = 0, interval: list[int] | None = None):
+        self.max = max
+        self.interval = interval or []
+
 class SimpleWorker:
     def __init__(self, queues: Iterable[Queue], connection: Any | None = None):
         self.queues = list(queues)

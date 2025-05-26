@@ -22,9 +22,10 @@ except Exception:  # pragma: no cover - ignore if missing
 try:  # pragma: no cover - during editable installs
     __version__ = version("lego-gpt-backend")
 except PackageNotFoundError:  # pragma: no cover - fallback for tests
-    __version__ = "0.5.50"
+    __version__ = "0.5.51"
 
 PACKAGE_DIR = Path(__file__).parent
+REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
 _env_static = os.getenv("STATIC_ROOT")
 STATIC_ROOT = Path(_env_static) if _env_static else PACKAGE_DIR / "static"
 STATIC_ROOT = STATIC_ROOT.resolve()
@@ -33,6 +34,9 @@ STATIC_ROOT = STATIC_ROOT.resolve()
 _env_sub = os.getenv("SUBMISSIONS_ROOT")
 SUBMISSIONS_ROOT = Path(_env_sub) if _env_sub else PACKAGE_DIR / "submissions"
 SUBMISSIONS_ROOT = SUBMISSIONS_ROOT.resolve()
+
+# Optional Redis URL to share the moderation queue across instances
+SUBMISSIONS_REDIS_URL = os.getenv("SUBMISSIONS_REDIS_URL")
 
 # Directory where example comments are stored
 _env_comments = os.getenv("COMMENTS_ROOT")
@@ -45,6 +49,11 @@ COMMENTS_ROOT = COMMENTS_ROOT.resolve()
 _env_history = os.getenv("HISTORY_ROOT")
 HISTORY_ROOT = Path(_env_history) if _env_history else PACKAGE_DIR / "history"
 HISTORY_ROOT = HISTORY_ROOT.resolve()
+
+# Directory storing per-user notification preferences
+_env_prefs = os.getenv("PREFERENCES_ROOT")
+PREFERENCES_ROOT = Path(_env_prefs) if _env_prefs else PACKAGE_DIR / "preferences"
+PREFERENCES_ROOT = PREFERENCES_ROOT.resolve()
 
 # Email notification settings
 SMTP_HOST = os.getenv("SMTP_HOST")
@@ -61,9 +70,12 @@ __all__ = [
     "__version__",
     "STATIC_ROOT",
     "STATIC_URL_PREFIX",
+    "REDIS_URL",
     "SUBMISSIONS_ROOT",
+    "SUBMISSIONS_REDIS_URL",
     "COMMENTS_ROOT",
     "HISTORY_ROOT",
+    "PREFERENCES_ROOT",
     "SMTP_HOST",
     "SMTP_PORT",
     "SMTP_USER",

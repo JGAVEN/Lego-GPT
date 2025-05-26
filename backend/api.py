@@ -1,13 +1,21 @@
 """Minimal API functions for offline use."""
 from pathlib import Path
 from backend.inference import generate
-from backend import __version__, STATIC_ROOT, STATIC_URL_PREFIX
+from redis import Redis
+from backend import __version__, STATIC_ROOT, STATIC_URL_PREFIX, REDIS_URL
 from backend.storage import maybe_upload_assets
 
 
 def health() -> dict:
     """Return service liveness and version information."""
-    return {"ok": True, "version": __version__}
+    redis_ok = True
+    try:
+        conn = Redis.from_url(REDIS_URL)
+        if hasattr(conn, "ping"):
+            conn.ping()
+    except Exception:
+        redis_ok = False
+    return {"ok": redis_ok, "version": __version__, "redis": redis_ok}
 
 
 def generate_lego_model(
