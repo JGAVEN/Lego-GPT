@@ -33,3 +33,16 @@ and `--concurrency` to simulate different workloads.
 
 Benchmark regularly when adjusting these parameters to find the optimal
 configuration for your hardware.
+
+## 4. Horizontal scaling
+
+When deployment traffic increases, run multiple `lego-gpt-worker` containers.
+All workers consume jobs from the same Redis queue, so you can add or remove
+instances without downtime.
+
+- **Docker Compose** – `docker compose up --scale worker=4` launches four
+  worker containers.
+- **Kubernetes** – configure a `HorizontalPodAutoscaler` for the worker
+  deployment based on CPU or queue length metrics.
+
+Monitor queue length and latency to adjust the scaling policy.

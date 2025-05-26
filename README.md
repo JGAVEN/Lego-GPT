@@ -80,7 +80,9 @@ real-life building via a built-in Three.js viewer.
 | 🛡️ **Comment moderation tools** | Admins can delete comments and ban users |
 | 📈 **Analytics export CLI** | `lego-gpt-analytics` outputs metrics history to CSV |
 | 🌓 **Dark mode toggle** | PWA remembers your light or dark theme preference |
+| 🎨 **Accent colour picker** | Choose a custom UI highlight colour |
 | 📝 **YAML config files** | Set `LEGOGPT_CONFIG` or `--config` to load settings |
+| 🛠️ **Config generator** | `lego-gpt-config` outputs a sample YAML template |
 | 🔌 **CLI plugins** | Drop Python modules in `~/.lego-gpt/plugins` to add commands |
 | ⏲️ **Scheduled cleanup** | Server periodically removes old assets |
 
@@ -152,6 +154,7 @@ export LEGOGPT_MODEL=/path/to/checkpoint     # optional larger LegoGPT model
 # See ``docs/TOKEN_ROTATION.md`` for rotating the JWT secret.
 # See ``docs/SCALABILITY_BENCHMARKING.md`` for load-testing guidance.
 # Alternatively set ``LEGOGPT_CONFIG`` or ``--config`` to load settings from a YAML file.
+# Generate a starter config with ``lego-gpt-config > config.yaml``.
 lego-gpt-server \
   --host 0.0.0.0 \
   --port 8000 \

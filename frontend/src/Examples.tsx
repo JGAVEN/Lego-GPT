@@ -34,8 +34,16 @@ export default function Examples({
   useEffect(() => {
     fetch("/examples.json")
       .then((res) => res.json())
-      .then((data) => setExamples(data as Example[]))
-      .catch(() => setExamples([]));
+      .then((data) => {
+        const extra = localStorage.getItem("extraExamples");
+        const extras = extra ? JSON.parse(extra) : [];
+        setExamples([...data, ...extras]);
+      })
+      .catch(() => {
+        const extra = localStorage.getItem("extraExamples");
+        const extras = extra ? JSON.parse(extra) : [];
+        setExamples(extras);
+      });
   }, []);
 
   const tags = Array.from(

@@ -26,12 +26,18 @@ export default function Settings({ onBack }: { onBack: () => void }) {
     localStorage.getItem("theme") ||
     (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
   );
+  const [accent, setAccent] = useState(() => localStorage.getItem("accent") || "#646cff");
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");
     document.documentElement.classList.toggle("light", theme === "light");
     localStorage.setItem("theme", theme);
   }, [theme]);
+
+  useEffect(() => {
+    document.documentElement.style.setProperty("--accent", accent);
+    localStorage.setItem("accent", accent);
+  }, [accent]);
 
   async function refresh() {
     setCacheCount(await countCachedGenerates());
@@ -127,6 +133,14 @@ export default function Settings({ onBack }: { onBack: () => void }) {
         >
           {theme === "dark" ? "Light Mode" : "Dark Mode"}
         </button>
+        <input
+          type="color"
+          value={accent}
+          onChange={(e) => setAccent(e.target.value)}
+          aria-label="accent color"
+          className="w-10 h-10 p-0 border rounded"
+          title={t("accentColor")}
+        />
       </div>
       <button className="mt-6 text-blue-600 underline" onClick={onBack} aria-label="back">
         {t("back")}
