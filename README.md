@@ -1,7 +1,7 @@
 
 # Lego GPT ![Coverage](https://codecov.io/gh/JGAVEN/Lego-GPT/branch/main/graph/badge.svg)
 
-Generate buildable **LEGO®** creations directly from your browser. All interface text and prompts are in English only.
+Generate buildable **LEGO®** creations directly from your browser. All interface text and prompts are in English only. The application does not include multilingual support and expects English input throughout.
 
 ---
 
