@@ -2,17 +2,17 @@
 
 These upcoming sprints focus on deployment and usability improvements.
 
-## Sprint 68 – CLI config generator
-* Command to create a sample YAML config with common settings.
+## Sprint 73 – Container image scanning
+* Integrate vulnerability scans for Docker images in CI.
 
-## Sprint 69 – Auto-scaling docs
-* Document horizontal scaling strategies for the worker deployments.
+## Sprint 74 – Admin user management CLI
+* Command-line tool for listing and deleting user accounts.
 
-## Sprint 70 – Remote example import UI
-* PWA page to import examples from another instance.
+## Sprint 75 – Asset compression
+* Compress generated models and images before upload.
 
-## Sprint 71 – Theme colour picker
-* Allow custom accent colours in the PWA settings page.
+## Sprint 76 – Multi-language docs skeleton
+* Start translating key docs to enable community contributions.
 
-## Sprint 72 – Container security hardening
-* Review Dockerfiles and apply best-practice security options.
+## Sprint 77 – External analytics export
+* Push metrics snapshots to a remote data warehouse.

@@ -17,6 +17,7 @@ import Moderation from "./Moderation";
 import Analytics from "./Analytics";
 import Reports from "./Reports";
 import Tutorial from "./Tutorial";
+import ImportExamples from "./ImportExamples";
 
 export default function App() {
   const { t } = useI18n();
@@ -28,6 +29,7 @@ export default function App() {
     | "moderation"
     | "analytics"
     | "reports"
+    | "import"
   >("main");
   const [prompt, setPrompt] = useState("");
   const [seed, setSeed] = useState("");
@@ -150,6 +152,10 @@ export default function App() {
     return <Reports onBack={() => setPage("main")} />;
   }
 
+  if (page === "import") {
+    return <ImportExamples onBack={() => setPage("main")} />;
+  }
+
   return (
     <main className="p-6 max-w-xl mx-auto font-sans">
       {showTutorial && (
@@ -220,6 +226,13 @@ export default function App() {
         aria-label="reports"
       >
         {t("reports")}
+      </button>
+      <button
+        className="text-sm underline mb-4 ml-4"
+        onClick={() => setPage("import")}
+        aria-label="import examples"
+      >
+        {t("importExamples")}
       </button>
 
       <form onSubmit={handleSubmit} className="space-y-4">

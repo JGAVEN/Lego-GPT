@@ -34,6 +34,8 @@ const en = {
   collabDemo: "Collaboration Demo",
   moderation: "Moderation",
   reports: "Reports",
+  importExamples: "Import Examples",
+  import: "Import",
   clear: "Clear",
   roomId: "Room ID",
   message: "Message",
@@ -43,6 +45,7 @@ const en = {
   pushEnabled: "Push notifications enabled",
   togglePush: "Toggle Push",
   connectedPeers: "Connected collaborators",
+  accentColor: "Accent Color",
   tutorialTitle: "Welcome to Lego GPT",
   tutorialStep1: "Enter a prompt and optional seed to generate a model.",
   tutorialStep2: "Upload a photo to detect your brick inventory.",
@@ -70,6 +73,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useI18n() {
   return useContext(I18nContext);
 }

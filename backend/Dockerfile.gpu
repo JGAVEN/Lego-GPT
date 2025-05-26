@@ -15,7 +15,10 @@ COPY detector ./detector
 COPY vendor/legogpt ./legogpt
 COPY vendor/legogpt/data ./legogpt/data
 
-RUN pip3 install --no-cache-dir ./backend[cv]
+RUN pip3 install --no-cache-dir ./backend[cv] \
+    && adduser --disabled-password --gecos '' lego \
+    && chown -R lego:lego /app
+USER lego
 
 WORKDIR /app/backend
 EXPOSE 8000
