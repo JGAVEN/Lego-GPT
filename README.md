@@ -182,6 +182,8 @@ lego-gpt-collab --host 0.0.0.0 --port 8765
 
 # Stream live metrics
 lego-gpt-metrics --host 0.0.0.0 --port 8777
+# Fetch Prometheus metrics
+curl -H "Authorization: Bearer $(cat token.txt)" http://localhost:8000/metrics_prom
 # Export metrics history to CSV
 lego-gpt-analytics metrics.csv --token $(cat token.txt)
 
@@ -193,6 +195,8 @@ lego-gpt-token --secret mysecret --sub dev > token.txt
 
 # Check the CLI version
 lego-gpt-cli --version
+# Enable shell completions
+lego-gpt-cli completion bash > /etc/bash_completion.d/lego-gpt
 
 # Test the API via the command-line client
 lego-gpt-cli --token $(cat token.txt) generate "a red car"
@@ -224,6 +228,8 @@ pnpm --dir frontend run test:e2e
 lego-gpt-cleanup --days 7 --dry-run
 # Convert an existing .ldr model to glTF
 lego-gpt-export model.ldr model.gltf
+# Translate example prompts
+lego-gpt-translate es --url https://api.example.com/translate
 # Set CLEANUP_DAYS and CLEANUP_DRY_RUN in the environment to persist defaults
 
 # Measure API throughput with 4 concurrent requests

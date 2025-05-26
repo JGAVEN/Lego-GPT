@@ -198,5 +198,20 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 62 – Kubernetes templates (completed)
 * Added sample manifests under `infra/k8s` for deploying the stack on Kubernetes.
 
+## Sprint 63 – CLI shell completion (completed)
+* `lego-gpt-cli completion` outputs bash or zsh scripts.
+
+## Sprint 64 – In-app tutorial overlay (completed)
+* First-time users see a short guided tour in the PWA.
+
+## Sprint 65 – Prometheus metrics exporter (completed)
+* `/metrics_prom` returns counters in Prometheus format.
+
+## Sprint 66 – Example translation workflow (completed)
+* `lego-gpt-translate` CLI translates example prompts via an external API.
+
+## Sprint 67 – Helm chart skeleton (completed)
+* Added `infra/helm` with a minimal Helm chart for Kubernetes.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.

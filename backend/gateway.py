@@ -66,6 +66,15 @@ METRICS_HISTORY: dict[str, dict[int, int]] = {
 }
 
 
+def _prometheus_metrics() -> str:
+    """Return metrics in Prometheus text format."""
+    lines = []
+    for key, val in METRICS.items():
+        lines.append(f"# TYPE lego_gpt_{key} counter")
+        lines.append(f"lego_gpt_{key} {val}")
+    return "\n".join(lines) + "\n"
+
+
 def _record_history(key: str) -> None:
     """Increment minute bucket for ``key`` and trim old entries."""
     now_min = int(time.time() // 60)
@@ -354,6 +363,20 @@ class Handler(BaseHTTPRequestHandler):
                 k: sorted(v.items()) for k, v in METRICS_HISTORY.items()
             }
             self._send_json(payload)
+            return
+        if self.path == "/metrics_prom":
+            try:
+                _check_admin(self.headers)
+            except PermissionError:
+                self.send_error(401)
+                return
+            data = _prometheus_metrics().encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/plain; version=0.0.4")
+            self.send_header("Content-Length", str(len(data)))
+            self._add_cors()
+            self.end_headers()
+            self.wfile.write(data)
             return
         if self.path.startswith("/search_examples"):
             q = self.path.split("?q=", 1)[-1] if "?q=" in self.path else ""

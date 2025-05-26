@@ -1,3 +1,13 @@
+## [0.5.62] – 2025-08-09
+### Added
+- `lego-gpt-cli completion` outputs shell completion scripts.
+- Tutorial overlay guides first-time PWA users.
+- `/metrics_prom` endpoint exposes Prometheus metrics.
+- `lego-gpt-translate` CLI translates example prompts.
+- Helm chart provided under `infra/helm`.
+### Changed
+- Backend version bumped to 0.5.62.
+
 ## [0.5.61] – 2025-08-08
 ### Added
 - `lego-gpt-analytics` CLI exports metrics history to CSV.

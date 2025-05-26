@@ -16,6 +16,7 @@ import CollabDemo from "./CollabDemo";
 import Moderation from "./Moderation";
 import Analytics from "./Analytics";
 import Reports from "./Reports";
+import Tutorial from "./Tutorial";
 
 export default function App() {
   const { t } = useI18n();
@@ -38,6 +39,9 @@ export default function App() {
   const [installEvent, setInstallEvent] = useState<BeforeInstallPromptEvent | null>(null);
   const [showInstall, setShowInstall] = useState(false);
   const [showPush, setShowPush] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(
+    () => !localStorage.getItem("tutorialSeen")
+  );
 
   const detect = useDetectInventory(photo);
 
@@ -148,6 +152,14 @@ export default function App() {
 
   return (
     <main className="p-6 max-w-xl mx-auto font-sans">
+      {showTutorial && (
+        <Tutorial
+          onClose={() => {
+            localStorage.setItem("tutorialSeen", "1");
+            setShowTutorial(false);
+          }}
+        />
+      )}
       <h1 className="text-2xl font-bold mb-4">{t("title")}</h1>
       {showInstall && (
         <button

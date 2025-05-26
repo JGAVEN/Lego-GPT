@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lego-gpt-api
+spec:
+  selector:
+    matchLabels:
+      app: lego-gpt-api
+  template:
+    metadata:
+      labels:
+        app: lego-gpt-api
+    spec:
+      containers:
+        - name: api
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          env:
+            - name: REDIS_URL
+              value: "redis://redis:6379/0"
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: lego-gpt-secret
+                  key: jwt-secret
+          ports:
+            - containerPort: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lego-gpt-worker
+spec:
+  selector:
+    matchLabels:
+      app: lego-gpt-worker
+  template:
+    metadata:
+      labels:
+        app: lego-gpt-worker
+    spec:
+      containers:
+        - name: worker
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          command: ["lego-gpt-worker"]
+          env:
+            - name: REDIS_URL
+              value: "redis://redis:6379/0"
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: lego-gpt-secret
+                  key: jwt-secret
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lego-detect-worker
+spec:
+  selector:
+    matchLabels:
+      app: lego-detect-worker
+  template:
+    metadata:
+      labels:
+        app: lego-detect-worker
+    spec:
+      containers:
+        - name: detector
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          command: ["lego-detect-worker"]
+          env:
+            - name: REDIS_URL
+              value: "redis://redis:6379/0"
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: lego-gpt-secret
+                  key: jwt-secret
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lego-gpt-metrics
+spec:
+  selector:
+    matchLabels:
+      app: lego-gpt-metrics
+  template:
+    metadata:
+      labels:
+        app: lego-gpt-metrics
+    spec:
+      containers:
+        - name: metrics
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          command: ["lego-gpt-metrics"]
+          env:
+            - name: REDIS_URL
+              value: "redis://redis:6379/0"

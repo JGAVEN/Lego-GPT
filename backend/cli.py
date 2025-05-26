@@ -228,6 +228,35 @@ def cmd_detect(args: argparse.Namespace) -> None:
     print(json.dumps(result, indent=2))
 
 
+BASH_COMPLETION = """
+_lego_gpt_cli_complete() {
+    local cmds="generate detect completion"
+    if [[ $COMP_CWORD == 1 ]]; then
+        COMPREPLY=( $(compgen -W "$cmds" -- "${COMP_WORDS[1]}") )
+    fi
+}
+complete -F _lego_gpt_cli_complete lego-gpt-cli
+"""
+
+ZSH_COMPLETION = """
+_lego_gpt_cli_complete() {
+    local -a cmds
+    cmds=(generate detect completion)
+    if [[ $CURRENT == 1 ]]; then
+        _values 'cmds' $cmds
+    fi
+}
+compdef _lego_gpt_cli_complete lego-gpt-cli
+"""
+
+
+def cmd_completion(args: argparse.Namespace) -> None:
+    if args.shell == "bash":
+        print(BASH_COMPLETION.strip())
+    else:
+        print(ZSH_COMPLETION.strip())
+
+
 from backend import __version__
 
 
@@ -258,6 +287,9 @@ def main(argv: list[str] | None = None) -> None:
     d = sub.add_parser("detect", help="Detect brick inventory from an image")
     d.add_argument("image", help="Path to image file")
     d.set_defaults(func=cmd_detect)
+    c = sub.add_parser("completion", help="Output shell completion script")
+    c.add_argument("shell", choices=["bash", "zsh"], help="Shell type")
+    c.set_defaults(func=cmd_completion)
     args = parser.parse_args(argv)
     if args.version:
         print(__version__)

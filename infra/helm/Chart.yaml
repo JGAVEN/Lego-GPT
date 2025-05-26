@@ -1,0 +1,4 @@
+apiVersion: v2
+name: lego-gpt
+version: 0.1.0
+description: Lego GPT Helm chart

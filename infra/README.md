@@ -1,9 +1,10 @@
 # Infrastructure Samples
 
-Terraform templates for deploying Lego GPT to cloud providers.
+Sample configurations for deploying Lego GPT to cloud providers.
 
 - `aws/` – deploys the API using AWS App Runner.
 - `k8s/` – sample manifests for running the stack on Kubernetes.
+- `helm/` – a basic Helm chart wrapping the Kubernetes manifests.
 
 Each template expects an existing Redis instance and a container image published
 to a registry. Secrets are supplied via environment variables to avoid storing
