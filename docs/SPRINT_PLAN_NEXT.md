@@ -2,9 +2,6 @@
 
 These upcoming sprints focus on deployment and usability improvements.
 
-## Sprint 62 – Kubernetes templates
-* Provide sample manifests for deploying the stack on Kubernetes.
-
 ## Sprint 63 – CLI shell completion
 * Offer bash/zsh completion scripts for `lego-gpt-cli`.
 
@@ -16,3 +13,6 @@ These upcoming sprints focus on deployment and usability improvements.
 
 ## Sprint 66 – Example translation workflow
 * CLI tool can translate example prompts via an external API.
+
+## Sprint 67 – Helm chart skeleton
+* Start a basic Helm chart to make Kubernetes deployment configurable.

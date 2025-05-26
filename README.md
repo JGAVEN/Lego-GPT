@@ -279,11 +279,13 @@ docker run -p 8000:8000 ghcr.io/<owner>/lego-gpt:v0.5.42
 
 Override the command to start a worker or the detector worker as needed.
 
-### Cloud Deployment with Terraform
+### Cloud Deployment
 
-Sample Terraform templates are available under [`infra/`](infra/README.md) for
-deploying the API to AWS. Export the required variables and run `terraform init`
-followed by `terraform apply`:
+Sample templates are available under [`infra/`](infra/README.md) for deploying
+Lego GPT to AWS or Kubernetes. The Terraform configuration sets up AWS App
+Runner, while `infra/k8s` contains vanilla Kubernetes manifests. To deploy with
+Terraform export the required variables and run `terraform init` followed by
+`terraform apply`:
 
 ```bash
 cd infra/aws

@@ -195,5 +195,8 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 61 – Scheduled cleanup jobs (completed)
 * Server runs periodic tasks to purge old assets automatically.
 
+## Sprint 62 – Kubernetes templates (completed)
+* Added sample manifests under `infra/k8s` for deploying the stack on Kubernetes.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.
