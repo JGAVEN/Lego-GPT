@@ -390,6 +390,51 @@ class ServerTests(unittest.TestCase):
         prefs = json.loads(data)["preferences"]
         self.assertTrue(prefs.get("email"))
 
+    def test_report_and_metrics(self):
+        import tempfile
+        from pathlib import Path
+
+        tmp = Path(tempfile.mkdtemp())
+        self.server.REPORTS_ROOT = tmp
+        status, _ = self._request("POST", "/report", body=b'{"id":"1"}', token=self.token)
+        self.assertEqual(status, 200)
+        status, data = self._request("GET", "/reports", token=self.admin_token)
+        self.assertEqual(status, 200)
+        payload = json.loads(data)
+        self.assertEqual(payload["reports"][0]["id"], "1")
+
+    def test_ban_user_and_comment_delete(self):
+        import tempfile
+        from pathlib import Path
+
+        self.server._TOKEN_USAGE.clear()
+        tmpc = Path(tempfile.mkdtemp())
+        self.server.COMMENTS_ROOT = tmpc
+        tmpb = Path(tempfile.mkdtemp()) / "b.json"
+        self.server.BANS_FILE = tmpb
+        status, _ = self._request("POST", "/comments/2", body=b'{"comment":"hi"}', token=self.token)
+        self.assertEqual(status, 200)
+        status, _ = self._request("POST", "/comments/2/delete", body=b'{"index":0}', token=self.admin_token)
+        self.assertEqual(status, 200)
+        status, data = self._request("GET", "/comments/2")
+        self.assertEqual(json.loads(data)["comments"], [])
+        status, _ = self._request("POST", "/ban_user", body=b'{"user":"t"}', token=self.admin_token)
+        self.assertEqual(status, 200)
+        status, _ = self._request("POST", "/generate", body=b"{}", token=self.token)
+        self.assertEqual(status, 401)
+
+    def test_rate_limit_metrics(self):
+        self.server.RATE_LIMIT = 1
+        self.server._TOKEN_USAGE.clear()
+        with patch("backend.gateway.queue.enqueue") as mock_q:
+            mock_q.return_value.id = "j"
+            self._request("POST", "/generate", body=b"{}", token=self.token)
+        self._request("POST", "/generate", body=b"{}", token=self.token)
+        status, data = self._request("GET", "/metrics", token=self.admin_token)
+        payload = json.loads(data)
+        self.assertGreaterEqual(payload.get("token_usage", 0), 1)
+        self.assertGreaterEqual(payload.get("rate_limit_hits", 0), 1)
+
 
 if __name__ == "__main__":  # pragma: no cover
     unittest.main()

@@ -71,6 +71,11 @@ real-life building via a built-in Three.js viewer.
 | 🔔 **Notification preferences** | Settings page stores email and push options |
 | 🗄️ **Example import/export** | Admin CLI can export and import community examples |
 | 💪 **Worker resilience** | Jobs retry automatically; health check reports Redis status |
+| 🚩 **Submission reporting** | Users can flag examples for admin review |
+| 📈 **Rate-limit metrics** | Analytics charts token usage and limit hits |
+| 🔐 **Improved CLI auth** | `lego-gpt-cli` reads token from `~/.lego-gpt` |
+| 🚦 **Performance audit** | Lighthouse CI enforces PWA performance budgets |
+| 🛡️ **Comment moderation tools** | Admins can delete comments and ban users |
 
 &nbsp;
 

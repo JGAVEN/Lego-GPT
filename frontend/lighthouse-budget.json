@@ -1,0 +1,6 @@
+[
+  {
+    "resourceSizes": [{"resourceType": "total", "budget": 300}],
+    "timings": [{"metric": "interactive", "budget": 5000}]
+  }
+]

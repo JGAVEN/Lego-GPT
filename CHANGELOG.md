@@ -42,6 +42,16 @@
 * Worker jobs retry automatically and `/health` reports Redis status.
 * Backend version bumped to 0.5.51.
 
+## [0.5.52] – 2025-08-05
+### Added
+* Submission reporting via `/report` endpoint.
+* Rate-limit metrics tracked in analytics.
+* `lego-gpt-cli` loads tokens from `~/.lego-gpt`.
+* Lighthouse CI performance budget check.
+* Comment moderation endpoints for deleting comments and banning users.
+### Changed
+* Backend version bumped to 0.5.52.
+
 ## [0.5.45] – 2025-07-27
 ### Added
 * Presence indicator shows connected collaborators in real time.

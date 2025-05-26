@@ -13,6 +13,8 @@ from backend import (
     SUBMISSIONS_ROOT,
     SUBMISSIONS_REDIS_URL,
     COMMENTS_ROOT,
+    REPORTS_ROOT,
+    BANS_FILE,
     HISTORY_ROOT,
     PREFERENCES_ROOT,
 )
@@ -34,19 +36,32 @@ RATE_LIMIT = int(os.getenv("RATE_LIMIT", "5"))
 # Allow cross-origin requests
 CORS_ORIGINS = os.getenv("CORS_ORIGINS", "*")
 # token -> (count, window_epoch_minute)
+# token -> (count, window_epoch_minute)
 _TOKEN_USAGE: dict[str, tuple[int, int]] = {}
 # one-time link codes -> (token, expiry_ts)
 _LINK_CODES: dict[str, tuple[str, float]] = {}
+
+# banned user subjects
+_BANNED_USERS: set[str] = set()
 
 # Simple in-memory metrics
 METRICS = {
     "generate_requests": 0,
     "detect_requests": 0,
     "example_submissions": 0,
+    "example_reports": 0,
+    "token_usage": 0,
+    "rate_limit_hits": 0,
 }
 
 # Additional example sources for federated search
 EXAMPLE_SOURCES = [s for s in os.getenv("EXAMPLE_SOURCES", "").split(",") if s]
+
+if BANS_FILE.is_file():
+    try:
+        _BANNED_USERS.update(json.loads(BANS_FILE.read_text()))
+    except Exception:
+        pass
 
 
 def _check_auth(headers) -> None:
@@ -54,7 +69,11 @@ def _check_auth(headers) -> None:
     if not auth.startswith("Bearer "):
         raise PermissionError
     token = auth.split(" ", 1)[1]
-    decode_jwt(token, JWT_SECRET)
+    payload = decode_jwt(token, JWT_SECRET)
+    if payload.get("sub") in _BANNED_USERS:
+        raise PermissionError
+
+    METRICS["token_usage"] += 1
 
     now = int(time.time())
     window = now // 60
@@ -63,6 +82,7 @@ def _check_auth(headers) -> None:
         count = 0
         win = window
     if count >= RATE_LIMIT:
+        METRICS["rate_limit_hits"] += 1
         raise RuntimeError("rate_limit")
     _TOKEN_USAGE[token] = (count + 1, win)
 
@@ -260,6 +280,23 @@ class Handler(BaseHTTPRequestHandler):
                 comments = []
             self._send_json({"comments": comments[-10:]})
             return
+        if self.path == "/reports":
+            try:
+                _check_admin(self.headers)
+            except PermissionError:
+                self.send_error(401)
+                return
+            REPORTS_ROOT.mkdir(parents=True, exist_ok=True)
+            items = []
+            for p in sorted(REPORTS_ROOT.glob("*.json")):
+                try:
+                    data = json.loads(p.read_text())
+                    count = len(data)
+                except Exception:
+                    count = 0
+                items.append({"id": p.stem, "count": count})
+            self._send_json({"reports": items})
+            return
         if self.path == "/metrics":
             try:
                 _check_admin(self.headers)
@@ -444,6 +481,38 @@ class Handler(BaseHTTPRequestHandler):
             METRICS["example_submissions"] += 1
             self._send_json({"ok": True})
             return
+        if self.path == "/report":
+            try:
+                _check_auth(self.headers)
+            except PermissionError:
+                self.send_error(401)
+                return
+            except RuntimeError:
+                self.send_error(429, "Rate limit exceeded")
+                return
+            length = int(self.headers.get("Content-Length", 0))
+            body = self.rfile.read(length)
+            try:
+                payload = json.loads(body.decode() or "{}")
+            except json.JSONDecodeError:
+                self.send_error(400, "Invalid JSON")
+                return
+            ex_id = payload.get("id")
+            if not ex_id:
+                self.send_error(400, "id required")
+                return
+            REPORTS_ROOT.mkdir(parents=True, exist_ok=True)
+            file_path = REPORTS_ROOT / f"{ex_id}.json"
+            try:
+                reports = json.loads(file_path.read_text()) if file_path.is_file() else []
+            except Exception:
+                reports = []
+            user = decode_jwt(self.headers.get("Authorization", "").split(" ", 1)[1], JWT_SECRET).get("sub", "user")
+            reports.append({"user": user, "ts": int(time.time())})
+            file_path.write_text(json.dumps(reports, indent=2))
+            METRICS["example_reports"] += 1
+            self._send_json({"ok": True})
+            return
         if self.path == "/submissions/approve":
             try:
                 _check_admin(self.headers)
@@ -504,6 +573,60 @@ class Handler(BaseHTTPRequestHandler):
                 self._send_json({"ok": True})
             else:
                 self.send_error(404, "file not found")
+            return
+        if self.path == "/ban_user":
+            try:
+                _check_admin(self.headers)
+            except PermissionError:
+                self.send_error(401)
+                return
+            length = int(self.headers.get("Content-Length", 0))
+            body = self.rfile.read(length)
+            try:
+                payload = json.loads(body.decode() or "{}")
+            except json.JSONDecodeError:
+                self.send_error(400, "Invalid JSON")
+                return
+            user = payload.get("user")
+            if not user:
+                self.send_error(400, "user required")
+                return
+            _BANNED_USERS.add(user)
+            try:
+                BANS_FILE.write_text(json.dumps(sorted(_BANNED_USERS), indent=2))
+            except Exception:
+                pass
+            self._send_json({"ok": True})
+            return
+        if self.path.startswith("/comments/") and self.path.endswith("/delete"):
+            try:
+                _check_admin(self.headers)
+            except PermissionError:
+                self.send_error(401)
+                return
+            ex_id = self.path.split("/")[2]
+            length = int(self.headers.get("Content-Length", 0))
+            body = self.rfile.read(length)
+            try:
+                payload = json.loads(body.decode() or "{}")
+            except json.JSONDecodeError:
+                self.send_error(400, "Invalid JSON")
+                return
+            idx = payload.get("index")
+            if idx is None:
+                self.send_error(400, "index required")
+                return
+            file_path = COMMENTS_ROOT / f"{ex_id}.json"
+            try:
+                comments = json.loads(file_path.read_text()) if file_path.is_file() else []
+            except Exception:
+                comments = []
+            if 0 <= idx < len(comments):
+                comments.pop(idx)
+                file_path.write_text(json.dumps(comments, indent=2))
+                self._send_json({"ok": True})
+            else:
+                self.send_error(404, "comment not found")
             return
         if self.path.startswith("/comments/"):
             try:

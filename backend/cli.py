@@ -40,6 +40,20 @@ except Exception:  # pragma: no cover - fallback minimal loader
             os.environ.setdefault(key.strip(), value.strip())
 
 
+def _load_config_token() -> str | None:
+    """Return token from ``~/.lego-gpt`` if present."""
+    path = Path.home() / ".lego-gpt"
+    if not path.is_file():
+        return None
+    try:
+        data = path.read_text().strip()
+        if data.startswith("{"):
+            return json.loads(data).get("token")
+        return data
+    except Exception:  # pragma: no cover - ignore errors
+        return None
+
+
 def _post(url: str, token: str, payload: dict) -> dict:
     data = json.dumps(payload).encode()
     req = request.Request(
@@ -180,7 +194,9 @@ def main(argv: list[str] | None = None) -> None:
         parser.print_help()
         return
     if not args.token:
-        parser.error("Auth token required (use --token or set JWT)")
+        args.token = _load_config_token()
+    if not args.token:
+        parser.error("Auth token required (use --token, config file, or set JWT)")
     args.func(args)
 
 

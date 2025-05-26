@@ -81,6 +81,11 @@
 | F-23 | **S**  | Push notification opt-in                        | **Done** | One-time prompt on first visit |
 | F-24 | **S**  | Admin analytics dashboard                        | **Done** | Metrics endpoint and dashboard page |
 | F-25 | **S**  | Comment notifications                             | **Done** | Email sent on new example comments |
+| F-26 | **S**  | Submission reporting                             | **Done** | Users can flag examples for admin review |
+| F-27 | **S**  | Rate-limit metrics                               | **Done** | Token usage and limit hits shown in analytics |
+| F-28 | **C**  | CLI config token                                 | **Done** | CLI reads token from `~/.lego-gpt` |
+| F-29 | **S**  | Mobile performance audit                         | **Done** | Lighthouse CI checks performance budgets |
+| F-30 | **S**  | Comment moderation tools                         | **Done** | Admins can delete comments and ban users |
 
 
 
@@ -88,4 +93,4 @@
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.
 
-_Last updated 2025-08-03_
+_Last updated 2025-08-05_
