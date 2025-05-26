@@ -52,6 +52,16 @@
 ### Changed
 * Backend version bumped to 0.5.52.
 
+## [0.5.53] – 2025-08-06
+### Added
+* Admin report review page for flagged examples.
+* Metrics dashboard shows token usage graphs.
+* CLI queues requests offline and replays them later.
+* Accessibility and best-practices budgets checked in CI.
+* `lego-gpt-sync-bans` CLI syncs banned-user lists.
+### Changed
+* Backend version bumped to 0.5.53.
+
 ## [0.5.45] – 2025-07-27
 ### Added
 * Presence indicator shows connected collaborators in real time.

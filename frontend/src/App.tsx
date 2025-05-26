@@ -14,11 +14,18 @@ import { processPending } from "./lib/offlineQueue";
 import CollabDemo from "./CollabDemo";
 import Moderation from "./Moderation";
 import Analytics from "./Analytics";
+import Reports from "./Reports";
 
 export default function App() {
   const { t } = useI18n();
   const [page, setPage] = useState<
-    "main" | "settings" | "examples" | "collab" | "moderation" | "analytics"
+    | "main"
+    | "settings"
+    | "examples"
+    | "collab"
+    | "moderation"
+    | "analytics"
+    | "reports"
   >("main");
   const [prompt, setPrompt] = useState("");
   const [seed, setSeed] = useState("");
@@ -132,6 +139,10 @@ export default function App() {
     return <Analytics onBack={() => setPage("main")} />;
   }
 
+  if (page === "reports") {
+    return <Reports onBack={() => setPage("main")} />;
+  }
+
   return (
     <main className="p-6 max-w-xl mx-auto font-sans">
       <h1 className="text-2xl font-bold mb-4">{t("title")}</h1>
@@ -187,6 +198,13 @@ export default function App() {
         aria-label="analytics"
       >
         Analytics
+      </button>
+      <button
+        className="text-sm underline mb-4 ml-4"
+        onClick={() => setPage("reports")}
+        aria-label="reports"
+      >
+        {t("reports")}
       </button>
 
       <form onSubmit={handleSubmit} className="space-y-4">

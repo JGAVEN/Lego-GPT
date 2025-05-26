@@ -54,6 +54,22 @@ METRICS = {
     "rate_limit_hits": 0,
 }
 
+# Sliding-window metric history (last 60 minutes)
+METRICS_HISTORY: dict[str, dict[int, int]] = {
+    "token_usage": {},
+    "rate_limit_hits": {},
+}
+
+
+def _record_history(key: str) -> None:
+    """Increment minute bucket for ``key`` and trim old entries."""
+    now_min = int(time.time() // 60)
+    hist = METRICS_HISTORY.setdefault(key, {})
+    hist[now_min] = hist.get(now_min, 0) + 1
+    for ts in list(hist):
+        if now_min - ts > 59:
+            del hist[ts]
+
 # Additional example sources for federated search
 EXAMPLE_SOURCES = [s for s in os.getenv("EXAMPLE_SOURCES", "").split(",") if s]
 
@@ -74,6 +90,7 @@ def _check_auth(headers) -> None:
         raise PermissionError
 
     METRICS["token_usage"] += 1
+    _record_history("token_usage")
 
     now = int(time.time())
     window = now // 60
@@ -83,6 +100,7 @@ def _check_auth(headers) -> None:
         win = window
     if count >= RATE_LIMIT:
         METRICS["rate_limit_hits"] += 1
+        _record_history("rate_limit_hits")
         raise RuntimeError("rate_limit")
     _TOKEN_USAGE[token] = (count + 1, win)
 
@@ -297,13 +315,25 @@ class Handler(BaseHTTPRequestHandler):
                 items.append({"id": p.stem, "count": count})
             self._send_json({"reports": items})
             return
+        if self.path == "/bans":
+            try:
+                _check_admin(self.headers)
+            except PermissionError:
+                self.send_error(401)
+                return
+            self._send_json({"bans": sorted(_BANNED_USERS)})
+            return
         if self.path == "/metrics":
             try:
                 _check_admin(self.headers)
             except PermissionError:
                 self.send_error(401)
                 return
-            self._send_json(METRICS)
+            payload = dict(METRICS)
+            payload["history"] = {
+                k: sorted(v.items()) for k, v in METRICS_HISTORY.items()
+            }
+            self._send_json(payload)
             return
         if self.path.startswith("/search_examples"):
             q = self.path.split("?q=", 1)[-1] if "?q=" in self.path else ""
@@ -513,6 +543,30 @@ class Handler(BaseHTTPRequestHandler):
             METRICS["example_reports"] += 1
             self._send_json({"ok": True})
             return
+        if self.path == "/reports/clear":
+            try:
+                _check_admin(self.headers)
+            except PermissionError:
+                self.send_error(401)
+                return
+            length = int(self.headers.get("Content-Length", 0))
+            body = self.rfile.read(length)
+            try:
+                payload = json.loads(body.decode() or "{}")
+            except json.JSONDecodeError:
+                self.send_error(400, "Invalid JSON")
+                return
+            rep_id = payload.get("id")
+            if not rep_id:
+                self.send_error(400, "id required")
+                return
+            file_path = REPORTS_ROOT / f"{rep_id}.json"
+            if file_path.is_file():
+                file_path.unlink()
+                self._send_json({"ok": True})
+            else:
+                self.send_error(404, "report not found")
+            return
         if self.path == "/submissions/approve":
             try:
                 _check_admin(self.headers)
@@ -592,6 +646,31 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_error(400, "user required")
                 return
             _BANNED_USERS.add(user)
+            try:
+                BANS_FILE.write_text(json.dumps(sorted(_BANNED_USERS), indent=2))
+            except Exception:
+                pass
+            self._send_json({"ok": True})
+            return
+        if self.path == "/bans":
+            try:
+                _check_admin(self.headers)
+            except PermissionError:
+                self.send_error(401)
+                return
+            length = int(self.headers.get("Content-Length", 0))
+            body = self.rfile.read(length)
+            try:
+                payload = json.loads(body.decode() or "{}")
+            except json.JSONDecodeError:
+                self.send_error(400, "Invalid JSON")
+                return
+            items = payload.get("bans")
+            if not isinstance(items, list):
+                self.send_error(400, "bans required")
+                return
+            for u in items:
+                _BANNED_USERS.add(str(u))
             try:
                 BANS_FILE.write_text(json.dumps(sorted(_BANNED_USERS), indent=2))
             except Exception:
