@@ -1,6 +1,6 @@
 [project]
 name = "lego-gpt-backend"
-version = "0.5.62"
+version = "0.5.64"
 requires-python = ">=3.11"
 dependencies = [
     "redis>=5",
@@ -42,7 +42,8 @@ lego-gpt-sync-bans = "backend.bans_cli:main"
 lego-gpt-analytics = "backend.analytics_cli:main"
 lego-gpt-translate = "backend.translate_cli:main"
 lego-gpt-config = "backend.config_gen_cli:main"
+lego-gpt-users = "backend.users_cli:main"
 
 [build-system]
-requires = ["setuptools>=64", "wheel"]
+requires = ["setuptools>=78.1.1", "wheel"]
 build-backend = "setuptools.build_meta"
