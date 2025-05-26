@@ -241,8 +241,9 @@ python scripts/benchmark_scalability.py --token $(cat token.txt) \
 ```
 
 ### Pre-commit Hooks
-Install hooks with `pre-commit install` to automatically run `ruff` on each
-commit. The configuration lives in `.pre-commit-config.yaml`.
+`./.codex/setup.sh` installs `pre-commit` and runs `pre-commit install` so
+`ruff` checks run automatically on each commit. The configuration lives in
+`.pre-commit-config.yaml`.
 
 Run `./scripts/run_tests.sh` to lint and test in one step.
 The script runs Cypress UI tests if the dependencies are available.
