@@ -41,6 +41,11 @@ COMMENTS_ROOT = (
 )
 COMMENTS_ROOT = COMMENTS_ROOT.resolve()
 
+# Directory storing per-user build history
+_env_history = os.getenv("HISTORY_ROOT")
+HISTORY_ROOT = Path(_env_history) if _env_history else PACKAGE_DIR / "history"
+HISTORY_ROOT = HISTORY_ROOT.resolve()
+
 # Email notification settings
 SMTP_HOST = os.getenv("SMTP_HOST")
 SMTP_PORT = int(os.getenv("SMTP_PORT", "25"))
@@ -58,6 +63,7 @@ __all__ = [
     "STATIC_URL_PREFIX",
     "SUBMISSIONS_ROOT",
     "COMMENTS_ROOT",
+    "HISTORY_ROOT",
     "SMTP_HOST",
     "SMTP_PORT",
     "SMTP_USER",

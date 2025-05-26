@@ -31,3 +31,11 @@ services:
       - ./backend:/app/backend:delegated
       - ./detector:/app/detector:delegated
     command: lego-detect-worker
+  metrics:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile.dev
+    working_dir: /app/backend
+    volumes:
+      - ./backend:/app/backend:delegated
+    command: lego-gpt-metrics

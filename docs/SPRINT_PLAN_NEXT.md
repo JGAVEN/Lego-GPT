@@ -2,17 +2,17 @@
 
 These upcoming sprints continue improving community and admin features.
 
-## Sprint 36 – Federated example search
-* Allow searching approved examples from multiple instances via a simple API.
+## Sprint 41 – Distributed moderation queue
+* Allow instances to share submission queues for collaborative moderation.
 
-## Sprint 37 – Mobile UI polish
-* Tweak layouts for small screens and improve touch targets.
+## Sprint 42 – Account linking
+* Optional account system so users can sync history across devices.
 
-## Sprint 38 – Admin roles
-* Add basic user roles so only admins can access moderation and analytics pages.
+## Sprint 43 – Notification preferences
+* UI page for managing email and push notification settings.
 
-## Sprint 39 – Live metrics stream
-* Provide a WebSocket endpoint streaming metrics updates in real time.
+## Sprint 44 – Example import/export
+* Admins can export and import community examples as JSON bundles.
 
-## Sprint 40 – Build history export
-* Users can download a JSON archive of their generated models.
+## Sprint 45 – Resilience improvements
+* Retry failed worker jobs automatically and expose health status.

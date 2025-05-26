@@ -8,10 +8,11 @@ from datetime import datetime, timedelta
 from backend.auth import encode
 
 
-def generate_token(secret: str, sub: str, lifetime: int) -> str:
+def generate_token(secret: str, sub: str, lifetime: int, role: str) -> str:
     """Return a JWT token signed with ``secret``."""
     exp_ts = int((datetime.utcnow() + timedelta(seconds=lifetime)).timestamp())
-    return encode({"sub": sub}, secret, exp=exp_ts)
+    payload = {"sub": sub, "role": role}
+    return encode(payload, secret, exp=exp_ts)
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -23,6 +24,7 @@ def main(argv: list[str] | None = None) -> None:
         help="HMAC secret (default: env JWT_SECRET or 'secret')",
     )
     parser.add_argument("--sub", default="dev", help="Subject claim (default: dev)")
+    parser.add_argument("--role", default="user", help="Role claim (default: user)")
     parser.add_argument(
         "--exp",
         type=int,
@@ -30,7 +32,7 @@ def main(argv: list[str] | None = None) -> None:
         help="Token lifetime in seconds (default: 3600)",
     )
     args = parser.parse_args(argv)
-    token = generate_token(args.secret, args.sub, args.exp)
+    token = generate_token(args.secret, args.sub, args.exp, args.role)
     print(token)
 
 
