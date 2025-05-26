@@ -1,18 +1,3 @@
-## [0.5.64] – 2025-08-11
-### Changed
-- Updated build requirements to `setuptools>=78.1.1` to resolve security advisories.
-- Backend version bumped to 0.5.64.
-
-## [0.5.63] – 2025-08-10
-### Added
-- Docker image scanning via Trivy in CI.
-- `lego-gpt-users` CLI lists and deletes user data.
-- Assets uploaded to S3 are gzip-compressed.
-- `lego-gpt-analytics --push-url` sends metrics snapshots remotely.
-- Skeleton folder `docs/i18n/` for translated docs.
-### Changed
-- Backend version bumped to 0.5.63.
-
 ## [0.5.62] – 2025-08-09
 ### Added
 - `lego-gpt-cli completion` outputs shell completion scripts.
