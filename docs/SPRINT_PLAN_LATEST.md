@@ -213,5 +213,20 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 67 – Helm chart skeleton (completed)
 * Added `infra/helm` with a minimal Helm chart for Kubernetes.
 
+## Sprint 68 – CLI config generator (completed)
+* Added `lego-gpt-config` command that outputs a sample YAML config.
+
+## Sprint 69 – Auto-scaling docs (completed)
+* Documented horizontal scaling strategies for workers in `SCALABILITY_BENCHMARKING.md`.
+
+## Sprint 70 – Remote example import UI (completed)
+* New PWA page allows importing examples from another instance.
+
+## Sprint 71 – Theme colour picker (completed)
+* Settings page includes a colour input that updates the accent CSS variable.
+
+## Sprint 72 – Container security hardening (completed)
+* Production Dockerfiles now create a non-root user.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.

@@ -41,6 +41,7 @@ lego-gpt-examples = "backend.examples_cli:main"
 lego-gpt-sync-bans = "backend.bans_cli:main"
 lego-gpt-analytics = "backend.analytics_cli:main"
 lego-gpt-translate = "backend.translate_cli:main"
+lego-gpt-config = "backend.config_gen_cli:main"
 
 [build-system]
 requires = ["setuptools>=64", "wheel"]
