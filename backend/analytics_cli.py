@@ -26,11 +26,18 @@ def export_csv(data: dict) -> str:
     return "\n".join(lines) + "\n"
 
 
+def _push_csv(url: str, csv_data: str) -> None:
+    req = request.Request(url, data=csv_data.encode(), headers={"Content-Type": "text/csv"})
+    with request.urlopen(req):
+        pass
+
+
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description="Export metrics history to CSV")
     parser.add_argument("file", help="Output CSV file ('-' for stdout)")
     parser.add_argument("--url", default=os.getenv("API_URL", "http://localhost:8000"))
     parser.add_argument("--token", default=os.getenv("JWT"))
+    parser.add_argument("--push-url", help="POST CSV data to this URL")
     args = parser.parse_args(argv)
     if not args.token:
         parser.error("Admin token required")
@@ -43,6 +50,8 @@ def main(argv: list[str] | None = None) -> None:
         print(csv_data, end="")
     else:
         Path(args.file).write_text(csv_data)
+    if args.push_url:
+        _push_csv(args.push_url, csv_data)
 
 
 if __name__ == "__main__":  # pragma: no cover - CLI entry
