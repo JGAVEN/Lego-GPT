@@ -5,6 +5,10 @@ import {
   countPendingGenerates,
   clearCachedGenerates,
   clearPendingGenerates,
+  countCachedDetects,
+  countPendingDetects,
+  clearCachedDetects,
+  clearPendingDetects,
   countPendingCollabs,
   clearPendingCollabs,
 } from "./lib/db";
@@ -14,12 +18,16 @@ export default function Settings({ onBack }: { onBack: () => void }) {
   const { t } = useI18n();
   const [cacheCount, setCacheCount] = useState(0);
   const [queueCount, setQueueCount] = useState(0);
+  const [detectCache, setDetectCache] = useState(0);
+  const [detectQueue, setDetectQueue] = useState(0);
   const [editCount, setEditCount] = useState(0);
   const [push, setPush] = useState(false);
 
   async function refresh() {
     setCacheCount(await countCachedGenerates());
     setQueueCount(await countPendingGenerates());
+    setDetectCache(await countCachedDetects());
+    setDetectQueue(await countPendingDetects());
     setEditCount(await countPendingCollabs());
     setPush(await hasSubscription());
   }
@@ -33,6 +41,8 @@ export default function Settings({ onBack }: { onBack: () => void }) {
       <h1 className="text-2xl font-bold mb-4">{t("settings")}</h1>
       <p>{t("cachedResults")} {cacheCount}</p>
       <p>{t("queuedRequests")} {queueCount}</p>
+      <p>{t("cachedDetections")} {detectCache}</p>
+      <p>{t("queuedDetections")} {detectQueue}</p>
       <p>{t("pendingEdits")} {editCount}</p>
       <p>{push ? t("pushEnabled") : ""}</p>
       <div className="mt-4 space-x-2">
@@ -49,12 +59,32 @@ export default function Settings({ onBack }: { onBack: () => void }) {
         <button
           className="bg-gray-200 px-3 py-1 rounded"
           onClick={async () => {
+            await clearCachedDetects();
+            refresh();
+          }}
+          aria-label="clear detect cache"
+        >
+          {t("clearDetectCache")}
+        </button>
+        <button
+          className="bg-gray-200 px-3 py-1 rounded"
+          onClick={async () => {
             await clearPendingGenerates();
             refresh();
           }}
           aria-label="clear queue"
         >
           {t("clearQueue")}
+        </button>
+        <button
+          className="bg-gray-200 px-3 py-1 rounded"
+          onClick={async () => {
+            await clearPendingDetects();
+            refresh();
+          }}
+          aria-label="clear detect queue"
+        >
+          {t("clearDetectQueue")}
         </button>
         <button
           className="bg-gray-200 px-3 py-1 rounded"

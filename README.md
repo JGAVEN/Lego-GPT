@@ -40,6 +40,7 @@ real-life building via a built-in Three.js viewer.
 | 🧹 **Cleanup script** (`lego-gpt-cleanup`) | Remove old asset directories (use `--dry-run` to preview) |
 | 🌐 **Collaboration server** (`lego-gpt-collab`) | WebSocket endpoint for real-time shared editing |
 | 🆕 **Offline queue + settings** | Requests made offline are queued and cached results can be cleared in the settings page |
+| 💾 **Persistent offline queue** | Pending requests survive reloads and CLI restarts |
 | 🔔 **Push notifications** | Service worker shows notifications when collaborators edit a build |
 | 📨 **Offline edit queue** | Collaboration messages are stored offline and synced on reconnect |
 | ↩️ **Undo/redo support** | Collaborative sessions track history with `/undo` and `/redo` |

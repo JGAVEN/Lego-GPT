@@ -11,6 +11,7 @@ import useDetectInventory from "./api/useDetectInventory";
 import LDrawViewer from "./LDrawViewer";
 import Settings from "./Settings";
 import { processPending } from "./lib/offlineQueue";
+import { processDetectQueue } from "./lib/detectQueue";
 import CollabDemo from "./CollabDemo";
 import Moderation from "./Moderation";
 import Analytics from "./Analytics";
@@ -43,8 +44,10 @@ export default function App() {
   useEffect(() => {
     function handleOnline() {
       processPending();
+      processDetectQueue();
     }
     processPending();
+    processDetectQueue();
     window.addEventListener("online", handleOnline);
     return () => window.removeEventListener("online", handleOnline);
   }, []);

@@ -57,14 +57,16 @@ def _load_config_token() -> str | None:
 OFFLINE_FILE = Path.home() / ".lego-gpt-offline.json"
 
 
-def _queue_offline(payload: dict) -> None:
-    items = []
+def _queue_offline(task: dict) -> None:
+    items: list[dict] = []
     if OFFLINE_FILE.is_file():
         try:
             items = json.loads(OFFLINE_FILE.read_text())
+            if not isinstance(items, list):
+                items = []
         except Exception:
             items = []
-    items.append(payload)
+    items.append(task)
     OFFLINE_FILE.write_text(json.dumps(items, indent=2))
 
 
@@ -73,22 +75,32 @@ def _replay_offline(url: str, token: str) -> None:
         return
     try:
         items = json.loads(OFFLINE_FILE.read_text())
+        if not isinstance(items, list):
+            items = []
     except Exception:
         items = []
     remaining = []
-    for payload in items:
+    for task in items:
+        cmd = task.get("cmd")
+        payload = task.get("payload", task)
         try:
-            print(
-                f"Replaying offline '{payload.get('prompt','')}'",
-                file=sys.stderr,
-            )
-            res = _post(f"{url}/generate", token, payload)
-            job_id = res["job_id"]
-            result = _poll(f"{url}/generate/{job_id}", token)
+            if cmd == "detect":
+                print("Replaying offline detection", file=sys.stderr)
+                res = _post(f"{url}/detect_inventory", token, payload)
+                job_id = res["job_id"]
+                result = _poll(f"{url}/detect_inventory/{job_id}", token)
+            else:
+                print(
+                    f"Replaying offline '{payload.get('prompt','')}'",
+                    file=sys.stderr,
+                )
+                res = _post(f"{url}/generate", token, payload)
+                job_id = res["job_id"]
+                result = _poll(f"{url}/generate/{job_id}", token)
             print(json.dumps(result, indent=2))
         except Exception as exc:  # pragma: no cover - network failure
             print(f"Replay failed: {exc}", file=sys.stderr)
-            remaining.append(payload)
+            remaining.append(task)
     if remaining:
         OFFLINE_FILE.write_text(json.dumps(remaining, indent=2))
     else:
@@ -169,7 +181,7 @@ def cmd_generate(args: argparse.Namespace) -> None:
             result = _poll(f"{args.url}/generate/{job_id}", args.token)
         except Exception as exc:
             print(f"Error: {exc}; queued offline", file=sys.stderr)
-            _queue_offline(payload)
+            _queue_offline({"cmd": "generate", "payload": payload})
             continue
         print(json.dumps(result, indent=2))
         if args.out_dir:
@@ -194,7 +206,8 @@ def cmd_detect(args: argparse.Namespace) -> None:
             f"{args.url}/detect_inventory/{job_id}", args.token
         )
     except Exception as exc:
-        print(f"Error: {exc}", file=sys.stderr)
+        print(f"Error: {exc}; queued offline", file=sys.stderr)
+        _queue_offline({"cmd": "detect", "payload": {"image": img_b64}})
         return
     print(json.dumps(result, indent=2))
 

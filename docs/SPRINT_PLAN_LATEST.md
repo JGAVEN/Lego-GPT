@@ -177,5 +177,8 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 55 – Federated comment moderation (completed)
 * Banned-user lists can be synced across instances via a new CLI.
 
+## Sprint 56 – Persistent offline queue (completed)
+* Front-end and CLI store pending requests across sessions.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.
