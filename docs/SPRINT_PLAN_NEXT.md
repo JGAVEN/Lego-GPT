@@ -2,9 +2,6 @@
 
 These upcoming sprints focus on deployment and usability improvements.
 
-## Sprint 73 – Admin user management CLI
-* Command-line tool for listing and deleting user accounts.
-
 ## Sprint 74 – Asset compression
 * Compress generated models and images before upload.
 
@@ -16,3 +13,6 @@ These upcoming sprints focus on deployment and usability improvements.
 
 ## Sprint 77 – Project wrap-up
 * Finalise documentation and prepare the repository for archival.
+
+## Sprint 78 – Post-launch maintenance
+* Address bug reports and triage community PRs.

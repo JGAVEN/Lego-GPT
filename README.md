@@ -85,6 +85,7 @@ real-life building via a built-in Three.js viewer.
 | 🛠️ **Config generator** | `lego-gpt-config` outputs a sample YAML template |
 | 🔌 **CLI plugins** | Drop Python modules in `~/.lego-gpt/plugins` to add commands |
 | ⏲️ **Scheduled cleanup** | Server periodically removes old assets |
+| 🧑‍💻 **User management CLI** | `lego-gpt-users` lists and deletes accounts |
 
 &nbsp;
 

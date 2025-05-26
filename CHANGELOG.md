@@ -1,3 +1,9 @@
+## [0.5.63] – 2025-08-10
+### Added
+- `lego-gpt-users` CLI lists and deletes user accounts.
+### Changed
+- Backend version bumped to 0.5.63.
+
 ## [0.5.62] – 2025-08-09
 ### Added
 - `lego-gpt-cli completion` outputs shell completion scripts.
