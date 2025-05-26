@@ -1,18 +1,18 @@
 # Next Sprint Plan
 
-These upcoming sprints focus on deployment and usability improvements.
+The following sprints continue enhancing deployment and monitoring.
 
-## Sprint 73 – Container image scanning
-* Integrate vulnerability scans for Docker images in CI.
+## Sprint 78 – Docker build caching
+* Speed up CI by caching Docker layers between runs.
 
-## Sprint 74 – Admin user management CLI
-* Command-line tool for listing and deleting user accounts.
+## Sprint 79 – Admin audit logs
+* Record account and moderation actions for review.
 
-## Sprint 75 – Asset compression
-* Compress generated models and images before upload.
+## Sprint 80 – Example quality scoring
+* Rate community examples automatically based on engagement.
 
-## Sprint 76 – Multi-language docs skeleton
-* Start translating key docs to enable community contributions.
+## Sprint 81 – Live metrics dashboard
+* Stream metrics charts to the admin UI in real time.
 
-## Sprint 77 – External analytics export
-* Push metrics snapshots to a remote data warehouse.
+## Sprint 82 – Data warehouse import script
+* Script to load exported metrics into a warehouse service.

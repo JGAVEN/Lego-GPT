@@ -85,6 +85,11 @@ real-life building via a built-in Three.js viewer.
 | 🛠️ **Config generator** | `lego-gpt-config` outputs a sample YAML template |
 | 🔌 **CLI plugins** | Drop Python modules in `~/.lego-gpt/plugins` to add commands |
 | ⏲️ **Scheduled cleanup** | Server periodically removes old assets |
+| 🛡️ **Container image scanning** | CI runs Trivy on the Docker images |
+| 👤 **User management CLI** | `lego-gpt-users` lists or deletes stored user data |
+| 📦 **Asset compression** | Models and images are gzipped before S3 upload |
+| 🌐 **Docs translation skeleton** | Basic Spanish and French READMEs added |
+| 📊 **Analytics push CLI** | `lego-gpt-analytics-push` sends metrics snapshots |
 
 &nbsp;
 
