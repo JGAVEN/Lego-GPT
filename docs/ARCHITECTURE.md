@@ -1,6 +1,8 @@
 
 # Architecture
 
+All components assume English input and output. The system does not provide multilingual support.
+
 ```
 ┌──────────────┐   HTTPS POST /generate   ┌────────────────────────────────────────┐
 │  PWA Client  │◄────────────────────────►│   HTTP Gateway (API)                │

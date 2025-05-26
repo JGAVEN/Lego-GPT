@@ -1,6 +1,6 @@
 # Latest Sprint Plan
 
-This plan outlines the next five logical sprints after completing the advanced front-end features.
+This plan outlines the next five logical sprints after completing the advanced front-end features. The application UI is English only and no multilingual support is planned.
 
 ## Sprint 1 – Cloud infrastructure templates (completed)
 * Added `infra/aws` sample using Terraform and App Runner.
@@ -233,3 +233,4 @@ This plan outlines the next five logical sprints after completing the advanced f
 
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.
+The feature set is now stable with an English-only interface and no plans for multi-language support.

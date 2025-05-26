@@ -1,6 +1,8 @@
 
 # Project Backlog (MoSCoW)
 
+The application is English-only. Multi-language user interfaces are out of scope.
+
 | ID   | Pri | Title                               | Status | Notes |
 |------|-----|-------------------------------------|--------|-------|
 | B‑1 | **v0.5** Inventory Detection | Fine‑tune YOLOv8 on 3 k brick images | CV lead | **Done**: training Dockerfile and docs |
@@ -60,7 +62,7 @@
 | D-23 | **S**  | Scalability benchmarking                              | **Done** | Benchmark script and tuning docs |
 | F-08 | **C**  | Advanced front-end features                            | **Done** | Offline queue + settings page |
 | F-09 | **C**  | Community example library                             | **Done** | Gallery of prompts and builds |
-| F-10 | **C**  | Multi-language support                                | **Removed** | Interface fixed to English |
+| F-10 | **C**  | Multi-language support                                | **Removed** | Interface fixed to English; no further translation work planned |
 | B-33 | **S**  | Cloud infrastructure templates                       | **Done** | Terraform sample for AWS App Runner |
 | B-34 | **S**  | Automated UI regression tests                        | **Done** | Cypress setup and basic PWA flow test |
 | F-11 | **C**  | Real-time collaboration via WebSocket                | **Done** | `lego-gpt-collab` server |

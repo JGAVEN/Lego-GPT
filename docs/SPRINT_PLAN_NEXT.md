@@ -6,7 +6,7 @@ These upcoming sprints focus on deployment and usability improvements.
 * Compress generated models and images before upload.
 
 ## Sprint 75 – Multi-language docs skeleton
-* Start translating key docs to enable community contributions.
+* Translate key documentation files for community contributors. The program itself remains English only.
 
 ## Sprint 76 – External analytics export
 * Push metrics snapshots to a remote data warehouse.
