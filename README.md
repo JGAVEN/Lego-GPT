@@ -26,6 +26,7 @@ real-life building via a built-in Three.js viewer.
 | 🌐 **AR Quick-Look export** | `.gltf` file for iOS AR viewer |
 | 📦 **Inventory filter** | Limits brick counts using `BRICK_INVENTORY` JSON or per-request `inventory_filter` |
 | 🆕 **Photo‑based brick inventory detection** – YOLOv8 detector + `/detect_inventory` API | Scan your loose bricks and generate builds you can actually build |
+| 📸 **Multiple inventory photos** | Combine several detected images into one project file |
 | 🛡️ **Static file handler sanitized** | Blocks path traversal in `/static` requests |
 | 🆕 **Console scripts** for API and workers (`lego-gpt-server`, `lego-gpt-worker`, `lego-detect-worker`) | Easier local development & Docker entrypoints; workers accept `--redis-url` and `--version` |
 | 🆕 **Command-line client** (`lego-gpt-cli`) | Test the API from your terminal or CI |
@@ -379,6 +380,7 @@ base64 string and returns `{ "job_id": "xyz" }`. Invalid base64 yields
 ```
 
 Use the counts as the `inventory_filter` in `/generate` requests.
+You can call the endpoint multiple times and merge the returned `brick_counts` objects to build a combined inventory file for one project.
 
 Default rate limit is `5` generate requests per token per minute (configurable via `RATE_LIMIT`).
 
@@ -419,4 +421,16 @@ conventions.
 | All new code in this repo (backend, solver, front-end) | **MIT** |
 
 Lego® is a trademark of the LEGO Group, which does not sponsor or endorse this project.
+
+## 8. Project Wrap‑Up & Handoff
+
+All major features are now implemented:
+
+* Upload one or more photos of your bricks. The PWA merges the detections into a single inventory file.
+* Generate a construction proposal from that inventory and request alternate builds by changing the prompt or seed.
+* Each option is logged under `/history` so you can review past builds.
+* When a model is chosen, a PDF with step‑by‑step instructions is available via `instructions_url`.
+* The responsive PWA works on laptops and mobile devices with intuitive navigation.
+
+The codebase is ready for rollout. See the Quick‑Start section for running the API, workers and PWA. New maintainers can consult `docs/ARCHITECTURE.md` for component details.
 
