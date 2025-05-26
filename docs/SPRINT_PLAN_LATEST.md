@@ -180,5 +180,20 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 56 – Persistent offline queue (completed)
 * Front-end and CLI store pending requests across sessions.
 
+## Sprint 57 – Analytics export CLI (completed)
+* Admins can export metrics history to CSV for external analysis.
+
+## Sprint 58 – Dark mode theme (completed)
+* PWA offers a dark mode toggle and remembers the preference.
+
+## Sprint 59 – YAML server config (completed)
+* Server and workers can load settings from a YAML file.
+
+## Sprint 60 – CLI plugin system (completed)
+* Third-party plugins can extend the command-line client.
+
+## Sprint 61 – Scheduled cleanup jobs (completed)
+* Server runs periodic tasks to purge old assets automatically.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.

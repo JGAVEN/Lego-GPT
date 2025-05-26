@@ -12,6 +12,7 @@ import time
 from pathlib import Path
 from urllib import request
 from urllib.error import HTTPError
+from importlib import import_module
 
 
 def _extract_error(exc: HTTPError) -> str:
@@ -152,6 +153,21 @@ def _stream_progress(url: str) -> None:
     print("", file=sys.stderr)
 
 
+def _load_plugins(subparsers: argparse._SubParsersAction) -> None:
+    """Load CLI plugins from ``~/.lego-gpt/plugins``."""
+    plugins_dir = Path.home() / ".lego-gpt" / "plugins"
+    if not plugins_dir.is_dir():
+        return
+    sys.path.insert(0, str(plugins_dir))
+    for mod_path in sorted(plugins_dir.glob("*.py")):
+        try:
+            mod = import_module(mod_path.stem)
+            if hasattr(mod, "register"):
+                mod.register(subparsers)
+        except Exception as exc:  # pragma: no cover - plugin errors
+            print(f"Failed to load plugin {mod_path.name}: {exc}", file=sys.stderr)
+
+
 def cmd_generate(args: argparse.Namespace) -> None:
     prompts: list[str] = []
     if args.file:
@@ -225,6 +241,7 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--url", default=os.getenv("API_URL", "http://localhost:8000"), help="API base URL")
     parser.add_argument("--token", default=os.getenv("JWT"), help="JWT auth token or JWT env var")
     sub = parser.add_subparsers(dest="cmd")
+    _load_plugins(sub)
     g = sub.add_parser("generate", help="Generate a model from text")
     g.add_argument("prompt", nargs="?", help="Text prompt")
     g.add_argument("--file", help="Path to text file with prompts")

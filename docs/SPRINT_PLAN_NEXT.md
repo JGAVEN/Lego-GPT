@@ -1,18 +1,18 @@
 # Next Sprint Plan
 
-These upcoming sprints continue improving community and admin features.
+These upcoming sprints focus on deployment and usability improvements.
 
-## Sprint 57 – Analytics export CLI
-* Admins can export metrics history to CSV for external analysis.
+## Sprint 62 – Kubernetes templates
+* Provide sample manifests for deploying the stack on Kubernetes.
 
-## Sprint 58 – Dark mode theme
-* PWA offers a dark mode toggle and remembers the preference.
+## Sprint 63 – CLI shell completion
+* Offer bash/zsh completion scripts for `lego-gpt-cli`.
 
-## Sprint 59 – YAML server config
-* Server and workers can load settings from a YAML file.
+## Sprint 64 – In-app tutorial overlay
+* PWA displays a short guided tour for first-time users.
 
-## Sprint 60 – CLI plugin system
-* Third-party plugins can extend the command-line client.
+## Sprint 65 – Prometheus metrics exporter
+* Optional endpoint exposes metrics in Prometheus format.
 
-## Sprint 61 – Scheduled cleanup jobs
-* Server runs periodic tasks to purge old assets automatically.
+## Sprint 66 – Example translation workflow
+* CLI tool can translate example prompts via an external API.
