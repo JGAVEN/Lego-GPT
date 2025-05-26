@@ -228,5 +228,8 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 72 – Container security hardening (completed)
 * Production Dockerfiles now create a non-root user.
 
+## Sprint 73 – Admin user management CLI (completed)
+* Added `lego-gpt-users` tool for listing and deleting accounts.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.
