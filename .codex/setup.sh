@@ -6,9 +6,14 @@ if [ -f .gitmodules ]; then
   git submodule update --init --recursive
 fi
 
-# Install backend dependencies (including fakeredis for tests)
+# Install backend dependencies (including test tools)
 python -m pip install --no-cache-dir -e ./backend[test] || \
   echo "Warning: could not install Python packages"
+
+# Enable pre-commit hooks if available
+if command -v pre-commit >/dev/null 2>&1; then
+  pre-commit install || echo "Warning: pre-commit install failed"
+fi
 
 # Install pnpm for front-end package management
 corepack enable

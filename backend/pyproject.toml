@@ -13,6 +13,8 @@ dependencies = [
 test = [
     "fakeredis>=2.21",
     "ruff>=0.4",
+    "coverage>=7",
+    "pre-commit>=3",
 ]
 cv = [
     "ultralytics>=8",
