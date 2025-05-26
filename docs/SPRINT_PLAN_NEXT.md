@@ -2,9 +2,6 @@
 
 These upcoming sprints continue improving community and admin features.
 
-## Sprint 56 – Persistent offline queue
-* Front-end and CLI store pending requests across sessions.
-
 ## Sprint 57 – Analytics export CLI
 * Admins can export metrics history to CSV for external analysis.
 
@@ -16,3 +13,6 @@ These upcoming sprints continue improving community and admin features.
 
 ## Sprint 60 – CLI plugin system
 * Third-party plugins can extend the command-line client.
+
+## Sprint 61 – Scheduled cleanup jobs
+* Server runs periodic tasks to purge old assets automatically.

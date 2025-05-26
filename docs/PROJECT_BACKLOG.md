@@ -91,6 +91,7 @@
 | F-33 | **S**  | Offline CLI usage                               | **Done** | CLI queues requests offline and replays later |
 | F-34 | **S**  | Advanced performance budgets                    | **Done** | Lighthouse CI checks accessibility & best practices |
 | F-35 | **S**  | Federated comment moderation                    | **Done** | Sync banned-user lists via new CLI |
+| F-36 | **S**  | Persistent offline queue                       | **Done** | Front-end and CLI store pending requests across sessions |
 
 
 
@@ -98,4 +99,4 @@
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.
 
-_Last updated 2025-08-06_
+_Last updated 2025-08-07_

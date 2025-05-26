@@ -62,6 +62,12 @@
 ### Changed
 * Backend version bumped to 0.5.53.
 
+## [0.5.54] – 2025-08-07
+### Added
+* Persistent offline queue for front-end and CLI.
+### Changed
+* Backend version bumped to 0.5.54.
+
 ## [0.5.45] – 2025-07-27
 ### Added
 * Presence indicator shows connected collaborators in real time.

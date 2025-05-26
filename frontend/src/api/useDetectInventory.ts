@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import type { DetectRequest, DetectResponse } from "./lego";
 import { API_BASE } from "./lego";
+import {
+  getCachedDetect,
+  setCachedDetect,
+  addPendingDetect,
+} from "../lib/db";
 
 export interface UseDetectResult {
   data: DetectResponse | null;
@@ -23,6 +28,8 @@ export default function useDetectInventory(image: string | null): UseDetectResul
       setLoading(true);
       setError(null);
       setData(null);
+      const cacheKey = image;
+      const cached = await getCachedDetect(cacheKey);
       try {
         const body: DetectRequest = { image };
         const res = await fetch(`${API_BASE}/detect_inventory`, {
@@ -43,6 +50,7 @@ export default function useDetectInventory(image: string | null): UseDetectResul
             const result = (await poll.json()) as DetectResponse;
             if (!cancelled) {
               setData(result);
+              await setCachedDetect(cacheKey, result);
             }
             break;
           }
@@ -53,10 +61,16 @@ export default function useDetectInventory(image: string | null): UseDetectResul
         }
       } catch (err: unknown) {
         if (!cancelled) {
-          if (err instanceof Error && err.name !== "AbortError") {
-            setError(err.message);
+          if (cached) {
+            setData(cached);
+            setError("Offline - showing cached result");
           } else {
-            setError("Unknown error");
+            await addPendingDetect({ image });
+            if (err instanceof Error && err.name !== "AbortError") {
+              setError("Offline - request queued");
+            } else {
+              setError("Unknown error");
+            }
           }
         }
       } finally {
