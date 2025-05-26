@@ -61,6 +61,11 @@ real-life building via a built-in Three.js viewer.
 | 📝 **Moderation dashboard** | Web interface to approve or reject community submissions |
 | 💬 **Collaboration chat** | WebSocket chat messages in the collaboration demo |
 | 📄 **PDF instructions** | Download simple build instructions with each model |
+| 🌐 **Federated example search** | `/search_examples` aggregates remote galleries |
+| 📱 **Mobile UI tweaks** | Larger touch targets on small screens |
+| 🔑 **Admin roles** | JWT `role` claim gates moderation and metrics |
+| 📡 **Metrics WebSocket** | `lego-gpt-metrics` streams live metrics |
+| 📂 **Build history export** | `/history` endpoint provides past builds |
 
 &nbsp;
 
@@ -144,6 +149,8 @@ lego-gpt-server \
 # Pass ``--static-root <dir>`` or set the ``STATIC_ROOT`` environment
 # variable to override the directory. ``STATIC_URL_PREFIX`` customises
 # the URL prefix returned in API responses (default: ``/static``).
+# ``HISTORY_ROOT`` sets the directory used for per-user build history.
+# ``EXAMPLE_SOURCES`` is a comma-separated list of instance URLs for federated search.
 # Set ``CORS_ORIGINS`` or pass ``--cors-origins <origins>`` to control the
 # ``Access-Control-Allow-Origin`` header.
 # Set ``S3_BUCKET`` and optional ``S3_URL_PREFIX`` to upload assets to S3/R2.
@@ -152,6 +159,9 @@ lego-gpt-server \
 
 # Start the collaboration server for shared editing
 lego-gpt-collab --host 0.0.0.0 --port 8765
+
+# Stream live metrics
+lego-gpt-metrics --host 0.0.0.0 --port 8777
 
 # Access the collaboration demo
 Open the PWA and choose **Collaboration Demo** from the main page to try real-time editing. A banner shows how many collaborators are connected.

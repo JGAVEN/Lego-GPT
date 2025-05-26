@@ -155,7 +155,7 @@ export default function Examples({
                 <button
                   key={n}
                   onClick={() => setRating(ex.id, n)}
-                  className={n <= (ratings[ex.id] ?? 0) ? "text-yellow-500" : "text-gray-300"}
+                  className={(n <= (ratings[ex.id] ?? 0) ? "text-yellow-500" : "text-gray-300") + " px-2"}
                   aria-label={`rate ${n}`}
                 >
                   ★

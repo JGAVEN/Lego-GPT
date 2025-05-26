@@ -9,6 +9,7 @@ from redis import Redis
 from rq import Queue, Job
 from backend.api import health
 from backend import STATIC_ROOT, SUBMISSIONS_ROOT, COMMENTS_ROOT
+from backend import HISTORY_ROOT
 from backend.worker import QUEUE_NAME as DEFAULT_QUEUE, generate_job, detect_job
 from backend.auth import decode as decode_jwt
 from backend import __version__
@@ -34,6 +35,9 @@ METRICS = {
     "example_submissions": 0,
 }
 
+# Additional example sources for federated search
+EXAMPLE_SOURCES = [s for s in os.getenv("EXAMPLE_SOURCES", "").split(",") if s]
+
 
 def _check_auth(headers) -> None:
     auth = headers.get("Authorization", "")
@@ -51,6 +55,49 @@ def _check_auth(headers) -> None:
     if count >= RATE_LIMIT:
         raise RuntimeError("rate_limit")
     _TOKEN_USAGE[token] = (count + 1, win)
+
+
+def _search_examples(query: str) -> list[dict]:
+    """Search local and remote examples for ``query``."""
+    examples_file = Path(__file__).resolve().parents[1] / "frontend/public/examples.json"
+    try:
+        data = json.loads(examples_file.read_text())
+    except Exception:
+        data = []
+    results = []
+    q = query.lower()
+    for ex in data:
+        text = f"{ex.get('title','')} {ex.get('prompt','')}".lower()
+        if q in text:
+            ex = ex.copy()
+            ex["source"] = "local"
+            results.append(ex)
+    for base in EXAMPLE_SOURCES:
+        url = base.rstrip("/") + "/examples.json"
+        try:
+            import urllib.request
+
+            with urllib.request.urlopen(url, timeout=2) as resp:
+                remote = json.loads(resp.read().decode())
+        except Exception:
+            continue
+        for ex in remote:
+            text = f"{ex.get('title','')} {ex.get('prompt','')}".lower()
+            if q in text:
+                ex = ex.copy()
+                ex["source"] = base
+                results.append(ex)
+    return results
+
+
+def _check_admin(headers) -> None:
+    auth = headers.get("Authorization", "")
+    if not auth.startswith("Bearer "):
+        raise PermissionError
+    token = auth.split(" ", 1)[1]
+    payload = decode_jwt(token, JWT_SECRET)
+    if payload.get("role") != "admin":
+        raise PermissionError
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -96,7 +143,20 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_error(404)
                 return
             if job_obj.is_finished:
-                self._send_json(job_obj.result)
+                result = job_obj.result
+                self._send_json(result)
+                user = job_obj.meta.get("user")
+                if user:
+                    HISTORY_ROOT.mkdir(parents=True, exist_ok=True)
+                    file_path = HISTORY_ROOT / f"{user}.jsonl"
+                    record = {
+                        "prompt": job_obj.meta.get("prompt", ""),
+                        "seed": job_obj.meta.get("seed", 42),
+                        "result": result,
+                        "ts": int(time.time()),
+                    }
+                    with open(file_path, "a") as fh:
+                        fh.write(json.dumps(record) + "\n")
             elif job_obj.is_failed:
                 self.send_error(500, "Job failed")
             else:
@@ -152,6 +212,11 @@ class Handler(BaseHTTPRequestHandler):
                 time.sleep(1)
             return
         if self.path == "/submissions":
+            try:
+                _check_admin(self.headers)
+            except PermissionError:
+                self.send_error(401)
+                return
             SUBMISSIONS_ROOT.mkdir(parents=True, exist_ok=True)
             items = []
             for item in sorted(SUBMISSIONS_ROOT.glob("*.json")):
@@ -178,7 +243,34 @@ class Handler(BaseHTTPRequestHandler):
             self._send_json({"comments": comments[-10:]})
             return
         if self.path == "/metrics":
+            try:
+                _check_admin(self.headers)
+            except PermissionError:
+                self.send_error(401)
+                return
             self._send_json(METRICS)
+            return
+        if self.path.startswith("/search_examples"):
+            q = self.path.split("?q=", 1)[-1] if "?q=" in self.path else ""
+            if not q:
+                self.send_error(400, "q required")
+                return
+            self._send_json({"examples": _search_examples(q)})
+            return
+        if self.path == "/history":
+            try:
+                _check_auth(self.headers)
+            except PermissionError:
+                self.send_error(401)
+                return
+            token = self.headers.get("Authorization", "").split(" ", 1)[1]
+            user = decode_jwt(token, JWT_SECRET).get("sub", "user")
+            file_path = HISTORY_ROOT / f"{user}.jsonl"
+            if file_path.is_file():
+                entries = [json.loads(line) for line in file_path.read_text().splitlines()]
+            else:
+                entries = []
+            self._send_json({"history": entries})
             return
         if self.path.startswith("/static/"):
             base = STATIC_ROOT.resolve()
@@ -226,7 +318,13 @@ class Handler(BaseHTTPRequestHandler):
             if inventory is not None and not isinstance(inventory, dict):
                 self.send_error(400, "Invalid inventory_filter")
                 return
+            token = self.headers.get("Authorization", "").split(" ", 1)[1]
+            payload = decode_jwt(token, JWT_SECRET)
             job_obj = queue.enqueue(generate_job, prompt, seed, inventory)
+            job_obj.meta["user"] = payload.get("sub", "user")
+            job_obj.meta["prompt"] = prompt
+            job_obj.meta["seed"] = seed
+            job_obj.save_meta()
             METRICS["generate_requests"] += 1
             self._send_json({"job_id": job_obj.id})
             return
@@ -257,6 +355,11 @@ class Handler(BaseHTTPRequestHandler):
             self._send_json({"ok": True})
             return
         if self.path == "/submissions/approve":
+            try:
+                _check_admin(self.headers)
+            except PermissionError:
+                self.send_error(401)
+                return
             length = int(self.headers.get("Content-Length", 0))
             body = self.rfile.read(length)
             try:
@@ -279,6 +382,11 @@ class Handler(BaseHTTPRequestHandler):
             self._send_json({"ok": True})
             return
         if self.path == "/submissions/reject":
+            try:
+                _check_admin(self.headers)
+            except PermissionError:
+                self.send_error(401)
+                return
             length = int(self.headers.get("Content-Length", 0))
             body = self.rfile.read(length)
             try:

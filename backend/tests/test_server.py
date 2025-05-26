@@ -27,7 +27,12 @@ class ServerTests(unittest.TestCase):
         import backend.gateway as server_mod
 
         self.server = importlib.reload(server_mod)
+        import tempfile
+        from pathlib import Path
+        self.tmp_history = Path(tempfile.mkdtemp())
+        self.server.HISTORY_ROOT = self.tmp_history
         self.token = auth.encode({"sub": "t"}, "testsecret")
+        self.admin_token = auth.encode({"sub": "a", "role": "admin"}, "testsecret")
         self.httpd = self.server.HTTPServer(("127.0.0.1", 0), self.server.Handler)
         self.port = self.httpd.server_address[1]
         self.thread = threading.Thread(target=self.httpd.serve_forever)
@@ -38,6 +43,8 @@ class ServerTests(unittest.TestCase):
         self.thread.join()
         # Ensure the server socket is fully closed to avoid resource warnings
         self.httpd.server_close()
+        import shutil
+        shutil.rmtree(self.tmp_history)
 
     def _request(
         self,
@@ -263,7 +270,9 @@ class ServerTests(unittest.TestCase):
             mock_q.return_value.id = "j"
             self._request("POST", "/generate", body=b"{}", token=self.token)
             self._request("POST", "/detect_inventory", body=b'{"image":"d"}', token=self.token)
-        status, data = self._request("GET", "/metrics")
+        status, _ = self._request("GET", "/metrics", token=self.token)
+        self.assertEqual(status, 401)
+        status, data = self._request("GET", "/metrics", token=self.admin_token)
         self.assertEqual(status, 200)
         payload = json.loads(data)
         self.assertGreaterEqual(payload.get("generate_requests", 0), 1)
@@ -291,6 +300,46 @@ class ServerTests(unittest.TestCase):
         self.assertEqual(status, 200)
         self.assertEqual(headers.get("Content-Type"), "text/event-stream")
         self.assertIn(b"progress", data)
+
+    def test_history_endpoint(self):
+        # Simulate finished job and ensure history is recorded
+        with patch("backend.gateway.Job.fetch") as mock_fetch, patch("backend.gateway.queue.enqueue") as mock_q:
+            class DummyJob:
+                def __init__(self):
+                    self.id = "1"
+                    self.meta = {"user": "t", "prompt": "p", "seed": 1}
+                    self.result = {"png_url": "u"}
+                    self.is_finished = True
+                    self.is_failed = False
+                def save_meta(self):
+                    pass
+            job = DummyJob()
+            mock_q.return_value = job
+            self._request("POST", "/generate", body=b'{"prompt":"p","seed":1}', token=self.token)
+            mock_fetch.return_value = job
+            self._request("GET", f"/generate/{job.id}", token=self.token)
+        self.server._TOKEN_USAGE.clear()
+        status, _ = self._request("GET", "/history", token=self.token)
+        self.assertEqual(status, 200)
+
+    def test_federated_search(self):
+        with patch("urllib.request.urlopen") as mock_urlopen:
+            class Resp:
+                def __init__(self, data):
+                    self.data = data
+                def read(self):
+                    return json.dumps([{"id": "2", "title": "R", "prompt": "p"}]).encode()
+                def __enter__(self):
+                    return self
+                def __exit__(self, exc_type, exc, tb):
+                    pass
+
+            mock_urlopen.return_value = Resp([])
+            self.server.EXAMPLE_SOURCES = ["http://x"]
+            status, data = self._request("GET", "/search_examples?q=p")
+        self.assertEqual(status, 200)
+        payload = json.loads(data)
+        self.assertGreaterEqual(len(payload["examples"]), 1)
 
 
 if __name__ == "__main__":  # pragma: no cover
