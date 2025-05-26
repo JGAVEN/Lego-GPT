@@ -54,12 +54,12 @@ clusters not connected to the ground.
 2. API validates, enqueues job on the Redis/RQ queue → ✅ returns `job_id`.
 3. Worker loads LegoGPT, **calls solver shim** ➜ bricks verified.
 4. Inventory filter trims the brick list using `BRICK_INVENTORY`.
-5. Worker writes `preview.png`, `model.ldr`, and `model.gltf` to
+5. Worker writes `preview.png`, `model.ldr`, `model.gltf`, and `instructions.pdf` to
    `backend/static/{uuid}/` by default. Pass ``--static-root <dir>``
    (or set ``STATIC_ROOT``) to override the directory. Use
    ``STATIC_URL_PREFIX`` to customise the URL prefix returned to the
    client (defaults to ``/static``).
-6. When finished, a GET on `/generate/{job_id}` returns `{png_url, ldr_url, gltf_url, brick_counts}`.
+6. When finished, a GET on `/generate/{job_id}` returns `{png_url, ldr_url, gltf_url, instructions_url, brick_counts}`. Each completed build is logged under ``HISTORY_ROOT`` and can be retrieved via ``/history``.
 7. Clients may subscribe to `/progress/{job_id}` for Server-Sent Events with
    `{"progress": 0..100}` updates.
 8. Client shows PNG immediately; Three.js lazily loads LDR → interactive viewer.
@@ -92,7 +92,7 @@ _Last updated 2025-07-28_
 
 ## Brick‑Detector Micro‑service (new in v0.5.0)
 
-Adds a YOLOv8‑based computer‑vision worker that converts user‑supplied photos into an inventory map `{ part_id: count }`. The gateway exposes `/detect_inventory`, and the PWA includes an `InventoryScanner` component (hook `useDetectInventory`) so users can upload a photo, review the detected parts list and generate a model constrained to their bricks.
+Adds a YOLOv8‑based computer‑vision worker that converts user‑supplied photos into an inventory map `{ part_id: count }`. The gateway exposes `/detect_inventory`, and the PWA includes an `InventoryScanner` component (hook `useDetectInventory`) so users can upload one or more photos, review the detected parts list and generate a model constrained to their bricks. Results from multiple photos are merged into a single inventory file.
 
 The API validates that the `image` field contains a valid base64 string and
 returns HTTP 400 for malformed data.
