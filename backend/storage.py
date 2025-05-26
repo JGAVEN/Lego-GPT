@@ -2,9 +2,6 @@
 from __future__ import annotations
 
 import os
-import mimetypes
-import gzip
-import io
 from pathlib import Path
 from typing import Iterable, Tuple
 
@@ -25,20 +22,11 @@ def _client():
 
 
 def upload(path: Path, key: str) -> str:
-    """Upload a file to S3 and return the public URL with gzip compression."""
+    """Upload a file to S3 and return the public URL."""
     if not S3_BUCKET:
         raise RuntimeError("S3_BUCKET not configured")
     client = _client()
-    mime, _ = mimetypes.guess_type(str(path))
-    extra: dict[str, str] = {}
-    if mime:
-        extra["ContentType"] = mime
-    extra["ContentEncoding"] = "gzip"
-    with open(path, "rb") as src, io.BytesIO() as buf:
-        with gzip.GzipFile(fileobj=buf, mode="wb") as gz:
-            gz.write(src.read())
-        buf.seek(0)
-        client.upload_fileobj(buf, S3_BUCKET, key, ExtraArgs=extra)
+    client.upload_file(str(path), S3_BUCKET, key)
     base = S3_URL_PREFIX.rstrip("/") if S3_URL_PREFIX else f"https://{S3_BUCKET}.s3.amazonaws.com"
     return f"{base}/{key}"
 

@@ -189,8 +189,6 @@ lego-gpt-metrics --host 0.0.0.0 --port 8777
 curl -H "Authorization: Bearer $(cat token.txt)" http://localhost:8000/metrics_prom
 # Export metrics history to CSV
 lego-gpt-analytics metrics.csv --token $(cat token.txt)
-# Push metrics to external service
-lego-gpt-analytics - --token $(cat token.txt) --push-url https://example.com/ingest
 
 # Access the collaboration demo
 Open the PWA and choose **Collaboration Demo** from the main page to try real-time editing. A banner shows how many collaborators are connected.
@@ -235,8 +233,6 @@ lego-gpt-cleanup --days 7 --dry-run
 lego-gpt-export model.ldr model.gltf
 # Translate example prompts
 lego-gpt-translate es --url https://api.example.com/translate
-# Manage user data
-lego-gpt-users list
 # Set CLEANUP_DAYS and CLEANUP_DRY_RUN in the environment to persist defaults
 
 # Measure API throughput with 4 concurrent requests
