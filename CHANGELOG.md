@@ -1,3 +1,8 @@
+## [0.5.65] – 2025-08-12
+### Changed
+- Updated Trivy action to use `aquasecurity/trivy-action@v0.20.0`.
+- Bumped project version to 0.5.65.
+
 ## [0.5.64] – 2025-08-11
 ### Changed
 - Updated build requirements to `setuptools>=78.1.1` to resolve security advisories.
