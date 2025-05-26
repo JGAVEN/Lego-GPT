@@ -29,6 +29,8 @@ const en = {
   clearEdits: "Clear Edits",
   collabDemo: "Collaboration Demo",
   moderation: "Moderation",
+  reports: "Reports",
+  clear: "Clear",
   roomId: "Room ID",
   message: "Message",
   send: "Send",

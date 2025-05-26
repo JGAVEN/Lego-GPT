@@ -402,6 +402,12 @@ class ServerTests(unittest.TestCase):
         self.assertEqual(status, 200)
         payload = json.loads(data)
         self.assertEqual(payload["reports"][0]["id"], "1")
+        status, _ = self._request(
+            "POST", "/reports/clear", body=b'{"id":"1"}', token=self.admin_token
+        )
+        self.assertEqual(status, 200)
+        status, data = self._request("GET", "/reports", token=self.admin_token)
+        self.assertEqual(json.loads(data)["reports"], [])
 
     def test_ban_user_and_comment_delete(self):
         import tempfile
@@ -420,6 +426,14 @@ class ServerTests(unittest.TestCase):
         self.assertEqual(json.loads(data)["comments"], [])
         status, _ = self._request("POST", "/ban_user", body=b'{"user":"t"}', token=self.admin_token)
         self.assertEqual(status, 200)
+        status, data = self._request("GET", "/bans", token=self.admin_token)
+        self.assertIn("t", json.loads(data)["bans"])
+        status, _ = self._request(
+            "POST", "/bans", body=b'{"bans":["x"]}', token=self.admin_token
+        )
+        self.assertEqual(status, 200)
+        status, data = self._request("GET", "/bans", token=self.admin_token)
+        self.assertIn("x", json.loads(data)["bans"])
         status, _ = self._request("POST", "/generate", body=b"{}", token=self.token)
         self.assertEqual(status, 401)
 
@@ -434,6 +448,8 @@ class ServerTests(unittest.TestCase):
         payload = json.loads(data)
         self.assertGreaterEqual(payload.get("token_usage", 0), 1)
         self.assertGreaterEqual(payload.get("rate_limit_hits", 0), 1)
+        history = payload.get("history", {}).get("token_usage")
+        self.assertTrue(history)
 
 
 if __name__ == "__main__":  # pragma: no cover

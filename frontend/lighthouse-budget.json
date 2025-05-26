@@ -1,6 +1,7 @@
 [
   {
     "resourceSizes": [{"resourceType": "total", "budget": 300}],
-    "timings": [{"metric": "interactive", "budget": 5000}]
+    "timings": [{"metric": "interactive", "budget": 5000}],
+    "scores": {"accessibility": 90, "best-practices": 90}
   }
 ]

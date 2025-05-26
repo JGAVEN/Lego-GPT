@@ -86,6 +86,11 @@
 | F-28 | **C**  | CLI config token                                 | **Done** | CLI reads token from `~/.lego-gpt` |
 | F-29 | **S**  | Mobile performance audit                         | **Done** | Lighthouse CI checks performance budgets |
 | F-30 | **S**  | Comment moderation tools                         | **Done** | Admins can delete comments and ban users |
+| F-31 | **S**  | Example report review UI                        | **Done** | Clear flagged examples in admin dashboard |
+| F-32 | **S**  | Token usage graphs                              | **Done** | Dashboard charts request and rate-limit history |
+| F-33 | **S**  | Offline CLI usage                               | **Done** | CLI queues requests offline and replays later |
+| F-34 | **S**  | Advanced performance budgets                    | **Done** | Lighthouse CI checks accessibility & best practices |
+| F-35 | **S**  | Federated comment moderation                    | **Done** | Sync banned-user lists via new CLI |
 
 
 
@@ -93,4 +98,4 @@
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.
 
-_Last updated 2025-08-05_
+_Last updated 2025-08-06_

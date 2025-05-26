@@ -162,5 +162,20 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 50 – Comment moderation tools (completed)
 * Admin dashboard can delete comments and ban users.
 
+## Sprint 51 – Example report review UI (completed)
+* Admin dashboard lists flagged examples and allows clearing reports.
+
+## Sprint 52 – Token usage graphs (completed)
+* Metrics dashboard visualises token usage and rate-limit trends.
+
+## Sprint 53 – Offline CLI usage (completed)
+* CLI queues requests offline and replays them when connected.
+
+## Sprint 54 – Advanced performance budgets (completed)
+* Lighthouse CI also checks accessibility and best-practices scores.
+
+## Sprint 55 – Federated comment moderation (completed)
+* Banned-user lists can be synced across instances via a new CLI.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.
