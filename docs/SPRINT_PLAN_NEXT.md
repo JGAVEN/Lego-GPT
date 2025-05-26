@@ -2,17 +2,17 @@
 
 These upcoming sprints focus on deployment and usability improvements.
 
-## Sprint 63 – CLI shell completion
-* Offer bash/zsh completion scripts for `lego-gpt-cli`.
+## Sprint 68 – CLI config generator
+* Command to create a sample YAML config with common settings.
 
-## Sprint 64 – In-app tutorial overlay
-* PWA displays a short guided tour for first-time users.
+## Sprint 69 – Auto-scaling docs
+* Document horizontal scaling strategies for the worker deployments.
 
-## Sprint 65 – Prometheus metrics exporter
-* Optional endpoint exposes metrics in Prometheus format.
+## Sprint 70 – Remote example import UI
+* PWA page to import examples from another instance.
 
-## Sprint 66 – Example translation workflow
-* CLI tool can translate example prompts via an external API.
+## Sprint 71 – Theme colour picker
+* Allow custom accent colours in the PWA settings page.
 
-## Sprint 67 – Helm chart skeleton
-* Start a basic Helm chart to make Kubernetes deployment configurable.
+## Sprint 72 – Container security hardening
+* Review Dockerfiles and apply best-practice security options.

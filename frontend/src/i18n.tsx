@@ -43,6 +43,11 @@ const en = {
   pushEnabled: "Push notifications enabled",
   togglePush: "Toggle Push",
   connectedPeers: "Connected collaborators",
+  tutorialTitle: "Welcome to Lego GPT",
+  tutorialStep1: "Enter a prompt and optional seed to generate a model.",
+  tutorialStep2: "Upload a photo to detect your brick inventory.",
+  tutorialStep3: "View and share the generated result.",
+  gotIt: "Got it",
 };
 
 export type Lang = "en";
