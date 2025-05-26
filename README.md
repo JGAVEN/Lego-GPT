@@ -66,6 +66,11 @@ real-life building via a built-in Three.js viewer.
 | 🔑 **Admin roles** | JWT `role` claim gates moderation and metrics |
 | 📡 **Metrics WebSocket** | `lego-gpt-metrics` streams live metrics |
 | 📂 **Build history export** | `/history` endpoint provides past builds |
+| 📥 **Distributed moderation queue** | Pending submissions stored in Redis and shared across instances |
+| 🔗 **Account linking** | Sync build history across devices with one-time link codes |
+| 🔔 **Notification preferences** | Settings page stores email and push options |
+| 🗄️ **Example import/export** | Admin CLI can export and import community examples |
+| 💪 **Worker resilience** | Jobs retry automatically; health check reports Redis status |
 
 &nbsp;
 
@@ -101,6 +106,8 @@ python -m pip install --editable ./backend[test,env]
 # docker run -p 6379:6379 -d redis:7
 # Optionally set the Redis URL for server and workers
 export REDIS_URL=redis://localhost:6379/0
+# Moderation queue can be shared via Redis as well
+export SUBMISSIONS_REDIS_URL=$REDIS_URL
 
 # Launch the RQ worker in one terminal
 # ``--redis-url`` overrides the REDIS_URL env var

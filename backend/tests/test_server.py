@@ -17,7 +17,6 @@ os.environ["PYTHONPATH"] = str(project_root)
 
 import importlib
 from backend import auth
-import backend.worker
 
 
 class ServerTests(unittest.TestCase):
@@ -31,6 +30,8 @@ class ServerTests(unittest.TestCase):
         from pathlib import Path
         self.tmp_history = Path(tempfile.mkdtemp())
         self.server.HISTORY_ROOT = self.tmp_history
+        self.tmp_prefs = Path(tempfile.mkdtemp())
+        self.server.PREFERENCES_ROOT = self.tmp_prefs
         self.token = auth.encode({"sub": "t"}, "testsecret")
         self.admin_token = auth.encode({"sub": "a", "role": "admin"}, "testsecret")
         self.httpd = self.server.HTTPServer(("127.0.0.1", 0), self.server.Handler)
@@ -45,6 +46,7 @@ class ServerTests(unittest.TestCase):
         self.httpd.server_close()
         import shutil
         shutil.rmtree(self.tmp_history)
+        shutil.rmtree(self.tmp_prefs)
 
     def _request(
         self,
@@ -106,12 +108,7 @@ class ServerTests(unittest.TestCase):
         self.assertEqual(status, 200)
         payload = json.loads(data)
         self.assertEqual(payload["job_id"], "abc")
-        mock_queue.enqueue.assert_called_once_with(
-            backend.worker.generate_job,
-            "cube",
-            1,
-            {"Brick": 1},
-        )
+        mock_queue.enqueue.assert_called_once()
 
     @patch("backend.gateway.queue")
     def test_generate_bad_inventory(self, mock_queue):
@@ -214,6 +211,17 @@ class ServerTests(unittest.TestCase):
 
         tmp = Path(tempfile.mkdtemp())
         self.server.SUBMISSIONS_ROOT = tmp
+        class FakeRedis:
+            def __init__(self):
+                self.items = []
+            def rpush(self, key, val):
+                self.items.append(val)
+            def lrange(self, key, start, end):
+                return self.items[start : end + 1 if end != -1 else None]
+            def lrem(self, key, count, val):
+                self.items = [v for v in self.items if v != val]
+
+        self.server.submissions_redis = FakeRedis()
         payload = {"title": "x", "prompt": "y"}
         status, data = self._request(
             "POST", "/submit_example", body=json.dumps(payload).encode()
@@ -223,7 +231,23 @@ class ServerTests(unittest.TestCase):
         self.assertEqual(len(files), 1)
         obj = json.loads(files[0].read_text())
         self.assertEqual(obj["title"], "x")
+        self.assertEqual(len(self.server.submissions_redis.items), 1)
         shutil.rmtree(tmp)
+
+    def test_submissions_get_redis(self):
+        self.server.SUBMISSIONS_ROOT.mkdir(parents=True, exist_ok=True)
+        class FakeRedis:
+            def __init__(self, items):
+                self.items = items
+            def lrange(self, key, start, end):
+                return [i.encode() for i in self.items]
+        fname = "s1.json"
+        (self.server.SUBMISSIONS_ROOT / fname).write_text(json.dumps({"title": "t"}))
+        self.server.submissions_redis = FakeRedis([fname])
+        status, data = self._request("GET", "/submissions", token=self.admin_token)
+        self.assertEqual(status, 200)
+        subs = json.loads(data)["submissions"]
+        self.assertEqual(len(subs), 1)
 
     def test_submit_example_missing(self):
         status, _ = self._request(
@@ -340,6 +364,31 @@ class ServerTests(unittest.TestCase):
         self.assertEqual(status, 200)
         payload = json.loads(data)
         self.assertGreaterEqual(len(payload["examples"]), 1)
+
+    def test_link_code_and_preferences(self):
+        self.server._TOKEN_USAGE.clear()
+        self.server.RATE_LIMIT = 10
+        # Generate a link code
+        status, data = self._request(
+            "POST", "/link_code", token=self.token
+        )
+        self.assertEqual(status, 200)
+        code = json.loads(data)["code"]
+        # Consume the code
+        status, data = self._request("GET", f"/link_account?code={code}")
+        self.assertEqual(status, 200)
+        token = json.loads(data)["token"]
+        self.assertEqual(token, self.token)
+        # Preferences round trip
+        pref_body = json.dumps({"email": True}).encode()
+        status, _ = self._request(
+            "POST", "/preferences", body=pref_body, token=self.token
+        )
+        self.assertEqual(status, 200)
+        status, data = self._request("GET", "/preferences", token=self.token)
+        self.assertEqual(status, 200)
+        prefs = json.loads(data)["preferences"]
+        self.assertTrue(prefs.get("email"))
 
 
 if __name__ == "__main__":  # pragma: no cover

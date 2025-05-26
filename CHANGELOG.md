@@ -32,6 +32,16 @@
 ### Changed
 * Backend version bumped to 0.5.50.
 
+## [0.5.51] – 2025-08-04
+### Added
+* Distributed moderation queue using Redis.
+* Account linking via one-time codes.
+* Notification preferences stored per user.
+* `lego-gpt-examples` import/export tool.
+### Changed
+* Worker jobs retry automatically and `/health` reports Redis status.
+* Backend version bumped to 0.5.51.
+
 ## [0.5.45] – 2025-07-27
 ### Added
 * Presence indicator shows connected collaborators in real time.
