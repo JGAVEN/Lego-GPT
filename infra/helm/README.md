@@ -8,7 +8,7 @@ It mirrors the manifests in `../k8s` but exposes a few configurable values.
 ```bash
 helm install lego-gpt infra/helm \
   --set image.repository=ghcr.io/<owner>/lego-gpt \
-  --set image.tag=v0.5.62
+  --set image.tag=v0.5.63
 ```
 
 The chart deploys the API, worker and detector deployments along with Redis.

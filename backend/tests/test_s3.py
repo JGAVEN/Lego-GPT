@@ -27,6 +27,9 @@ class S3UploadTests(unittest.TestCase):
             urls, uploaded = storage.maybe_upload_assets([f])
             self.assertTrue(uploaded)
             mock_client.upload_file.assert_called_once()
+            args, kwargs = mock_client.upload_file.call_args
+            self.assertIn("ExtraArgs", kwargs)
+            self.assertEqual(kwargs["ExtraArgs"].get("ContentEncoding"), "gzip")
             self.assertEqual(urls[0], "http://cdn/" + f"{f.parent.name}/{f.name}")
         del os.environ["S3_BUCKET"]
         del os.environ["S3_URL_PREFIX"]

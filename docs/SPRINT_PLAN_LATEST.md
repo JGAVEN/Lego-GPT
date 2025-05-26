@@ -228,5 +228,20 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 72 – Container security hardening (completed)
 * Production Dockerfiles now create a non-root user.
 
+## Sprint 73 – Container image scanning (completed)
+* CI workflow runs Trivy vulnerability scans on Docker images.
+
+## Sprint 74 – Admin user management CLI (completed)
+* Added `lego-gpt-users` command for listing and deleting user data.
+
+## Sprint 75 – Asset compression (completed)
+* Generated models and images are gzipped before S3 upload.
+
+## Sprint 76 – Multi-language docs skeleton (completed)
+* Created Spanish and French README stubs under `docs/i18n/`.
+
+## Sprint 77 – External analytics export (completed)
+* `lego-gpt-analytics-push` CLI posts metrics to a remote endpoint.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.
