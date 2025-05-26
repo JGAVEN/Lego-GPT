@@ -1,3 +1,7 @@
+## [0.5.65] – 2025-08-12
+### Fixed
+- Updated Trivy GitHub action to `v0.20.0` to resolve missing download error.
+
 ## [0.5.64] – 2025-08-11
 ### Changed
 - Updated build requirements to `setuptools>=78.1.1` to resolve security advisories.
