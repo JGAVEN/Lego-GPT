@@ -26,7 +26,7 @@ class S3UploadTests(unittest.TestCase):
             mock_boto.client.return_value = mock_client
             urls, uploaded = storage.maybe_upload_assets([f])
             self.assertTrue(uploaded)
-            mock_client.upload_file.assert_called_once()
+            mock_client.upload_fileobj.assert_called_once()
             self.assertEqual(urls[0], "http://cdn/" + f"{f.parent.name}/{f.name}")
         del os.environ["S3_BUCKET"]
         del os.environ["S3_URL_PREFIX"]

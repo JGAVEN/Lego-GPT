@@ -92,6 +92,11 @@
 | F-34 | **S**  | Advanced performance budgets                    | **Done** | Lighthouse CI checks accessibility & best practices |
 | F-35 | **S**  | Federated comment moderation                    | **Done** | Sync banned-user lists via new CLI |
 | F-36 | **S**  | Persistent offline queue                       | **Done** | Front-end and CLI store pending requests across sessions |
+| D-24 | **S**  | Container image scanning                       | **Done** | Trivy scan in CI |
+| B-38 | **S**  | Admin user management CLI                      | **Done** | `lego-gpt-users` command |
+| S-16 | **S**  | Asset compression for uploads                  | **Done** | gzip assets before S3 upload |
+| D-25 | **C**  | Multi-language docs skeleton                   | **Done** | `docs/i18n` created |
+| B-39 | **S**  | External analytics export                      | **Done** | CLI `--push-url` option |
 
 
 
@@ -99,4 +104,4 @@
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.
 
-_Last updated 2025-08-07_
+_Last updated 2025-08-10_
