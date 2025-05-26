@@ -3,6 +3,7 @@ import os
 from redis import Redis
 from rq import Connection, Worker
 from backend.logging_config import setup_logging
+from backend.config import apply_yaml_config
 from backend.api import generate_lego_model
 from backend.detector import detect_inventory
 from backend import __version__
@@ -90,11 +91,19 @@ def main(argv: list[str] | None = None) -> None:
         default=os.getenv("ORTOOLS_ENGINE", "HIGHs"),
         help="OR-Tools solver backend (default: env ORTOOLS_ENGINE or HIGHs)",
     )
+    parser.add_argument(
+        "--config",
+        default=os.getenv("LEGOGPT_CONFIG"),
+        help="Path to YAML config file",
+    )
     args = parser.parse_args(argv)
 
     if args.version:
         print(__version__)
         return
+
+    if args.config:
+        apply_yaml_config(args.config)
 
     run_worker(
         args.redis_url,

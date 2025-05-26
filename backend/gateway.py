@@ -22,6 +22,8 @@ from backend.worker import QUEUE_NAME as DEFAULT_QUEUE, generate_job, detect_job
 from backend.auth import decode as decode_jwt
 from backend import __version__
 from backend.logging_config import setup_logging
+from backend.cleanup import cleanup
+from backend.config import apply_yaml_config
 
 
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
@@ -33,6 +35,9 @@ DEFAULT_RETRY = Retry(max=3, interval=[10, 30, 60])
 
 JWT_SECRET = os.getenv("JWT_SECRET", "secret")
 RATE_LIMIT = int(os.getenv("RATE_LIMIT", "5"))
+# Cleanup settings
+CLEANUP_DAYS = int(os.getenv("CLEANUP_DAYS", "7"))
+CLEANUP_INTERVAL = int(os.getenv("CLEANUP_INTERVAL", "3600"))  # seconds
 # Allow cross-origin requests
 CORS_ORIGINS = os.getenv("CORS_ORIGINS", "*")
 # token -> (count, window_epoch_minute)
@@ -136,6 +141,21 @@ def _search_examples(query: str) -> list[dict]:
                 ex["source"] = base
                 results.append(ex)
     return results
+
+
+def _start_cleanup_thread(path: Path, days: int, interval: int) -> None:
+    """Periodically run the cleanup task in a daemon thread."""
+    import threading
+
+    def loop() -> None:
+        while True:
+            try:
+                cleanup(path, days)
+            except Exception:
+                pass
+            time.sleep(interval)
+
+    threading.Thread(target=loop, daemon=True).start()
 
 
 def _check_admin(headers) -> None:
@@ -796,6 +816,8 @@ def run(
     log_level: str | None = None,
     log_file: str | None = None,
     cors_origins: str = CORS_ORIGINS,
+    cleanup_days: int = CLEANUP_DAYS,
+    cleanup_interval: int = CLEANUP_INTERVAL,
 ) -> None:
     """Start the HTTP API server."""
     global queue, redis_conn, JWT_SECRET, RATE_LIMIT, CORS_ORIGINS, COMMENTS_ROOT, submissions_redis, PREFERENCES_ROOT
@@ -819,6 +841,8 @@ def run(
         backend_pkg.PREFERENCES_ROOT = Path(preferences_root).resolve()
     CORS_ORIGINS = cors_origins
     setup_logging(log_level, log_file)
+    if cleanup_interval > 0:
+        _start_cleanup_thread(Path(static_root or STATIC_ROOT), cleanup_days, cleanup_interval)
     server = HTTPServer((host, port), Handler)
     print(f"Serving on http://{host}:{port}")
     server.serve_forever()
@@ -906,10 +930,29 @@ def main() -> None:
             "Access-Control-Allow-Origin header value (default: env CORS_ORIGINS or '*')"
         ),
     )
+    parser.add_argument(
+        "--cleanup-days",
+        type=int,
+        default=int(os.getenv("CLEANUP_DAYS", str(CLEANUP_DAYS))),
+        help="Remove assets older than this many days",
+    )
+    parser.add_argument(
+        "--cleanup-interval",
+        type=int,
+        default=int(os.getenv("CLEANUP_INTERVAL", str(CLEANUP_INTERVAL))),
+        help="Seconds between cleanup runs (0 to disable)",
+    )
+    parser.add_argument(
+        "--config",
+        default=os.getenv("LEGOGPT_CONFIG"),
+        help="Path to YAML config file",
+    )
     args = parser.parse_args()
     if args.version:
         print(__version__)
         return
+    if args.config:
+        apply_yaml_config(args.config)
     run(
         args.host,
         args.port,
@@ -924,6 +967,8 @@ def main() -> None:
         args.log_level,
         args.log_file,
         args.cors_origins,
+        args.cleanup_days,
+        args.cleanup_interval,
     )
 
 

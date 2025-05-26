@@ -1,3 +1,13 @@
+## [0.5.61] – 2025-08-08
+### Added
+- `lego-gpt-analytics` CLI exports metrics history to CSV.
+- Dark mode toggle remembers the chosen theme.
+- YAML configuration loaded via `LEGOGPT_CONFIG` or `--config`.
+- CLI loads plugins from `~/.lego-gpt/plugins`.
+- API server runs scheduled cleanup of old assets.
+### Changed
+- Backend version bumped to 0.5.61.
+
 ## [0.5.46] – 2025-07-28
 ### Added
 * Example submission endpoint `/submit_example`.

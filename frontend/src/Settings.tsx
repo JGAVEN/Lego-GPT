@@ -22,6 +22,16 @@ export default function Settings({ onBack }: { onBack: () => void }) {
   const [detectQueue, setDetectQueue] = useState(0);
   const [editCount, setEditCount] = useState(0);
   const [push, setPush] = useState(false);
+  const [theme, setTheme] = useState(() =>
+    localStorage.getItem("theme") ||
+    (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+  );
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    document.documentElement.classList.toggle("light", theme === "light");
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   async function refresh() {
     setCacheCount(await countCachedGenerates());
@@ -109,6 +119,13 @@ export default function Settings({ onBack }: { onBack: () => void }) {
           aria-label="toggle push"
         >
           {t("togglePush")}
+        </button>
+        <button
+          className="bg-gray-200 px-3 py-1 rounded"
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          aria-label="toggle theme"
+        >
+          {theme === "dark" ? "Light Mode" : "Dark Mode"}
         </button>
       </div>
       <button className="mt-6 text-blue-600 underline" onClick={onBack} aria-label="back">

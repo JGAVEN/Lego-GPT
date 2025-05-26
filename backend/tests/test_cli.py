@@ -53,6 +53,8 @@ class CLITests(unittest.TestCase):
                     'INFO',
                     '/tmp/api.log',
                     'http://x',
+                    7,
+                    3600,
                 )
 
 

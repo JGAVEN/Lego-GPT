@@ -78,6 +78,11 @@ real-life building via a built-in Three.js viewer.
 | 🔐 **Improved CLI auth** | `lego-gpt-cli` reads token from `~/.lego-gpt` |
 | 🚦 **Performance audit** | Lighthouse CI enforces PWA performance budgets |
 | 🛡️ **Comment moderation tools** | Admins can delete comments and ban users |
+| 📈 **Analytics export CLI** | `lego-gpt-analytics` outputs metrics history to CSV |
+| 🌓 **Dark mode toggle** | PWA remembers your light or dark theme preference |
+| 📝 **YAML config files** | Set `LEGOGPT_CONFIG` or `--config` to load settings |
+| 🔌 **CLI plugins** | Drop Python modules in `~/.lego-gpt/plugins` to add commands |
+| ⏲️ **Scheduled cleanup** | Server periodically removes old assets |
 
 &nbsp;
 
@@ -146,6 +151,7 @@ export LEGOGPT_MODEL=/path/to/checkpoint     # optional larger LegoGPT model
 # The backend automatically loads it on startup.
 # See ``docs/TOKEN_ROTATION.md`` for rotating the JWT secret.
 # See ``docs/SCALABILITY_BENCHMARKING.md`` for load-testing guidance.
+# Alternatively set ``LEGOGPT_CONFIG`` or ``--config`` to load settings from a YAML file.
 lego-gpt-server \
   --host 0.0.0.0 \
   --port 8000 \
@@ -176,6 +182,8 @@ lego-gpt-collab --host 0.0.0.0 --port 8765
 
 # Stream live metrics
 lego-gpt-metrics --host 0.0.0.0 --port 8777
+# Export metrics history to CSV
+lego-gpt-analytics metrics.csv --token $(cat token.txt)
 
 # Access the collaboration demo
 Open the PWA and choose **Collaboration Demo** from the main page to try real-time editing. A banner shows how many collaborators are connected.
@@ -197,6 +205,8 @@ lego-gpt-cli --token $(cat token.txt) generate --file prompts.txt
 # The CLI loads API_URL and JWT from a .env file if present
 # The front-end can be pointed at a custom backend by creating
 # `frontend/.env` and setting `VITE_API_URL=http://host:8000`
+# Additional commands can be installed by placing Python modules in
+# `~/.lego-gpt/plugins` with a `register(subparsers)` function.
 
 # Start the front-end PWA
 pnpm --dir frontend run dev    # http://localhost:5173
