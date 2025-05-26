@@ -2,17 +2,17 @@
 
 These upcoming sprints continue improving community and admin features.
 
-## Sprint 46 – Submission reporting
-* Users can flag inappropriate examples for admin review.
+## Sprint 51 – Example report review UI
+* Admin dashboard lists flagged examples and lets moderators clear reports.
 
-## Sprint 47 – Rate-limit metrics
-* Metrics dashboard charts token usage and rate-limit hits.
+## Sprint 52 – Token usage graphs
+* Metrics dashboard visualises token usage and rate-limit trends.
 
-## Sprint 48 – Improved CLI auth
-* `lego-gpt-cli` supports reading tokens from `~/.lego-gpt` config.
+## Sprint 53 – Offline CLI usage
+* CLI caches requests made while offline and replays them when connected.
 
-## Sprint 49 – Mobile performance audit
-* Lighthouse-based CI job checks PWA performance budgets.
+## Sprint 54 – Advanced performance budgets
+* Additional Lighthouse budgets track accessibility and best practices.
 
-## Sprint 50 – Comment moderation tools
-* Admin dashboard allows deleting comments and banning users.
+## Sprint 55 – Federated comment moderation
+* Moderators can sync banned-user lists across instances.

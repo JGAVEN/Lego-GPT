@@ -22,7 +22,7 @@ except Exception:  # pragma: no cover - ignore if missing
 try:  # pragma: no cover - during editable installs
     __version__ = version("lego-gpt-backend")
 except PackageNotFoundError:  # pragma: no cover - fallback for tests
-    __version__ = "0.5.51"
+    __version__ = "0.5.52"
 
 PACKAGE_DIR = Path(__file__).parent
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
@@ -44,6 +44,16 @@ COMMENTS_ROOT = (
     Path(_env_comments) if _env_comments else PACKAGE_DIR / "comments"
 )
 COMMENTS_ROOT = COMMENTS_ROOT.resolve()
+
+# Directory where example reports are stored
+_env_reports = os.getenv("REPORTS_ROOT")
+REPORTS_ROOT = Path(_env_reports) if _env_reports else PACKAGE_DIR / "reports"
+REPORTS_ROOT = REPORTS_ROOT.resolve()
+
+# JSON file storing banned user IDs
+_env_bans = os.getenv("BANS_FILE")
+BANS_FILE = Path(_env_bans) if _env_bans else PACKAGE_DIR / "banned.json"
+BANS_FILE = BANS_FILE.resolve()
 
 # Directory storing per-user build history
 _env_history = os.getenv("HISTORY_ROOT")
@@ -74,6 +84,8 @@ __all__ = [
     "SUBMISSIONS_ROOT",
     "SUBMISSIONS_REDIS_URL",
     "COMMENTS_ROOT",
+    "REPORTS_ROOT",
+    "BANS_FILE",
     "HISTORY_ROOT",
     "PREFERENCES_ROOT",
     "SMTP_HOST",

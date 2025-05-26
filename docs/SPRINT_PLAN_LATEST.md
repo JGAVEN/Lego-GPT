@@ -147,5 +147,20 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 45 – Resilience improvements (completed)
 * Worker jobs retry automatically and `/health` checks Redis status.
 
+## Sprint 46 – Submission reporting (completed)
+* Users can flag inappropriate examples for admin review.
+
+## Sprint 47 – Rate-limit metrics (completed)
+* Metrics dashboard charts token usage and rate-limit hits.
+
+## Sprint 48 – Improved CLI auth (completed)
+* `lego-gpt-cli` reads tokens from `~/.lego-gpt` if `--token` is missing.
+
+## Sprint 49 – Mobile performance audit (completed)
+* Lighthouse-based CI job enforces PWA performance budgets.
+
+## Sprint 50 – Comment moderation tools (completed)
+* Admin dashboard can delete comments and ban users.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.
