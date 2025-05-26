@@ -178,6 +178,7 @@ lego-gpt-server \
 # Set ``CORS_ORIGINS`` or pass ``--cors-origins <origins>`` to control the
 # ``Access-Control-Allow-Origin`` header.
 # Set ``S3_BUCKET`` and optional ``S3_URL_PREFIX`` to upload assets to S3/R2.
+# Generated files are gzipped before upload when this is enabled.
 # Set ``SMTP_HOST`` and ``COMMENT_NOTIFY_EMAIL`` to enable comment notifications.
 # Optionally configure ``SMTP_USER``, ``SMTP_PASSWORD`` and ``SMTP_FROM``.
 

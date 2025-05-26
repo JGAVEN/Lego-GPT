@@ -61,15 +61,17 @@ clusters not connected to the ground.
    (or set ``STATIC_ROOT``) to override the directory. Use
    ``STATIC_URL_PREFIX`` to customise the URL prefix returned to the
    client (defaults to ``/static``).
-6. When finished, a GET on `/generate/{job_id}` returns `{png_url, ldr_url, gltf_url, instructions_url, brick_counts}`. Each completed build is logged under ``HISTORY_ROOT`` and can be retrieved via ``/history``.
-7. Clients may subscribe to `/progress/{job_id}` for Server-Sent Events with
+6. If ``S3_BUCKET`` is configured, each file is gzipped and uploaded with
+   ``Content-Encoding: gzip`` for efficient storage.
+7. When finished, a GET on `/generate/{job_id}` returns `{png_url, ldr_url, gltf_url, instructions_url, brick_counts}`. Each completed build is logged under ``HISTORY_ROOT`` and can be retrieved via ``/history``.
+8. Clients may subscribe to `/progress/{job_id}` for Server-Sent Events with
    `{"progress": 0..100}` updates.
-8. Client shows PNG immediately; Three.js lazily loads LDR → interactive viewer.
+9. Client shows PNG immediately; Three.js lazily loads LDR → interactive viewer.
    The `LDrawLoader` module is fetched from a CDN at runtime.
-9. Set ``LOG_LEVEL`` or pass ``--log-level`` to server/workers to control logging verbosity.
-10. Environment variables can be placed in a ``.env`` file. If
+10. Set ``LOG_LEVEL`` or pass ``--log-level`` to server/workers to control logging verbosity.
+11. Environment variables can be placed in a ``.env`` file. If
    ``python-dotenv`` is installed, the backend loads it automatically on startup.
-11. Set ``ORTOOLS_ENGINE`` or pass ``--solver-engine`` to the worker to pick a
+12. Set ``ORTOOLS_ENGINE`` or pass ``--solver-engine`` to the worker to pick a
     specific OR-Tools backend (``HIGHs`` or ``CBC``).
 
 Community members can post new prompt ideas via ``POST /submit_example``. Each

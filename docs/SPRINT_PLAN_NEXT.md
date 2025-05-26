@@ -2,9 +2,6 @@
 
 These upcoming sprints focus on deployment and usability improvements.
 
-## Sprint 74 – Asset compression
-* Compress generated models and images before upload.
-
 ## Sprint 75 – Multi-language docs skeleton
 * Translate key documentation files for community contributors. The program itself remains English only.
 
@@ -16,3 +13,6 @@ These upcoming sprints focus on deployment and usability improvements.
 
 ## Sprint 78 – Post-launch maintenance
 * Address bug reports and triage community PRs.
+
+## Sprint 79 – Final archive
+* Tag the final release and archive the repository.

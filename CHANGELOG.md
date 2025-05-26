@@ -1,3 +1,9 @@
+## [0.5.64] – 2025-08-11
+### Added
+- Assets are gzipped before S3 upload for smaller transfers.
+### Changed
+- Backend version bumped to 0.5.64.
+
 ## [0.5.63] – 2025-08-10
 ### Added
 - `lego-gpt-users` CLI lists and deletes user accounts.

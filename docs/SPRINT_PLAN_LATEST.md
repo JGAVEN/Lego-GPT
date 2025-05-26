@@ -231,6 +231,9 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 73 – Admin user management CLI (completed)
 * Added `lego-gpt-users` tool for listing and deleting accounts.
 
+## Sprint 74 – Asset compression (completed)
+* Generated images and models are gzipped before uploading to S3.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.
 The feature set is now stable with an English-only interface and no plans for multi-language support.
