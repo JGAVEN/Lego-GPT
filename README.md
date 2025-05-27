@@ -473,3 +473,4 @@ announcement is available at `frontend/public/sunset.html`.
 Pinned package versions are listed in
 [docs/DEPENDENCY_VERSIONS.md](docs/DEPENDENCY_VERSIONS.md).
 
+For creating a new release, follow the steps in [docs/RELEASE_PROCESS.md](docs/RELEASE_PROCESS.md). Documentation is mirrored as a static site (see [docs/ARCHIVE_SITE.md](docs/ARCHIVE_SITE.md)).
