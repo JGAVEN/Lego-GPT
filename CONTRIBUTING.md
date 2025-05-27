@@ -1,6 +1,8 @@
 # Contributing & AI‑Agent Workflow
 
 This project is developed by a **human owner (Jeff) plus ChatGPT‑4o “dev agents”.**
+> **Note**: The application launches with an English-only interface and does not support multiple languages.
+
 
 ## Ground rules for *all* dev agents
 

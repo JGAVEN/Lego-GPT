@@ -1,5 +1,7 @@
 # Sprint Plan Archive
 
+> **Note**: Lego GPT ships with an English-only interface and does not support multiple languages.
+
 This document consolidates the historical sprint plans for Lego GPT. All completed plans are summarised here for reference.
 
 ## Initial Roadmap

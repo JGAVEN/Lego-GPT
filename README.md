@@ -235,6 +235,7 @@ lego-gpt-cleanup --days 7 --dry-run
 lego-gpt-export model.ldr model.gltf
 # Translate example prompts
 lego-gpt-translate es --url https://api.example.com/translate
+# This command translates example prompts only; the app itself is English-only.
 # Set CLEANUP_DAYS and CLEANUP_DRY_RUN in the environment to persist defaults
 
 # Measure API throughput with 4 concurrent requests

@@ -1,5 +1,7 @@
 # AWS Terraform Sample
 
+> **Note**: Lego GPT runs in English only. The Terraform sample does not configure translations.
+
 This folder contains a minimal Terraform configuration for deploying the Lego GPT API to [AWS App Runner](https://aws.amazon.com/apprunner/).
 It expects a container image published to a registry such as GitHub Container Registry or Amazon ECR Public.
 
