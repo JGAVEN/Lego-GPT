@@ -1,3 +1,10 @@
+## [0.5.67] – 2025-05-27
+### Changed
+* Backend package version bumped to 0.5.67.
+### Added
+- Dependabot configuration for dependency updates.
+- Documentation for the release process and archive site.
+
 > **Note**: The application launches with an English-only interface and has no multilingual support.
 
 ## [0.5.66] – 2025-08-13

@@ -258,3 +258,12 @@ This plan outlines the next five logical sprints after completing the advanced f
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.
 The feature set is now stable with an English-only interface and no plans for multi-language support.
+
+## Sprint 83 – Community release process (completed)
+* Documented how to cut a new release tag and publish Docker images.
+
+## Sprint 84 – Automated dependency PRs (completed)
+* Added Dependabot configuration for Python and Node packages.
+
+## Sprint 85 – Documentation archive site (completed)
+* Instructions added for hosting the docs as a static site using MkDocs.
