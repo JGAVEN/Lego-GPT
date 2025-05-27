@@ -1,5 +1,7 @@
 # Infrastructure Samples
 
+> **Note**: The software ships with an English-only interface. The infrastructure samples do not include localisation support.
+
 Sample configurations for deploying Lego GPT to cloud providers.
 
 - `aws/` – deploys the API using AWS App Runner.

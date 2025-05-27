@@ -1,3 +1,5 @@
+<!-- Lego GPT launches in English only with no multilingual support. -->
+
 ## Title
 
 <!-- Concise summary of the issue -->

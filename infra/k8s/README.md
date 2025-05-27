@@ -1,5 +1,7 @@
 # Kubernetes Sample
 
+> **Note**: The provided Kubernetes manifests assume the application is English-only.
+
 This folder provides a minimal set of manifests for running Lego GPT on Kubernetes. The manifests assume a container image is already available in a registry and that all services can share a Redis instance within the cluster.
 
 ## Usage

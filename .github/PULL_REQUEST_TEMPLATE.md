@@ -1,3 +1,5 @@
+<!-- Lego GPT is English only; do not add multilingual features yet. -->
+
 ## Description
 
 <!-- Describe what this PR does and why it matters -->

@@ -1,5 +1,7 @@
 # Scalability Benchmarking
 
+> **Note**: The application launches with an English-only interface and does not support additional languages.
+
 This guide explains how to measure API throughput and tune your deployment.
 
 ## 1. Prerequisites

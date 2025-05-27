@@ -1,3 +1,4 @@
+> **Note**: The application launches with an English-only interface and has no multilingual support.
 ## [0.5.64] – 2025-08-11
 ### Added
 - Assets are gzipped before S3 upload for smaller transfers.

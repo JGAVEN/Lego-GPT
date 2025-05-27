@@ -1,5 +1,7 @@
 # Lego GPT Helm Chart
 
+> **Note**: The Helm chart assumes the application is English-only; no localisation is provided.
+
 This chart provides a simple way to deploy Lego GPT on Kubernetes using Helm.
 It mirrors the manifests in `../k8s` but exposes a few configurable values.
 

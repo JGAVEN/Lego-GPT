@@ -1,5 +1,7 @@
 # JWT Token Rotation
 
+> **Note**: The application is English-only at launch with no multilingual support.
+
 To rotate authentication tokens:
 
 1. **Generate a new secret**

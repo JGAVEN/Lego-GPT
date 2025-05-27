@@ -1,5 +1,7 @@
 # Brick Detector Dataset Format
 
+> **Note**: The project launches with an English-only interface and does not support additional languages.
+
 This document describes the expected layout for training the YOLOv8 brick detector with the `lego-detect-train` command.
 
 The dataset should follow the standard [Ultralytics](https://docs.ultralytics.com/datasets/detect/) directory structure:

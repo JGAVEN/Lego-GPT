@@ -1,5 +1,7 @@
 # Next Sprint Plan
 
+> **Note**: The software launches in English only; multilingual support is not included.
+
 These upcoming sprints focus on deployment and usability improvements.
 
 ## Sprint 75 – Multi-language docs skeleton
