@@ -467,4 +467,9 @@ The codebase is ready for rollout. See the Quick‑Start section for running the
 Lego GPT is feature complete and entering long‑term maintenance. Only security fixes
 and community pull requests will be accepted. The repository will be archived
 after the final release tag.
+See [docs/COMMUNITY_MAINTENANCE.md](docs/COMMUNITY_MAINTENANCE.md) for how to
+fork the project and submit security patches. A static
+announcement is available at `frontend/public/sunset.html`.
+Pinned package versions are listed in
+[docs/DEPENDENCY_VERSIONS.md](docs/DEPENDENCY_VERSIONS.md).
 
