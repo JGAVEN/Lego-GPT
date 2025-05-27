@@ -267,3 +267,9 @@ The feature set is now stable with an English-only interface and no plans for mu
 
 ## Sprint 85 – Documentation archive site (completed)
 * Instructions added for hosting the docs as a static site using MkDocs.
+
+## Sprint 86 – Issue triage guidelines (completed)
+* Documented the workflow for reviewing and labelling new issues.
+
+## Sprint 87 – Long-term support policy (completed)
+* Created an LTS policy outlining the 12‑month security patch window.

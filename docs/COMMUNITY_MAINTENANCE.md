@@ -1,6 +1,7 @@
 # Community Maintenance Guide
 
 This project is now community‑maintained. The codebase remains English‑only and receives security fixes only.
+See [LTS_POLICY.md](LTS_POLICY.md) for details on the support timeline.
 
 ## Forking
 1. Use the GitHub **Fork** button to create your own copy.

@@ -472,5 +472,8 @@ fork the project and submit security patches. A static
 announcement is available at `frontend/public/sunset.html`.
 Pinned package versions are listed in
 [docs/DEPENDENCY_VERSIONS.md](docs/DEPENDENCY_VERSIONS.md).
+See [docs/LTS_POLICY.md](docs/LTS_POLICY.md) for the long-term support window.
+Issue triage steps are documented in
+[docs/ISSUE_TRIAGE_GUIDE.md](docs/ISSUE_TRIAGE_GUIDE.md).
 
 For creating a new release, follow the steps in [docs/RELEASE_PROCESS.md](docs/RELEASE_PROCESS.md). Documentation is mirrored as a static site (see [docs/ARCHIVE_SITE.md](docs/ARCHIVE_SITE.md)).
