@@ -1,17 +1,17 @@
 # Next Sprint Plan
 
-> **Note**: The software launches in English only; multilingual support is not included.
+> **Note**: The software remains English-only.
 
-These upcoming sprints focus on deployment and usability improvements.
+The remaining work focuses on the transition to long-term community maintenance.
 
-## Sprint 75 – External analytics export
-* Push metrics snapshots to a remote data warehouse.
+## Sprint 79 – Community transition guidelines
+* Document how to fork the project and submit security fixes.
 
-## Sprint 76 – Project wrap-up
-* Finalise documentation and prepare the repository for archival.
+## Sprint 80 – Dependency update checks
+* Add a scheduled workflow that scans for new package vulnerabilities.
 
-## Sprint 77 – Post-launch maintenance
-* Address bug reports and triage community PRs.
+## Sprint 81 – Dependency freeze
+* Pin all backend and frontend dependencies and document the versions.
 
-## Sprint 78 – Final archive
-* Tag the final release and archive the repository.
+## Sprint 82 – Sunset announcement
+* Publish a static webpage announcing the project archive and pointing to community forks.

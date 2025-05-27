@@ -1,4 +1,9 @@
 > **Note**: The application launches with an English-only interface and has no multilingual support.
+## [0.5.65] – 2025-08-12
+### Added
+- `lego-gpt-analytics` can push metrics to a remote warehouse via `--push-url`.
+### Changed
+- Backend version bumped to 0.5.65.
 ## [0.5.64] – 2025-08-11
 ### Added
 - Assets are gzipped before S3 upload for smaller transfers.
