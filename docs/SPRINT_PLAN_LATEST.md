@@ -207,31 +207,28 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 65 – Prometheus metrics exporter (completed)
 * `/metrics_prom` returns counters in Prometheus format.
 
-## Sprint 66 – Example translation workflow (completed)
-* `lego-gpt-translate` CLI translates example prompts via an external API.
-
-## Sprint 67 – Helm chart skeleton (completed)
+## Sprint 66 – Helm chart skeleton (completed)
 * Added `infra/helm` with a minimal Helm chart for Kubernetes.
 
-## Sprint 68 – CLI config generator (completed)
+## Sprint 67 – CLI config generator (completed)
 * Added `lego-gpt-config` command that outputs a sample YAML config.
 
-## Sprint 69 – Auto-scaling docs (completed)
+## Sprint 68 – Auto-scaling docs (completed)
 * Documented horizontal scaling strategies for workers in `SCALABILITY_BENCHMARKING.md`.
 
-## Sprint 70 – Remote example import UI (completed)
+## Sprint 69 – Remote example import UI (completed)
 * New PWA page allows importing examples from another instance.
 
-## Sprint 71 – Theme colour picker (completed)
+## Sprint 70 – Theme colour picker (completed)
 * Settings page includes a colour input that updates the accent CSS variable.
 
-## Sprint 72 – Container security hardening (completed)
+## Sprint 71 – Container security hardening (completed)
 * Production Dockerfiles now create a non-root user.
 
-## Sprint 73 – Admin user management CLI (completed)
+## Sprint 72 – Admin user management CLI (completed)
 * Added `lego-gpt-users` tool for listing and deleting accounts.
 
-## Sprint 74 – Asset compression (completed)
+## Sprint 73 – Asset compression (completed)
 * Generated images and models are gzipped before uploading to S3.
 
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
