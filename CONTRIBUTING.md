@@ -16,8 +16,10 @@ This project is developed by a **human owner (Jeff) plus ChatGPT‑4o “dev age
    * Conventional Commits (`feat:`, `fix:`, `docs:` …).  
    * One logical change per PR.  
    * `git push --set-upstream origin <branch>`; open PR and add `@OpenAI-JeffArchitect` as reviewer.
-6. **Docs are living.**  
+6. **Docs are living.**
    After a ticket merges, update `CHANGELOG.md` and, if scope changes, `PROJECT_BACKLOG.md`.
+7. **Bug triage.**
+   Review new issues weekly and label them `bug` or `enhancement`.
 
 ## Local setup (for humans)
 

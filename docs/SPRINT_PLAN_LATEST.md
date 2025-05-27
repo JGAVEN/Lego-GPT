@@ -231,6 +231,18 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 73 – Asset compression (completed)
 * Generated images and models are gzipped before uploading to S3.
 
+## Sprint 75 – External analytics export (completed)
+* `lego-gpt-analytics` can push metrics snapshots to a remote warehouse.
+
+## Sprint 76 – Project wrap-up (completed)
+* Documentation updated with maintenance and archival notes.
+
+## Sprint 77 – Post-launch maintenance (completed)
+* CONTRIBUTING guidelines mention bug triage and community PR review.
+
+## Sprint 78 – Final archive (completed)
+* Repository to be archived after tagging the final release.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.
 The feature set is now stable with an English-only interface and no plans for multi-language support.
