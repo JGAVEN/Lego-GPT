@@ -1,3 +1,9 @@
+## [0.5.68] – 2025-05-27
+### Changed
+* Backend package version bumped to 0.5.68.
+### Added
+* Issue triage guidelines and long-term support policy docs.
+
 ## [0.5.67] – 2025-05-27
 ### Changed
 * Backend package version bumped to 0.5.67.

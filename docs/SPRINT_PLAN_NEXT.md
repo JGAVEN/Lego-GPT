@@ -2,13 +2,13 @@
 
 > **Note**: The software remains English-only.
 
-The project is community driven. Future work focuses on long-term maintenance.
+The project is in long-term maintenance. Upcoming work focuses on automating routine tasks.
 
-## Sprint 86 – Issue triage guidelines
-* Document the workflow for reviewing and labelling new issues.
+## Sprint 88 – Automated stale issue cleanup
+* Configure a workflow to close issues that remain inactive for 30 days.
 
-## Sprint 87 – Container vulnerability scanning
-* Add a workflow that runs Trivy on each push.
+## Sprint 89 – Release sign-off checklist
+* Provide a short checklist for community maintainers performing a release.
 
-## Sprint 88 – Long-term support policy
-* Outline the security patch and support timeline.
+## Sprint 90 – Container image retention docs
+* Document how long published container images will remain available.
