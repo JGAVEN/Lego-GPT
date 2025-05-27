@@ -1,4 +1,12 @@
 > **Note**: The application launches with an English-only interface and has no multilingual support.
+
+## [0.5.66] – 2025-08-13
+### Added
+- Community transition guide describing how to fork the project and submit security fixes.
+- Scheduled GitHub workflow runs weekly dependency audits.
+- Static `sunset.html` page announces project archival.
+### Changed
+- Backend version bumped to 0.5.66 and all dependencies are pinned.
 ## [0.5.65] – 2025-08-12
 ### Added
 - `lego-gpt-analytics` can push metrics to a remote warehouse via `--push-url`.

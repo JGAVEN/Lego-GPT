@@ -243,6 +243,18 @@ This plan outlines the next five logical sprints after completing the advanced f
 ## Sprint 78 – Final archive (completed)
 * Repository to be archived after tagging the final release.
 
+## Sprint 79 – Community transition guidelines (completed)
+* Added `docs/COMMUNITY_MAINTENANCE.md` with forking and security fix instructions.
+
+## Sprint 80 – Dependency update checks (completed)
+* Scheduled `depscan` workflow audits backend and frontend packages weekly.
+
+## Sprint 81 – Dependency freeze (completed)
+* All dependencies pinned and documented in `docs/DEPENDENCY_VERSIONS.md`.
+
+## Sprint 82 – Sunset announcement (completed)
+* Static `sunset.html` page announces the project archive.
+
 Older sprint plans were combined into `SPRINT_PLAN_ARCHIVE.md` as part of the
 documentation cleanup.
 The feature set is now stable with an English-only interface and no plans for multi-language support.
