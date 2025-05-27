@@ -78,7 +78,7 @@ real-life building via a built-in Three.js viewer.
 | 🔐 **Improved CLI auth** | `lego-gpt-cli` reads token from `~/.lego-gpt` |
 | 🚦 **Performance audit** | Lighthouse CI enforces PWA performance budgets |
 | 🛡️ **Comment moderation tools** | Admins can delete comments and ban users |
-| 📈 **Analytics export CLI** | `lego-gpt-analytics` outputs metrics history to CSV |
+| 📈 **Analytics export CLI** | `lego-gpt-analytics` outputs metrics history to CSV and can push it to a data warehouse |
 | 🌓 **Dark mode toggle** | PWA remembers your light or dark theme preference |
 | 🎨 **Accent colour picker** | Choose a custom UI highlight colour |
 | 📝 **YAML config files** | Set `LEGOGPT_CONFIG` or `--config` to load settings |
@@ -191,6 +191,8 @@ lego-gpt-metrics --host 0.0.0.0 --port 8777
 curl -H "Authorization: Bearer $(cat token.txt)" http://localhost:8000/metrics_prom
 # Export metrics history to CSV
 lego-gpt-analytics metrics.csv --token $(cat token.txt)
+# Push metrics to a data warehouse
+lego-gpt-analytics - --token $(cat token.txt) --push-url http://warehouse.example.com/upload
 
 # Access the collaboration demo
 Open the PWA and choose **Collaboration Demo** from the main page to try real-time editing. A banner shows how many collaborators are connected.
@@ -459,4 +461,10 @@ All major features are now implemented:
 * The responsive PWA works on laptops and mobile devices with intuitive navigation.
 
 The codebase is ready for rollout. See the Quick‑Start section for running the API, workers and PWA. New maintainers can consult `docs/ARCHITECTURE.md` for component details.
+
+## 9. Maintenance Mode
+
+Lego GPT is feature complete and entering long‑term maintenance. Only security fixes
+and community pull requests will be accepted. The repository will be archived
+after the final release tag.
 

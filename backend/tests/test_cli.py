@@ -49,7 +49,7 @@ class CLITests(unittest.TestCase):
                     '/tmp/out',
                     '/tmp/com',
                     '',
-                    str(Path('backend/preferences').resolve()),
+                    str(Path('preferences').resolve()),
                     'INFO',
                     '/tmp/api.log',
                     'http://x',

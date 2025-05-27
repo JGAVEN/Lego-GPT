@@ -26,11 +26,25 @@ def export_csv(data: dict) -> str:
     return "\n".join(lines) + "\n"
 
 
+def _push_metrics(csv_data: str, url: str, token: str) -> None:
+    req = request.Request(
+        url,
+        data=csv_data.encode(),
+        headers={
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "text/csv",
+        },
+    )
+    with request.urlopen(req):
+        pass
+
+
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description="Export metrics history to CSV")
     parser.add_argument("file", help="Output CSV file ('-' for stdout)")
     parser.add_argument("--url", default=os.getenv("API_URL", "http://localhost:8000"))
     parser.add_argument("--token", default=os.getenv("JWT"))
+    parser.add_argument("--push-url", default=os.getenv("WAREHOUSE_URL"))
     args = parser.parse_args(argv)
     if not args.token:
         parser.error("Admin token required")
@@ -39,6 +53,11 @@ def main(argv: list[str] | None = None) -> None:
     except HTTPError as exc:
         raise SystemExit(f"Failed to fetch metrics: {exc}")
     csv_data = export_csv(data)
+    if args.push_url:
+        try:
+            _push_metrics(csv_data, args.push_url, args.token)
+        except HTTPError as exc:
+            raise SystemExit(f"Failed to push metrics: {exc}")
     if args.file == "-":
         print(csv_data, end="")
     else:
