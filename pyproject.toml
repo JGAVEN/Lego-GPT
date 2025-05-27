@@ -1,6 +1,6 @@
 [project]
 name = "lego-gpt"
-version = "0.5.67"
+version = "0.5.68"
 requires-python = ">=3.11"
 
 [build-system]

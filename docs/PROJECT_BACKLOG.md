@@ -94,11 +94,11 @@ The application is English-only. Multi-language user interfaces are out of scope
 | F-34 | **S**  | Advanced performance budgets                    | **Done** | Lighthouse CI checks accessibility & best practices |
 | F-35 | **S**  | Federated comment moderation                    | **Done** | Sync banned-user lists via new CLI |
 | F-36 | **S**  | Persistent offline queue                       | **Done** | Front-end and CLI store pending requests across sessions |
-
-
-
+| F-37 | **S**  | Issue triage guidelines                        | **Done** | Documented weekly review and labelling process |
+| F-38 | **S**  | Container vulnerability scanning               | **Done** | Trivy workflow scans on each push |
+| F-39 | **S**  | Long-term support policy                       | **Done** | Security updates provided for 12 months |
 ### Legend
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.
 
-_Last updated 2025-08-07_
+_Last updated 2025-08-15_

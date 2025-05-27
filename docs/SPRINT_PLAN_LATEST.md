@@ -267,3 +267,12 @@ The feature set is now stable with an English-only interface and no plans for mu
 
 ## Sprint 85 – Documentation archive site (completed)
 * Instructions added for hosting the docs as a static site using MkDocs.
+
+## Sprint 86 – Issue triage guidelines (completed)
+* Documented the workflow for reviewing and labelling new issues.
+
+## Sprint 87 – Container vulnerability scanning (completed)
+* Added a Trivy GitHub Action that scans the repository on each push.
+
+## Sprint 88 – Long-term support policy (completed)
+* Created an LTS policy outlining the 12‑month security patch window.

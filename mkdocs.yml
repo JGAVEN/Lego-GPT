@@ -7,5 +7,7 @@ nav:
   - Home: index.md
   - Architecture: ARCHITECTURE.md
   - Maintenance: COMMUNITY_MAINTENANCE.md
+  - Issue Triage: ISSUE_TRIAGE_GUIDE.md
+  - LTS Policy: LTS_POLICY.md
   - Dependency Versions: DEPENDENCY_VERSIONS.md
   - Backlog: PROJECT_BACKLOG.md
