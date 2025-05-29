@@ -1,33 +1,40 @@
-# render.yaml  ── one Blueprint, two services
+# render.yaml  ── Blueprint: API + Redis + Static Site
 services:
   # ────────────────────────────────────────────────
   - type: web
     name: lego-gpt-api
     env: docker
-    dockerfilePath: backend/Dockerfile.cpu   # ← the one we inspected
+    dockerfilePath: backend/Dockerfile.cpu
     autoDeploy: true
     branch: main
-    plan: standard          # 2 GB RAM / 1 vCPU   $25 mo
+    plan: standard            # 2 GB RAM / 1 vCPU
     envVars:
-      # Inject Redis URL from the service defined below
       - key: REDIS_URL
         fromService:
           type: redis
           name: lego-gpt-redis
           property: connectionString
-      # Your auth secret – leave empty in Git, set in the Render UI
-      - key: JWT_SECRET
+      - key: JWT_SECRET        # consider blanking this and setting via dashboard
         sync: false
         value: ycQGGSqO3/JYGY96TLnC829sXFPHMW+OFIcx/OSL+gs=
-      # Per-user request cap
       - key: RATE_LIMIT
         value: "10"
-      # Allowed browser origins (local dev + Render static site)
       - key: CORS_ORIGINS
         value: "http://localhost:5173,https://lego-gpt.onrender.com"
 
   # ────────────────────────────────────────────────
   - type: redis
     name: lego-gpt-redis
-    tier: free        # Hobby tier – sleeps when idle
+    tier: free
     maxmemoryPolicy: allkeys-lru
+
+  # ────────────────────────────────────────────────
+  - type: static
+    name: lego-gpt                 # → https://lego-gpt.onrender.com
+    rootDir: frontend              # React app lives here
+    buildCommand: |
+      pnpm install --frozen-lockfile
+      pnpm run build
+    staticPublishPath: dist        # Vite output folder
+    branch: main
+    autoDeploy: true
