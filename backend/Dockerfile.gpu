@@ -19,11 +19,13 @@ COPY detector ./detector
 COPY vendor/legogpt ./legogpt
 COPY vendor/legogpt/data ./legogpt/data
 
-RUN pip3 install --upgrade pip setuptools wheel && \
-    pip3 install --no-cache-dir ./backend[cv] && \
-    adduser --disabled-password --gecos '' lego && \
+RUN adduser --disabled-password --gecos '' lego && \
     chown -R lego:lego /app
 USER lego
+ENV PATH="/home/lego/.local/bin:$PATH"
+
+RUN pip3 install --upgrade pip setuptools wheel --user && \
+    pip3 install --no-cache-dir ./backend[cv] --user
 
 WORKDIR /app/backend
 EXPOSE 8000
