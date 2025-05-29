@@ -8,7 +8,7 @@ The project is in maintenance mode. Versions are fixed to ensure reproducible bu
 |---------|---------|
 | redis | 5.0.0 |
 | rq | 1.16.0 |
-| ortools | 9.10.0 |
+| ortools | 9.10.4067 |
 | websockets | 12.0 |
 | fakeredis | 2.21.0 |
 | ruff | 0.4.0 |
