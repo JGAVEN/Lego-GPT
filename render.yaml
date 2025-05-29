@@ -18,7 +18,6 @@ services:
       # Your auth secret – leave empty in Git, set in the Render UI
       - key: JWT_SECRET
         sync: false
-        value: ycQGGSqO3/JYGY96TLnC829sXFPHMW+OFIcx/OSL+gs=
       # Per-user request cap
       - key: RATE_LIMIT
         value: "10"
@@ -30,4 +29,6 @@ services:
   - type: redis
     name: lego-gpt-redis
     plan: free        # Hobby plan – sleeps when idle
+    ipAllowList:
+      - source: 0.0.0.0/0
     maxmemoryPolicy: allkeys-lru
