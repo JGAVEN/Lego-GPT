@@ -29,5 +29,5 @@ services:
   # ────────────────────────────────────────────────
   - type: redis
     name: lego-gpt-redis
-    tier: free        # Hobby tier – sleeps when idle
+    plan: free        # Hobby plan – sleeps when idle
     maxmemoryPolicy: allkeys-lru
