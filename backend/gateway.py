@@ -6,7 +6,11 @@ import time
 from pathlib import Path
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from redis import Redis
-from rq import Queue, Job, Retry
+from rq import Queue, Retry
+try:
+    from rq.job import Job
+except Exception:  # pragma: no cover - fallback for older/stub versions
+    from rq import Job
 from backend.api import health
 from backend import (
     STATIC_ROOT,
