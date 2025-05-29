@@ -6,14 +6,23 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PYTHONPATH=/app
 
+# Install build tools required by optional CV dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        build-essential \
+        git \
+        libgl1 && \
+    rm -rf /var/lib/apt/lists/*
+
 COPY backend ./backend
 COPY detector ./detector
 COPY vendor/legogpt ./legogpt
 COPY vendor/legogpt/data ./legogpt/data
 
-RUN pip install --no-cache-dir ./backend[cv] \
-    && adduser --disabled-password --gecos '' lego \
-    && chown -R lego:lego /app
+RUN pip install --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir ./backend[cv] && \
+    adduser --disabled-password --gecos '' lego && \
+    chown -R lego:lego /app
 USER lego
 
 WORKDIR /app/backend
