@@ -30,3 +30,9 @@ See `frontend/package.json` and `pnpm-lock.yaml` for exact versions. Key runtime
 | vite | 6.3.5 |
 | typescript | 5.8.3 |
 | cypress | 13.7.3 |
+
+## Runtime
+
+| Tool | Version |
+|------|---------|
+| Node.js | 20 |
