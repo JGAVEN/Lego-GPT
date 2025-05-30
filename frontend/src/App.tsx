@@ -1,4 +1,5 @@
-import { useState, useEffect, FormEvent, ChangeEvent } from "react";
+import { useState, useEffect } from "react";
+import type { FormEvent, ChangeEvent } from "react";
 import { useI18n } from "./i18n";
 import Examples from "./Examples";
 
