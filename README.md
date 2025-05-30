@@ -96,6 +96,9 @@ real-life building via a built-in Three.js viewer.
 git clone https://github.com/JGAVEN/Lego-GPT.git
 cd Lego-GPT
 
+# Use the Node version pinned in `.nvmrc`
+nvm use
+
 # Optional: copy ``.env.example`` to ``.env`` and adjust settings.
 # Front-end builds can also read ``frontend/.env``. Copy ``frontend/.env.example``
 # and set ``VITE_API_URL`` if the API runs elsewhere. ``VITE_JWT`` can hold
