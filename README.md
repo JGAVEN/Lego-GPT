@@ -355,6 +355,11 @@ The configuration spins up a Redis instance, a Python web service running
 `uvicorn api:app`, and a static site for the front-end build. Update any
 environment variables in the Render dashboard or via `envVarGroups` as needed.
 
+The blueprint defines two API services—`lego-gpt-api-green` and
+`lego-gpt-api-blue`. Only the green service is active by default. The blue
+service stays disabled until you use it for a blue/green rollout, so it may show
+as a failed or pending deploy in the Render dashboard.
+
 
 > **Prerequisites**
 > * Python 3.11+
