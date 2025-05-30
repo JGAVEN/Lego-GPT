@@ -61,5 +61,5 @@ Network unavailable and the pnpm store is missing required packages.
 Run this script once with network access to populate the store.
 See README.md for details.
 EOF
-# Exit successfully so CI environments without the Node packages don't fail.
+# Exit successfully so environments without the Node packages don't fail.
 exit 0

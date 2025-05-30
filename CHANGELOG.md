@@ -1,3 +1,8 @@
+## [0.5.71] – 2025-08-16
+### Changed
+- Continuous integration workflow removed.
+- Updated documentation to drop CI references in the contribution process.
+
 ## [0.5.70] – 2025-05-30
 ### Fixed
 - Restored the `three` dependency so the front-end builds correctly on Render.

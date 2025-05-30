@@ -252,9 +252,7 @@ python scripts/benchmark_scalability.py --token $(cat token.txt) \
 
 Run `./scripts/run_tests.sh` to lint and test in one step.
 The script runs Cypress UI tests if the dependencies are available.
-CI runs the same tests under `coverage` and uploads the report to Codecov.
-CI also executes a lightweight scalability benchmark via
-`scripts/benchmark_ci.py` to detect performance regressions.
+Use `scripts/benchmark_ci.py` to perform a lightweight scalability benchmark.
 
 The Vite dev server proxies `/generate`, `/detect_inventory`, and `/static`
 requests to `http://localhost:8000` so the PWA works against your local backend
