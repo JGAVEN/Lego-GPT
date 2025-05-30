@@ -273,3 +273,21 @@ The feature set is now stable with an English-only interface and no plans for mu
 
 ## Sprint 87 – Long-term support policy (completed)
 * Created an LTS policy outlining the 12‑month security patch window.
+
+## Sprint 88 – FastAPI scaffold
+* Add `backend/api.py` with a `/health` endpoint and local dev command.
+
+## Sprint 89 – GET route migration
+* Move `/metrics`, `/metrics_prom` and `/history` routes with tests.
+
+## Sprint 90 – POST route migration
+* Refactor `/generate` and `/detect_inventory` endpoints for FastAPI.
+
+## Sprint 91 – Middleware & security
+* Enable CORS, bearer-token auth stub and rate limiting.
+
+## Sprint 92 – CI/CD & Render rollout
+* Update `render.yaml` and deploy using a blue/green strategy.
+
+## Sprint 93 – Docs & monitoring
+* Polish `/docs`, expose Prometheus metrics and update the README.
