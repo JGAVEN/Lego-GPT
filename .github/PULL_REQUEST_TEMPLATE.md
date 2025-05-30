@@ -8,7 +8,7 @@
 
 - [ ] Tests added or updated
 - [ ] Documentation updated
-- [ ] All tests pass locally
+- [ ] CI passes locally
 
 ## Related Issue
 
