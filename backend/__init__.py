@@ -22,7 +22,7 @@ except Exception:  # pragma: no cover - ignore if missing
 try:  # pragma: no cover - during editable installs
     __version__ = version("lego-gpt-backend")
 except PackageNotFoundError:  # pragma: no cover - fallback for tests
-    __version__ = "0.5.69"
+    __version__ = "0.5.70"
 
 PACKAGE_DIR = Path(__file__).parent
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")

@@ -14,6 +14,9 @@ importers:
       react-dom:
         specifier: 19.1.0
         version: 19.1.0(react@19.1.0)
+      three:
+        specifier: 0.160.0
+        version: 0.160.0
     devDependencies:
       '@eslint/js':
         specifier: 9.25.0
@@ -3169,6 +3172,8 @@ snapshots:
   throttleit@1.0.1: {}
 
   through@2.3.8: {}
+
+  three@0.160.0: {}
 
   tinyglobby@0.2.14:
     dependencies:

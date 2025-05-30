@@ -1,3 +1,7 @@
+## [0.5.70] – 2025-05-30
+### Fixed
+- Restored the `three` dependency so the front-end builds correctly on Render.
+
 ## [0.5.69] – 2025-05-28
 ### Changed
 * Backend package version bumped to 0.5.69.
