@@ -6,6 +6,12 @@ if [ -f .gitmodules ]; then
   git submodule update --init --recursive
 fi
 
+# Use Node version from .nvmrc when nvm is available
+if command -v nvm >/dev/null 2>&1; then
+  nvm install >/dev/null 2>&1 || true
+  nvm use || true
+fi
+
 # Install backend dependencies (including test tools)
 python -m pip install --no-cache-dir -e ./backend[test] || \
   echo "Warning: could not install Python packages"
