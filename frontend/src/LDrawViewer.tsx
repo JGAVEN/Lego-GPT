@@ -24,14 +24,14 @@ export default function LDrawViewer({ url }: Props) {
     let animationId: number;
 
     async function init() {
-      const THREE = await import(
+      const THREE = (await import(
         /* @vite-ignore */
         "https://unpkg.com/three@0.160.0/build/three.module.js?module"
-      );
-      const { LDrawLoader } = await import(
+      )) as typeof import("three");
+      const { LDrawLoader } = (await import(
         /* @vite-ignore */
         "https://unpkg.com/three@0.160.0/examples/jsm/loaders/LDrawLoader.js?module"
-      );
+      )) as typeof import("three/examples/jsm/loaders/LDrawLoader.js");
 
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(
@@ -43,17 +43,19 @@ export default function LDrawViewer({ url }: Props) {
       camera.position.set(200, 200, 200);
       camera.lookAt(0, 0, 0);
 
-      const { OrbitControls } = await import(
+      const { OrbitControls } = (await import(
         /* @vite-ignore */
         "https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js?module"
-      );
+      )) as typeof import("three/examples/jsm/controls/OrbitControls.js");
 
-      renderer = new THREE.WebGLRenderer({ antialias: true });
-      renderer.setSize(mountRef.current!.clientWidth, 400);
-      mountRef.current!.appendChild(renderer.domElement);
+      const localRenderer = new THREE.WebGLRenderer({ antialias: true });
+      localRenderer.setSize(mountRef.current!.clientWidth, 400);
+      mountRef.current!.appendChild(localRenderer.domElement);
+      renderer = localRenderer;
 
-      controls = new OrbitControls(camera, renderer.domElement);
-      controls.enableDamping = true;
+      const localControls = new OrbitControls(camera, localRenderer.domElement);
+      localControls.enableDamping = true;
+      controls = localControls;
 
       const loader = new LDrawLoader();
       loader.load(url, (group: unknown) => {
@@ -65,7 +67,9 @@ export default function LDrawViewer({ url }: Props) {
       function animate() {
         animationId = requestAnimationFrame(animate);
         controls?.update();
-        renderer!.render(scene, camera);
+        if (renderer) {
+          renderer.render(scene, camera);
+        }
       }
     }
 
