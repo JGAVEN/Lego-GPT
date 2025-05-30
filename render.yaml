@@ -14,8 +14,7 @@ services:
           type: redis
           name: lego-gpt-redis
           property: connectionString
-      - key: JWT_SECRET        # consider blanking and setting via dashboard
-        sync: false
+      - key: JWT_SECRET        # removed “sync: false”
         value: ycQGGSqO3/JYGY96TLnC829sXFPHMW+OFIcx/OSL+gs=
       - key: RATE_LIMIT
         value: "10"
@@ -31,8 +30,8 @@ services:
     maxmemoryPolicy: allkeys-lru
 
   # ────────────────────────────────────────────────
-  - type: web                 # static sites are “web” with runtime: static
-    name: lego-gpt            # → https://lego-gpt.onrender.com
+  - type: web                  # static site
+    name: lego-gpt             # → https://lego-gpt.onrender.com
     runtime: static
     rootDir: frontend
     buildCommand: |
