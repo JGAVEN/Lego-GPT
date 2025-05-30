@@ -25,6 +25,7 @@ See `frontend/package.json` and `pnpm-lock.yaml` for exact versions. Key runtime
 
 | Package | Version |
 |---------|---------|
+| node | 20 |
 | react | 19.1.0 |
 | react-dom | 19.1.0 |
 | vite | 6.3.5 |
