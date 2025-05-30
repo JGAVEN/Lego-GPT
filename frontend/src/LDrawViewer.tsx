@@ -24,14 +24,14 @@ export default function LDrawViewer({ url }: Props) {
     let animationId: number;
 
     async function init() {
-      const THREE = await import(
+      const THREE: any = await import(
         /* @vite-ignore */
         "https://unpkg.com/three@0.160.0/build/three.module.js?module"
       );
-      const { LDrawLoader } = await import(
+      const { LDrawLoader } = (await import(
         /* @vite-ignore */
         "https://unpkg.com/three@0.160.0/examples/jsm/loaders/LDrawLoader.js?module"
-      );
+      )) as any;
 
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(
@@ -43,17 +43,17 @@ export default function LDrawViewer({ url }: Props) {
       camera.position.set(200, 200, 200);
       camera.lookAt(0, 0, 0);
 
-      const { OrbitControls } = await import(
+      const { OrbitControls } = (await import(
         /* @vite-ignore */
         "https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js?module"
-      );
+      )) as any;
 
       renderer = new THREE.WebGLRenderer({ antialias: true });
-      renderer.setSize(mountRef.current!.clientWidth, 400);
-      mountRef.current!.appendChild(renderer.domElement);
+      renderer!.setSize(mountRef.current!.clientWidth, 400);
+      mountRef.current!.appendChild(renderer!.domElement);
 
-      controls = new OrbitControls(camera, renderer.domElement);
-      controls.enableDamping = true;
+      controls = new OrbitControls(camera, renderer!.domElement);
+      controls!.enableDamping = true;
 
       const loader = new LDrawLoader();
       loader.load(url, (group: unknown) => {

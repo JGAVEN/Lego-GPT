@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { API_BASE } from "./api/lego";
 
 interface Metrics {
-  [k: string]: number | Record<string, unknown>;
   history?: {
     token_usage: Array<[number, number]>;
     rate_limit_hits: Array<[number, number]>;
   };
+  [k: string]: number | Record<string, unknown> | undefined;
 }
 
 export default function Analytics({ onBack }: { onBack: () => void }) {
