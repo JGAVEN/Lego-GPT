@@ -1,8 +1,12 @@
 FROM nvidia/cuda:12.2.0-cudnn8-runtime-ubuntu22.04
 
-RUN apt-get update \
-    && apt-get install -y python3 python3-pip \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        python3 python3-pip \
+        build-essential \
+        git \
+        libgl1 && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -15,10 +19,13 @@ COPY detector ./detector
 COPY vendor/legogpt ./legogpt
 COPY vendor/legogpt/data ./legogpt/data
 
-RUN pip3 install --no-cache-dir ./backend[cv] \
-    && adduser --disabled-password --gecos '' lego \
-    && chown -R lego:lego /app
+RUN adduser --disabled-password --gecos '' lego && \
+    chown -R lego:lego /app
 USER lego
+ENV PATH="/home/lego/.local/bin:$PATH"
+
+RUN pip3 install --upgrade pip setuptools wheel --user && \
+    pip3 install --no-cache-dir ./backend[cv] --user
 
 WORKDIR /app/backend
 EXPOSE 8000

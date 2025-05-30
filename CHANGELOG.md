@@ -1,3 +1,8 @@
+## [0.5.69] – 2025-05-28
+### Changed
+* Backend package version bumped to 0.5.69.
+* Docker images now install system packages for CV extras, fixing Render build errors.
+
 ## [0.5.68] – 2025-05-27
 ### Changed
 * Backend package version bumped to 0.5.68.

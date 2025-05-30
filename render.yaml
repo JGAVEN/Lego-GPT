@@ -7,14 +7,14 @@ services:
     dockerfilePath: backend/Dockerfile.cpu
     autoDeploy: true
     branch: main
-    plan: standard            # 2 GB RAM / 1 vCPU
+    plan: standard              # 2 GB RAM / 1 vCPU
     envVars:
       - key: REDIS_URL
         fromService:
           type: redis
           name: lego-gpt-redis
           property: connectionString
-      - key: JWT_SECRET        # consider blanking this and setting via dashboard
+      - key: JWT_SECRET          # you can blank this later if you prefer
         sync: false
         value: ycQGGSqO3/JYGY96TLnC829sXFPHMW+OFIcx/OSL+gs=
       - key: RATE_LIMIT
@@ -25,16 +25,18 @@ services:
   # ────────────────────────────────────────────────
   - type: redis
     name: lego-gpt-redis
-    tier: free
+    plan: free                  # Hobby plan – sleeps when idle
+    ipAllowList:
+      - source: 0.0.0.0/0
     maxmemoryPolicy: allkeys-lru
 
   # ────────────────────────────────────────────────
   - type: static
-    name: lego-gpt                 # → https://lego-gpt.onrender.com
-    rootDir: frontend              # React app lives here
+    name: lego-gpt               # → https://lego-gpt.onrender.com
+    rootDir: frontend
     buildCommand: |
       pnpm install --frozen-lockfile
       pnpm run build
-    staticPublishPath: dist        # Vite output folder
+    staticPublishPath: dist
     branch: main
     autoDeploy: true

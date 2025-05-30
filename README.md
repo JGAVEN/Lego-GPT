@@ -293,6 +293,8 @@ docker run -p 8000:8000 ghcr.io/<owner>/lego-gpt:v0.5.42
 ```
 
 Override the command to start a worker or the detector worker as needed.
+The Dockerfiles install build tools (`build-essential`, `git` and `libgl1`) so
+optional computer‑vision dependencies compile without errors.
 
 ### Cloud Deployment
 
