@@ -2,9 +2,11 @@
 services:
   # ────────────────────────────────────────────────
   - type: web
-    name: lego-gpt-api
-    env: docker
-    dockerfilePath: backend/Dockerfile.cpu
+    name: lego-gpt-api-green
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -e .
+    startCommand: uvicorn api:app --host 0.0.0.0 --port $PORT
     autoDeploy: true
     branch: main
     plan: standard            # 2 GB RAM / 1 vCPU
@@ -15,6 +17,28 @@ services:
           name: lego-gpt-redis
           property: connectionString
       - key: JWT_SECRET        # removed “sync: false”
+        value: ycQGGSqO3/JYGY96TLnC829sXFPHMW+OFIcx/OSL+gs=
+      - key: RATE_LIMIT
+        value: "10"
+      - key: CORS_ORIGINS
+        value: "http://localhost:5173,https://lego-gpt.onrender.com"
+
+  - type: web
+    name: lego-gpt-api-blue
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -e .
+    startCommand: uvicorn api:app --host 0.0.0.0 --port $PORT
+    autoDeploy: false
+    branch: main
+    plan: standard
+    envVars:
+      - fromService:
+          type: redis
+          name: lego-gpt-redis
+          property: connectionString
+        key: REDIS_URL
+      - key: JWT_SECRET
         value: ycQGGSqO3/JYGY96TLnC829sXFPHMW+OFIcx/OSL+gs=
       - key: RATE_LIMIT
         value: "10"
