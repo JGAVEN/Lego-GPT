@@ -286,8 +286,9 @@ The feature set is now stable with an English-only interface and no plans for mu
 ## Sprint 91 – Middleware & security
 * Enable CORS, bearer-token auth stub and rate limiting.
 
-## Sprint 92 – CI/CD & Render rollout
-* Update `render.yaml` and deploy using a blue/green strategy.
+## Sprint 92 – CI/CD & Render rollout (completed)
+* Updated `render.yaml` with Python 3.11 and `/health` checks.
+* Added a blue/green API pair for safe deploys.
 
 ## Sprint 93 – Docs & monitoring
 * Polish `/docs`, expose Prometheus metrics and update the README.

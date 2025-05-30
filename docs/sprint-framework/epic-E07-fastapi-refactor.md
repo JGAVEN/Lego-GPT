@@ -60,8 +60,10 @@ slowapi` |
 * **render.yaml** (service *lego‑gpt‑api*):
   ```yaml
   rootDir: .
+  pythonVersion: 3.11
   buildCommand: pip install -e backend
   startCommand: uvicorn backend.api:app --host 0.0.0.0 --port $PORT
+  healthCheckPath: /health
   ```
   A second service `lego-gpt-api-blue` is defined but kept disabled to allow
   blue/green rollouts.
