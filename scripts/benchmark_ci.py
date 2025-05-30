@@ -58,7 +58,7 @@ class Handler(BaseHTTPRequestHandler):
         self._send_json(job)
 
     def log_message(self, format: str, *args) -> None:  # noqa: D401
-        # silence default logging for cleaner output
+        # silence default logging for cleaner CI output
         return
 
 def main() -> None:
