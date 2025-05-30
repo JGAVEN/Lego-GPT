@@ -4,9 +4,9 @@ services:
   - type: web
     name: lego-gpt-api-green
     runtime: python
-    rootDir: backend
-    buildCommand: pip install -e .
-    startCommand: uvicorn api:app --host 0.0.0.0 --port $PORT
+    rootDir: .
+    buildCommand: pip install -e backend
+    startCommand: uvicorn backend.api:app --host 0.0.0.0 --port $PORT
     autoDeploy: true
     branch: main
     plan: standard            # 2 GB RAM / 1 vCPU
@@ -26,9 +26,9 @@ services:
   - type: web
     name: lego-gpt-api-blue
     runtime: python
-    rootDir: backend
-    buildCommand: pip install -e .
-    startCommand: uvicorn api:app --host 0.0.0.0 --port $PORT
+    rootDir: .
+    buildCommand: pip install -e backend
+    startCommand: uvicorn backend.api:app --host 0.0.0.0 --port $PORT
     autoDeploy: false
     branch: main
     plan: standard
