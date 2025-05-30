@@ -57,11 +57,13 @@ slowapi` |
 
 ## CI / Render adjustments
 
-* **render.yaml** (service *lego‑gpt‑api*):  
+* **render.yaml** (service *lego‑gpt‑api*):
   ```yaml
   rootDir: backend
   startCommand: uvicorn api:app --host 0.0.0.0 --port $PORT
   ```
+  A second service `lego-gpt-api-blue` is defined but kept disabled to allow
+  blue/green rollouts.
 * **.github/workflows/ci.yml**:  
   * run `pytest`  
   * run smoke test: `uvicorn backend.api:app --port 9999 --lifespan on --log-level warning` for 5 s.

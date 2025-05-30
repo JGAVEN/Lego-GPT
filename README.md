@@ -342,6 +342,20 @@ environment variable when running the detector worker. See
 [`docs/DETECTOR_DATASET.md`](docs/DETECTOR_DATASET.md) for the required dataset
 layout.
 
+#### Render quick-start
+
+Deploy the API and PWA on [Render](https://render.com) using the bundled
+`render.yaml` blueprint:
+
+```bash
+render blueprint apply render.yaml
+```
+
+The configuration spins up a Redis instance, a Python web service running
+`uvicorn api:app`, and a static site for the front-end build. Update any
+environment variables in the Render dashboard or via `envVarGroups` as needed.
+
+
 > **Prerequisites**
 > * Python 3.11+
 > * Node.js 20+
