@@ -1,6 +1,6 @@
 [project]
 name = "lego-gpt-backend"
-version = "0.5.69"
+version = "0.5.70"
 requires-python = ">=3.11"
 dependencies = [
     "redis==5.0.0",
