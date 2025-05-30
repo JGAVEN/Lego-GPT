@@ -35,7 +35,7 @@ services:
     runtime: static
     rootDir: frontend
     buildCommand: |
-      pnpm install --frozen-lockfile
+      pnpm install --no-frozen-lockfile
       pnpm run build
     staticPublishPath: dist
     branch: main
