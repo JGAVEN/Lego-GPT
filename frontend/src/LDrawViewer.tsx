@@ -20,7 +20,7 @@ export default function LDrawViewer({ url }: Props) {
     }
 
     let renderer: SimpleRenderer | null = null;
-    let controls: { update: () => void; dispose: () => void } | null = null;
+    let controls: { update: () => void; dispose: () => void; enableDamping: boolean } | null = null;
     let animationId: number;
 
     async function init() {
@@ -65,7 +65,7 @@ export default function LDrawViewer({ url }: Props) {
       function animate() {
         animationId = requestAnimationFrame(animate);
         controls?.update();
-        renderer.render(scene, camera);
+        renderer!.render(scene, camera);
       }
     }
 

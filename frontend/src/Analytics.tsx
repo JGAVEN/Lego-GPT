@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { API_BASE } from "./api/lego";
 
 interface Metrics {
-  [k: string]: number | Record<string, never>;
+  [k: string]: number | Record<string, unknown>;
   history?: {
     token_usage: Array<[number, number]>;
     rate_limit_hits: Array<[number, number]>;

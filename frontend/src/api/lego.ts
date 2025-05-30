@@ -6,7 +6,7 @@ export interface GenerateRequest {
 
 export const API_BASE = import.meta.env.VITE_API_URL ?? "";
 
-function authHeaders() {
+function authHeaders(): Record<string, string> {
   const token = localStorage.getItem("jwt") || import.meta.env.VITE_JWT;
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
@@ -33,7 +33,7 @@ export async function generateLego(
 ): Promise<GenerateResponse> {
   const res = await fetch(`${API_BASE}/generate`, {
     method: "POST",
-    headers: { "Content-Type": "application/json", ...authHeaders() },
+    headers: { "Content-Type": "application/json", ...authHeaders() } as HeadersInit,
     body: JSON.stringify(body),
     signal: abortSignal,
   });
@@ -53,7 +53,7 @@ export async function detectInventory(
 ): Promise<DetectResponse> {
   const res = await fetch(`${API_BASE}/detect_inventory`, {
     method: "POST",
-    headers: { "Content-Type": "application/json", ...authHeaders() },
+    headers: { "Content-Type": "application/json", ...authHeaders() } as HeadersInit,
     body: JSON.stringify(body),
     signal: abortSignal,
   });
@@ -73,7 +73,7 @@ export async function fetchComments(exampleId: string) {
 export async function postComment(exampleId: string, comment: string) {
   const res = await fetch(`${API_BASE}/comments/${exampleId}`, {
     method: "POST",
-    headers: { "Content-Type": "application/json", ...authHeaders() },
+    headers: { "Content-Type": "application/json", ...authHeaders() } as HeadersInit,
     body: JSON.stringify({ comment }),
   });
   if (!res.ok) throw new Error("Failed");
