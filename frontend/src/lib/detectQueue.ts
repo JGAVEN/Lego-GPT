@@ -4,8 +4,8 @@ import {
   getPendingDetects,
   deletePendingDetect,
   setCachedDetect,
-  PendingDetect,
 } from "./db";
+import type { PendingDetect } from "./db";
 
 async function runDetect(req: PendingDetect): Promise<DetectResponse> {
   const res = await fetch(`${API_BASE}/detect_inventory`, {

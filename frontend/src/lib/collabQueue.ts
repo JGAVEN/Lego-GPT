@@ -1,4 +1,5 @@
-import { addPendingCollab, getPendingCollabs, deletePendingCollab, PendingCollab } from "./db";
+import { addPendingCollab, getPendingCollabs, deletePendingCollab } from "./db";
+import type { PendingCollab } from "./db";
 
 export async function queueCollab(msg: PendingCollab): Promise<void> {
   await addPendingCollab(msg);

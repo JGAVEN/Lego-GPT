@@ -4,8 +4,8 @@ import {
   getPendingGenerates,
   deletePendingGenerate,
   setCachedGenerate,
-  PendingRequest,
 } from "./db";
+import type { PendingRequest } from "./db";
 
 async function runGenerate(req: PendingRequest): Promise<GenerateResponse> {
   const res = await fetch(`${API_BASE}/generate`, {
