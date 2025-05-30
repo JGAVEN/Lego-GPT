@@ -21,6 +21,8 @@ export default function useDetectInventory(image: string | null): UseDetectResul
   useEffect(() => {
     if (!image) return;
 
+    const img = image;
+
     const ctrl = new AbortController();
     let cancelled = false;
 
@@ -28,10 +30,10 @@ export default function useDetectInventory(image: string | null): UseDetectResul
       setLoading(true);
       setError(null);
       setData(null);
-      const cacheKey = image;
+      const cacheKey = img;
       const cached = await getCachedDetect(cacheKey);
       try {
-        const body: DetectRequest = { image };
+        const body: DetectRequest = { image: img };
         const res = await fetch(`${API_BASE}/detect_inventory`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -65,7 +67,7 @@ export default function useDetectInventory(image: string | null): UseDetectResul
             setData(cached);
             setError("Offline - showing cached result");
           } else {
-            await addPendingDetect({ image });
+            await addPendingDetect({ image: img });
             if (err instanceof Error && err.name !== "AbortError") {
               setError("Offline - request queued");
             } else {

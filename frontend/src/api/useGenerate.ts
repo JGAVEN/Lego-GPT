@@ -29,6 +29,8 @@ export default function useGenerate(
   useEffect(() => {
     if (!prompt) return;
 
+    const actualPrompt = prompt;
+
     const ctrl = new AbortController();
     let cancelled = false;
 
@@ -36,10 +38,10 @@ export default function useGenerate(
       setLoading(true);
       setError(null);
       setData(null);
-      const cacheKey = JSON.stringify({ prompt, seed, inventoryFilter });
+      const cacheKey = JSON.stringify({ prompt: actualPrompt, seed, inventoryFilter });
       const cached = await getCachedGenerate(cacheKey);
       try {
-        const reqBody: GenerateRequest = { prompt };
+        const reqBody: GenerateRequest = { prompt: actualPrompt };
         if (seed !== undefined && seed !== null) {
           reqBody.seed = seed;
         }
@@ -81,7 +83,7 @@ export default function useGenerate(
               setError("Offline - showing cached result");
             } else {
               await addPendingGenerate({
-                prompt,
+                prompt: actualPrompt,
                 seed: seed ?? null,
                 inventory_filter: inventoryFilter,
               });
