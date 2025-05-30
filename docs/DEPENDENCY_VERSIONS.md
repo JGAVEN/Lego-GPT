@@ -10,6 +10,9 @@ The project is in maintenance mode. Versions are fixed to ensure reproducible bu
 | rq | 1.16.0 |
 | ortools | 9.10.4067 |
 | websockets | 12.0 |
+| fastapi | 0.97.0 |
+| uvicorn | 0.27.0.post1 |
+| slowapi | 0.1.9 |
 | fakeredis | 2.21.0 |
 | ruff | 0.4.0 |
 | coverage | 7.0.0 |

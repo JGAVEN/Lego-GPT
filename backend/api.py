@@ -1,7 +1,11 @@
 """Minimal API functions for offline use."""
 from pathlib import Path
-from backend.inference import generate
+import os
 from redis import Redis
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from starlette.concurrency import run_in_threadpool
+from backend.inference import generate
 from backend import __version__, STATIC_ROOT, STATIC_URL_PREFIX, REDIS_URL
 from backend.storage import maybe_upload_assets
 
@@ -64,3 +68,18 @@ def generate_lego_model(
         "brick_counts": brick_counts,
         "instructions_url": pdf_url,
     }
+
+
+app = FastAPI(title="Lego-GPT API")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=os.getenv("CORS_ORIGINS", "*").split(","),
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+@app.get("/health")
+async def health_route() -> dict:
+    return await run_in_threadpool(health)
+

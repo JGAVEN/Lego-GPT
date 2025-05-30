@@ -21,8 +21,10 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install ruff and coverage
-        run: pip install ruff coverage
+      - name: Install Python dependencies
+        run: |
+          pip install ruff coverage
+          pip install -e ./backend[test]
 
       - name: Run ruff
         run: ruff check backend detector
@@ -31,6 +33,10 @@ jobs:
         run: |
           coverage run -m unittest discover -v
           coverage xml
+
+      - name: Smoke test FastAPI app
+        run: |
+          timeout 5s uvicorn backend.api:app --port 9999 --lifespan on --log-level warning
 
       - name: Upload coverage
         uses: codecov/codecov-action@v3
