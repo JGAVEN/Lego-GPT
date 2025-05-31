@@ -374,6 +374,9 @@ The blueprint defines two API services—`lego-gpt-api-green` and
 service stays disabled until you use it for a blue/green rollout, so it may show
 as a failed or pending deploy in the Render dashboard.
 
+Once deployed, visit `/docs` on the API service URL to explore the OpenAPI
+documentation. Admin users can fetch `/metrics_prom` for Prometheus scraping.
+
 
 > **Prerequisites**
 > * Python 3.11+

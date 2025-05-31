@@ -97,7 +97,7 @@ The application is English-only. Multi-language user interfaces are out of scope
 | F-37 | **S**  | Issue triage guidelines                        | **Done** | Documented weekly review and labelling process |
 | F-38 | **S**  | Container vulnerability scanning               | **Open** | Planned Trivy integration deferred |
 | F-39 | **S**  | Long-term support policy                       | **Done** | Security updates provided for 12 months |
-| F-40 | **M**  | FastAPI gateway refactor (Epic E‑07)           | **Open** | Sprints 88‑93 migrate the gateway to FastAPI |
+| F-40 | **M**  | FastAPI gateway refactor (Epic E‑07)           | **Done** | Sprints 88‑93 migrated the gateway to FastAPI |
 ### Legend
 * **Pri** – MoSCoW priority (**M**ust, **S**hould, **C**ould, **W**on’t-Have-Now).
 * **Status** – Open / WIP / Blocked / Done.

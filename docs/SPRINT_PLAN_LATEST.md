@@ -290,5 +290,5 @@ The feature set is now stable with an English-only interface and no plans for mu
 * Updated `render.yaml` with Python 3.11 and `/health` checks.
 * Added a blue/green API pair for safe deploys.
 
-## Sprint 93 – Docs & monitoring
-* Polish `/docs`, expose Prometheus metrics and update the README.
+## Sprint 93 – Docs & monitoring (completed)
+* Polished `/docs`, exposed Prometheus metrics and updated the README.
