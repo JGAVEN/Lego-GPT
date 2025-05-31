@@ -55,8 +55,9 @@ services:
       - source: 0.0.0.0/0
     maxmemoryPolicy: allkeys-lru
 
-  - type: static
+  - type: web
     name: lego-gpt
+    runtime: static
     rootDir: frontend
     buildCommand: |
       pnpm install --no-frozen-lockfile
