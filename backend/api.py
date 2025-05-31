@@ -6,7 +6,11 @@ import os
 import time
 
 from redis import Redis
-from rq import Queue, Retry, Job
+from rq import Queue, Retry
+try:
+    from rq.job import Job
+except Exception:  # pragma: no cover - fallback for older/stub versions
+    from rq import Job
 from fastapi import (
     FastAPI,
     Depends,
