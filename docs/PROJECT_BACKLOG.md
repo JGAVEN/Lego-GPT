@@ -25,7 +25,7 @@ The application is English-only. Multi-language user interfaces are out of scope
 | B-12 | **XS** | JWT auth unit tests                  | **Done** | encode/decode helpers |
 | B-13 | **XS** | Front-end lint step in CI            | **Done** | pnpm runs ESLint in workflow |
 | B-14 | **S** | YOLOv8 model auto-loader            | **Done** | `DETECTOR_MODEL` env var selects weights |
-| B-15 | **XS** | Console scripts for server/worker   | **Done** | `lego-gpt-server`, `lego-gpt-worker`, `lego-detect-worker` |
+| B-15 | **XS** | Console scripts for server/worker   | **Done** | `lego-gpt-api`, `lego-gpt-worker`, `lego-detect-worker` |
 | B-16 | **XS** | Ruff lint + CI step                 | **Done** | pyproject config + workflow |
 | B-17 | **XS** | Configurable CORS headers            | **Done** | `--cors-origins` CLI + tests |
 | B-18 | **S** | Customisable static URL prefix       | **Done** | `STATIC_URL_PREFIX` env var |

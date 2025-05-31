@@ -28,7 +28,7 @@ real-life building via a built-in Three.js viewer.
 | 🆕 **Photo‑based brick inventory detection** – YOLOv8 detector + `/detect_inventory` API | Scan your loose bricks and generate builds you can actually build |
 | 📸 **Multiple inventory photos** | Combine several detected images into one project file |
 | 🛡️ **Static file handler sanitized** | Blocks path traversal in `/static` requests |
-| 🆕 **Console scripts** for API and workers (`lego-gpt-server`, `lego-gpt-worker`, `lego-detect-worker`) | Easier local development & Docker entrypoints; workers accept `--redis-url` and `--version` |
+| 🆕 **Console scripts** for API and workers (`lego-gpt-api`, `lego-gpt-worker`, `lego-detect-worker`) | Easier local development & Docker entrypoints; workers accept `--redis-url` and `--version` |
 | 🆕 **Command-line client** (`lego-gpt-cli`) | Test the API from your terminal or CI |
 | 🛠️ **Ruff linting** for backend code | Consistent style via `ruff check` locally and in CI |
 | 🌍 **CORS configuration** via `--cors-origins` | Allows custom `Access-Control-Allow-Origin` |
@@ -157,7 +157,7 @@ export LEGOGPT_MODEL=/path/to/checkpoint     # optional larger LegoGPT model
 # See ``docs/SCALABILITY_BENCHMARKING.md`` for load-testing guidance.
 # Alternatively set ``LEGOGPT_CONFIG`` or ``--config`` to load settings from a YAML file.
 # Generate a starter config with ``lego-gpt-config > config.yaml``.
-lego-gpt-server \
+lego-gpt-api \
   --host 0.0.0.0 \
   --port 8000 \
   --redis-url "$REDIS_URL" \

@@ -7,7 +7,7 @@ This guide explains how to measure API throughput and tune your deployment.
 ## 1. Prerequisites
 
 * A running Redis instance and at least one `lego-gpt-worker`.
-* The API server started via `lego-gpt-server`.
+* The API server started via `lego-gpt-api`.
 * A valid JWT token for authentication.
 
 ## 2. Benchmark script

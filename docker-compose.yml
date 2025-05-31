@@ -13,7 +13,7 @@ services:
       - ./backend:/app/backend:delegated
     ports:
       - "8000:8000"
-    command: lego-gpt-server
+    command: lego-gpt-api
   worker:
     build:
       context: .

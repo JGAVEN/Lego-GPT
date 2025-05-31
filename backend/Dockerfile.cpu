@@ -29,4 +29,4 @@ RUN pip install --upgrade pip setuptools wheel --user && \
 
 WORKDIR /app/backend
 EXPOSE 8000
-CMD ["lego-gpt-server"]
+CMD ["lego-gpt-api"]

@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 import os
 import time
+import argparse
 
 from redis import Redis
 from rq import Queue, Retry
@@ -22,6 +23,7 @@ from pydantic import BaseModel
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.concurrency import run_in_threadpool
+import uvicorn
 
 from backend import (
     __version__,
@@ -263,4 +265,20 @@ async def history_route(auth: tuple[dict, str] = Depends(_auth)) -> dict:
     else:
         entries = []
     return {"history": entries}
+
+
+def main() -> None:
+    """Run the FastAPI server via uvicorn."""
+    parser = argparse.ArgumentParser(description="Run Lego GPT FastAPI server")
+    parser.add_argument("--host", default=os.getenv("HOST", "0.0.0.0"))
+    parser.add_argument("--port", type=int, default=int(os.getenv("PORT", "8000")))
+    parser.add_argument(
+        "--reload", action="store_true", help="Enable auto-reload for development"
+    )
+    args = parser.parse_args()
+    uvicorn.run("backend.api:app", host=args.host, port=args.port, reload=args.reload)
+
+
+if __name__ == "__main__":  # pragma: no cover - CLI entry point
+    main()
 
