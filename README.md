@@ -352,8 +352,10 @@ render blueprint apply render.yaml
 ```
 
 The configuration spins up a Redis instance, a Python web service running
-`uvicorn backend.api:app`, and a static site for the front-end build. Update any
-environment variables in the Render dashboard or via `envVarGroups` as needed.
+`uvicorn backend.api:app`, and a static site for the front-end build. Both API
+services target Python 3.11 and declare `/health` as the health check path.
+Update any environment variables in the Render dashboard or via
+`envVarGroups` as needed.
 
 The blueprint defines two API services—`lego-gpt-api-green` and
 `lego-gpt-api-blue`. Only the green service is active by default. The blue
