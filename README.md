@@ -277,6 +277,18 @@ The API will be available at http://localhost:8000/health.
 The `/health` endpoint responds with `{ "ok": true, "version": "x.y.z" }` so you
 can verify the backend version.
 
+### FastAPI dev helper
+
+For a lighter setup during development, run `backend/dev.sh` to launch the API
+with auto-reload enabled:
+
+```bash
+./backend/dev.sh
+```
+
+The script starts `uvicorn` on <http://localhost:8000> and watches for code
+changes.
+
 ### Production Docker Images
 
 Release tags trigger a workflow that builds CPU and GPU images and publishes
