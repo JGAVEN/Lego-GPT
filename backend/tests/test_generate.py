@@ -12,11 +12,11 @@ for p in (project_root, vendor_root):
         sys.path.insert(0, str(p))
 os.environ["PYTHONPATH"] = str(project_root)
 
-from backend.api import generate_lego_model  # noqa: E402
+from backend.generation import generate_lego_model  # noqa: E402
 
 
 class GenerateTests(unittest.TestCase):
-    @patch("backend.api.generate")
+    @patch("backend.generation.generate")
     def test_generate_endpoint(self, mock_generate):
         mock_generate.return_value = (
             "backend/static/x/preview.png",

@@ -96,7 +96,7 @@ _Last updated 2025-07-28_
 
 ## Brick‑Detector Micro‑service (new in v0.5.0)
 
-Adds a YOLOv8‑based computer‑vision worker that converts user‑supplied photos into an inventory map `{ part_id: count }`. The gateway exposes `/detect_inventory`, and the PWA includes an `InventoryScanner` component (hook `useDetectInventory`) so users can upload one or more photos, review the detected parts list and generate a model constrained to their bricks. Results from multiple photos are merged into a single inventory file.
+Adds a YOLOv8‑based computer‑vision worker that converts user‑supplied photos into an inventory map `{ part_id: count }`. The FastAPI server exposes `/detect_inventory`, and the PWA includes an `InventoryScanner` component (hook `useDetectInventory`) so users can upload one or more photos, review the detected parts list and generate a model constrained to their bricks. Results from multiple photos are merged into a single inventory file.
 
 The API validates that the `image` field contains a valid base64 string and
 returns HTTP 400 for malformed data.

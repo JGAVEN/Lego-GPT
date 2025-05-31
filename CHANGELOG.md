@@ -1,3 +1,11 @@
+## [0.5.71] – 2025-05-31
+### Added
+- FastAPI routes for `/generate`, `/detect_inventory`, `/metrics`,
+  `/metrics_prom` and `/history` with token-based auth.
+- Prometheus metrics endpoint exposed in Render deployment docs.
+### Changed
+- Backend package version bumped to 0.5.71.
+
 ## [0.5.70] – 2025-05-30
 ### Fixed
 - Restored the `three` dependency so the front-end builds correctly on Render.

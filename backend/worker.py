@@ -4,7 +4,7 @@ from redis import Redis
 from rq import Connection, Worker
 from backend.logging_config import setup_logging
 from backend.config import apply_yaml_config
-from backend.api import generate_lego_model
+from backend.generation import generate_lego_model
 from backend.detector import detect_inventory
 from backend import __version__
 
