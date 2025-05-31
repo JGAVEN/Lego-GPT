@@ -370,7 +370,9 @@ Update any environment variables in the Render dashboard or via
 `envVarGroups` as needed. Typical tweaks include setting `JWT_SECRET`, adjusting
 `RATE_LIMIT`, or pointing `LEGOGPT_MODEL` at a custom checkpoint. The static
 site should define `VITE_API_URL` so the PWA knows which API instance to use
-(e.g. `https://lego-gpt-api-green.onrender.com`).
+(e.g. `https://lego-gpt-api-green.onrender.com`). If you switch to the blue
+service during a rollout, update the variable to
+`https://lego-gpt-api-blue.onrender.com`.
 
 The blueprint defines two API services—`lego-gpt-api-green` and
 `lego-gpt-api-blue`. Only the green service is active by default. The blue
