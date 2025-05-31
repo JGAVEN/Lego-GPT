@@ -52,7 +52,7 @@ services:
   # ------------------------------------------------
   - type: redis
     name: lego-gpt-redis
-    plan: free                # Hobby plan – sleeps when idle
+    plan: free                # Hobby plan - sleeps when idle
     ipAllowList:
       - source: 0.0.0.0/0
     maxmemoryPolicy: allkeys-lru
