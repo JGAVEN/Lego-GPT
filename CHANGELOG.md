@@ -1,3 +1,8 @@
+## [0.5.72] – 2025-05-31
+### Changed
+- Documentation tweaks for Render deployment.
+- Backend package version bumped to 0.5.72.
+
 ## [0.5.71] – 2025-05-31
 ### Added
 - FastAPI routes for `/generate`, `/detect_inventory`, `/metrics`,
