@@ -1,6 +1,5 @@
 # render.yaml -- Blueprint: API + Redis + Static Site
 services:
-  # ------------------------------------------------
   - type: web
     name: lego-gpt-api-green
     runtime: python
@@ -11,14 +10,14 @@ services:
     healthCheckPath: /health
     autoDeploy: true
     branch: main
-    plan: standard            # 2 GB RAM / 1 vCPU
+    plan: standard
     envVars:
       - key: REDIS_URL
         fromService:
           type: redis
           name: lego-gpt-redis
           property: connectionString
-      - key: JWT_SECRET        # removed "sync: false"
+      - key: JWT_SECRET
         value: ycQGGSqO3/JYGY96TLnC829sXFPHMW+OFIcx/OSL+gs=
       - key: RATE_LIMIT
         value: "10"
@@ -37,11 +36,11 @@ services:
     branch: main
     plan: standard
     envVars:
-      - fromService:
+      - key: REDIS_URL
+        fromService:
           type: redis
           name: lego-gpt-redis
           property: connectionString
-        key: REDIS_URL
       - key: JWT_SECRET
         value: ycQGGSqO3/JYGY96TLnC829sXFPHMW+OFIcx/OSL+gs=
       - key: RATE_LIMIT
@@ -49,17 +48,15 @@ services:
       - key: CORS_ORIGINS
         value: "http://localhost:5173,https://lego-gpt.onrender.com"
 
-  # ------------------------------------------------
   - type: redis
     name: lego-gpt-redis
-    plan: free                # Hobby plan - sleeps when idle
+    plan: free
     ipAllowList:
       - source: 0.0.0.0/0
     maxmemoryPolicy: allkeys-lru
 
-  # ------------------------------------------------
-  - type: web                  # static site
-    name: lego-gpt             # -> https://lego-gpt.onrender.com
+  - type: web
+    name: lego-gpt
     runtime: static
     rootDir: frontend
     buildCommand: |
