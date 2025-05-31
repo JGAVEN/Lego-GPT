@@ -68,6 +68,8 @@ services:
     envVars:
       - key: NODE_VERSION
         value: "20"
+      - key: VITE_API_URL
+        value: "https://lego-gpt-api-green.onrender.com"
     staticPublishPath: dist
     branch: main
     autoDeploy: true

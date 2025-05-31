@@ -368,7 +368,9 @@ The configuration spins up a Redis instance, a Python web service running
 services target Python 3.11 and declare `/health` as the health check path.
 Update any environment variables in the Render dashboard or via
 `envVarGroups` as needed. Typical tweaks include setting `JWT_SECRET`, adjusting
-`RATE_LIMIT`, or pointing `LEGOGPT_MODEL` at a custom checkpoint.
+`RATE_LIMIT`, or pointing `LEGOGPT_MODEL` at a custom checkpoint. The static
+site should define `VITE_API_URL` so the PWA knows which API instance to use
+(e.g. `https://lego-gpt-api-green.onrender.com`).
 
 The blueprint defines two API services—`lego-gpt-api-green` and
 `lego-gpt-api-blue`. Only the green service is active by default. The blue
