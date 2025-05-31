@@ -377,6 +377,10 @@ as a failed or pending deploy in the Render dashboard.
 Once deployed, visit `/docs` on the API service URL to explore the OpenAPI
 documentation. Admin users can fetch `/metrics_prom` for Prometheus scraping.
 
+See [docs/RENDER_DEPLOYMENT.md](docs/RENDER_DEPLOYMENT.md) for detailed
+instructions on managing the Render services and performing blue/green
+deployments.
+
 
 > **Prerequisites**
 > * Python 3.11+
