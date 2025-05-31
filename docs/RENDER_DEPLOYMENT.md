@@ -18,7 +18,7 @@ This guide explains how to deploy Lego GPT to [Render](https://render.com) using
    render blueprint apply render.yaml
    ```
 
-3. Update any secrets or environment variables through the Render dashboard or via `envVarGroups`. Common options include setting `JWT_SECRET` for API authentication, tweaking `RATE_LIMIT`, and defining a custom `LEGOGPT_MODEL` path if you host a larger checkpoint.
+3. Update any secrets or environment variables through the Render dashboard or via `envVarGroups`. Common options include setting `JWT_SECRET` for API authentication, tweaking `RATE_LIMIT`, defining `VITE_API_URL` for the front-end (e.g. `https://lego-gpt-api-green.onrender.com`), and supplying a custom `LEGOGPT_MODEL` path if you host a larger checkpoint.
 4. The blueprint sets up two API services:
    - `lego-gpt-api-green` (active)
    - `lego-gpt-api-blue` (disabled for blue/green rollouts)
