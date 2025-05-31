@@ -37,7 +37,7 @@ services:
     plan: standard
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11
+        value: 3.11.9
       - key: REDIS_URL
         fromService:
           type: redis
