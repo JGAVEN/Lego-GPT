@@ -10,4 +10,5 @@ nav:
   - Issue Triage: ISSUE_TRIAGE_GUIDE.md
   - LTS Policy: LTS_POLICY.md
   - Dependency Versions: DEPENDENCY_VERSIONS.md
+  - Render Deployment: RENDER_DEPLOYMENT.md
   - Backlog: PROJECT_BACKLOG.md

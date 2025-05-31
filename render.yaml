@@ -65,6 +65,9 @@ services:
     buildCommand: |
       pnpm install --no-frozen-lockfile
       pnpm run build
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
     staticPublishPath: dist
     branch: main
     autoDeploy: true
