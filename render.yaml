@@ -3,8 +3,8 @@ services:
   - type: web
     name: lego-gpt-api-green
     runtime: python
+    runtimeVersion: 3.11
     rootDir: .
-    pythonVersion: 3.11
     buildCommand: pip install -e backend
     startCommand: uvicorn backend.api:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
@@ -27,8 +27,8 @@ services:
   - type: web
     name: lego-gpt-api-blue
     runtime: python
+    runtimeVersion: 3.11
     rootDir: .
-    pythonVersion: 3.11
     buildCommand: pip install -e backend
     startCommand: uvicorn backend.api:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
