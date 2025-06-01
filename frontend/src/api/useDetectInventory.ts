@@ -33,6 +33,7 @@ export default function useDetectInventory(image: string | null): UseDetectResul
       const cached = await getCachedDetect(cacheKey);
 
       try {
+        // Kick off the detect_inventory job
         const body: DetectRequest = { image: img };
         const res = await fetch(`${API_BASE}/detect_inventory`, {
           method: "POST",
@@ -45,7 +46,13 @@ export default function useDetectInventory(image: string | null): UseDetectResul
           throw new Error(`Request failed (${res.status})`);
         }
 
+        // Extract the job_id from the response
         const { job_id } = (await res.json()) as { job_id: string };
+
+        // Begin polling with exponential backoff
+        let delay = 2000;      // Start with a 2-second delay
+        const maxDelay = 30000; // Cap delay at 30 seconds
+
         while (!cancelled) {
           const poll = await fetch(`${API_BASE}/detect_inventory/${job_id}`, {
             method: "GET",
@@ -54,6 +61,7 @@ export default function useDetectInventory(image: string | null): UseDetectResul
           });
 
           if (poll.status === 200) {
+            // Job is complete
             const result = (await poll.json()) as DetectResponse;
             if (!cancelled) {
               setData(result);
@@ -63,17 +71,22 @@ export default function useDetectInventory(image: string | null): UseDetectResul
           }
 
           if (poll.status !== 202) {
+            // An unexpected status code; treat as failure
             throw new Error(`Job failed (${poll.status})`);
           }
 
-          await new Promise((r) => setTimeout(r, 1000));
+          // Wait for the current delay, then double it (up to the max)
+          await new Promise((r) => setTimeout(r, delay));
+          delay = Math.min(delay * 2, maxDelay);
         }
       } catch (err: unknown) {
         if (!cancelled) {
           if (cached) {
+            // Show cached result if available
             setData(cached);
             setError("Offline - showing cached result");
           } else {
+            // Queue the request for later
             await addPendingDetect({ image: img });
             if (err instanceof Error && err.name !== "AbortError") {
               setError("Offline - request queued");
