@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { DetectRequest, DetectResponse } from "./lego";
-import { API_BASE } from "./lego";
+import { API_BASE, authHeaders } from "./lego";
 import {
   getCachedDetect,
   setCachedDetect,
@@ -22,7 +22,6 @@ export default function useDetectInventory(image: string | null): UseDetectResul
     if (!image) return;
 
     const img = image;
-
     const ctrl = new AbortController();
     let cancelled = false;
 
@@ -32,22 +31,28 @@ export default function useDetectInventory(image: string | null): UseDetectResul
       setData(null);
       const cacheKey = img;
       const cached = await getCachedDetect(cacheKey);
+
       try {
         const body: DetectRequest = { image: img };
         const res = await fetch(`${API_BASE}/detect_inventory`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", ...authHeaders() },
           body: JSON.stringify(body),
           signal: ctrl.signal,
         });
+
         if (!res.ok) {
           throw new Error(`Request failed (${res.status})`);
         }
+
         const { job_id } = (await res.json()) as { job_id: string };
         while (!cancelled) {
           const poll = await fetch(`${API_BASE}/detect_inventory/${job_id}`, {
+            method: "GET",
+            headers: { ...authHeaders() },
             signal: ctrl.signal,
           });
+
           if (poll.status === 200) {
             const result = (await poll.json()) as DetectResponse;
             if (!cancelled) {
@@ -56,9 +61,11 @@ export default function useDetectInventory(image: string | null): UseDetectResul
             }
             break;
           }
+
           if (poll.status !== 202) {
             throw new Error(`Job failed (${poll.status})`);
           }
+
           await new Promise((r) => setTimeout(r, 1000));
         }
       } catch (err: unknown) {
