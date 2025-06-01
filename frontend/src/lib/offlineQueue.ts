@@ -1,4 +1,4 @@
-import { API_BASE } from "../api/lego";
+import { API_BASE, authHeaders } from "../api/lego";
 import type { GenerateResponse } from "../api/lego";
 import {
   getPendingGenerates,
@@ -10,7 +10,7 @@ import type { PendingRequest } from "./db";
 async function runGenerate(req: PendingRequest): Promise<GenerateResponse> {
   const res = await fetch(`${API_BASE}/generate`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...authHeaders() },
     body: JSON.stringify({
       prompt: req.prompt,
       seed: req.seed,
@@ -22,7 +22,9 @@ async function runGenerate(req: PendingRequest): Promise<GenerateResponse> {
   }
   const { job_id } = (await res.json()) as { job_id: string };
   while (true) {
-    const poll = await fetch(`${API_BASE}/generate/${job_id}`);
+    const poll = await fetch(`${API_BASE}/generate/${job_id}`, {
+      headers: { ...authHeaders() },
+    });
     if (poll.status === 200) {
       return (await poll.json()) as GenerateResponse;
     }
