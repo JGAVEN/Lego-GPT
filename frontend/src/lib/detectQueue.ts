@@ -1,6 +1,7 @@
 // File: frontend/src/lib/detectQueue.ts
 
 import { authHeaders, API_BASE } from "../api/lego";
+import type { DetectResponse } from "../api/lego";
 import { getPendingDetects, deletePendingDetect, setCachedDetect } from "./db";
 import type { PendingDetect } from "./db";
 
