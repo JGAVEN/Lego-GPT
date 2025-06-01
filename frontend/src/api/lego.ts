@@ -6,7 +6,7 @@ export interface GenerateRequest {
 
 export const API_BASE = import.meta.env.VITE_API_URL ?? "";
 
-function authHeaders(): Record<string, string> {
+export function authHeaders(): Record<string, string> {
   const token = localStorage.getItem("jwt") || import.meta.env.VITE_JWT;
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
