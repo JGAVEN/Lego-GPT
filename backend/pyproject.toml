@@ -14,7 +14,7 @@ dependencies = [
 
 [project.optional-dependencies]
 test = [
-    "fakeredis==2.21.0",
+    "fakeredis==2.29.0",
     "ruff==0.4.0",
     "coverage==7.0.0",
     "pre-commit==3.0.0",
