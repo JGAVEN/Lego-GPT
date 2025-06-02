@@ -53,6 +53,10 @@ export default function useDetectInventory(image: string | null): UseDetectResul
         let delay = 2000;      // Start with a 2-second delay
         const maxDelay = 30000; // Cap delay at 30 seconds
 
+        // Initial wait before sending the first GET
+        await new Promise((r) => setTimeout(r, delay));
+        delay = Math.min(delay * 2, maxDelay);
+
         while (!cancelled) {
           const poll = await fetch(`${API_BASE}/detect_inventory/${job_id}`, {
             method: "GET",
