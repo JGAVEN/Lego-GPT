@@ -49,39 +49,49 @@ export default function useDetectInventory(image: string | null): UseDetectResul
         // Extract the job_id from the response
         const { job_id } = (await res.json()) as { job_id: string };
 
-        // Begin polling with exponential backoff
-        let delay = 2000;      // Start with a 2-second delay
-        const maxDelay = 30000; // Cap delay at 30 seconds
+        // Prevent overlapping polling loops
+        if ((window as any)._detectIsRunning) {
+          throw new Error("Detect is already in progress");
+        }
+        (window as any)._detectIsRunning = true;
 
-        // Initial wait before sending the first GET
-        await new Promise((r) => setTimeout(r, delay));
-        delay = Math.min(delay * 2, maxDelay);
+        try {
+          // Begin polling with exponential backoff
+          let delay = 2000;      // Start with a 2-second delay
+          const maxDelay = 30000; // Cap delay at 30 seconds
 
-        while (!cancelled) {
-          const poll = await fetch(`${API_BASE}/detect_inventory/${job_id}`, {
-            method: "GET",
-            headers: { ...authHeaders() },
-            signal: ctrl.signal,
-          });
-
-          if (poll.status === 200) {
-            // Job is complete
-            const result = (await poll.json()) as DetectResponse;
-            if (!cancelled) {
-              setData(result);
-              await setCachedDetect(cacheKey, result);
-            }
-            break;
-          }
-
-          if (poll.status !== 202) {
-            // An unexpected status code; treat as failure
-            throw new Error(`Job failed (${poll.status})`);
-          }
-
-          // Wait for the current delay, then double it (up to the max)
+          // Initial wait before sending the first GET
           await new Promise((r) => setTimeout(r, delay));
           delay = Math.min(delay * 2, maxDelay);
+
+          while (!cancelled) {
+            const poll = await fetch(`${API_BASE}/detect_inventory/${job_id}`, {
+              method: "GET",
+              headers: { ...authHeaders() },
+              signal: ctrl.signal,
+            });
+
+            if (poll.status === 200) {
+              // Job is complete
+              const result = (await poll.json()) as DetectResponse;
+              if (!cancelled) {
+                setData(result);
+                await setCachedDetect(cacheKey, result);
+              }
+              break;
+            }
+
+            if (poll.status !== 202) {
+              // An unexpected status code; treat as failure
+              throw new Error(`Job failed (${poll.status})`);
+            }
+
+            // Wait for the current delay, then double it (up to the max)
+            await new Promise((r) => setTimeout(r, delay));
+            delay = Math.min(delay * 2, maxDelay);
+          }
+        } finally {
+          delete (window as any)._detectIsRunning;
         }
       } catch (err: unknown) {
         if (!cancelled) {
