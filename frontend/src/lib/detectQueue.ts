@@ -6,42 +6,56 @@ import { getPendingDetects, deletePendingDetect, setCachedDetect } from "./db";
 import type { PendingDetect } from "./db";
 
 async function runDetect(req: PendingDetect): Promise<DetectResponse> {
-  // Send the initial POST to kick off detection, including the JWT
-  const res = await fetch(`${API_BASE}/detect_inventory`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", ...authHeaders() },
-    body: JSON.stringify({ image: req.image }),
-  });
-  if (!res.ok) {
-    throw new Error(`Request failed (${res.status})`);
+  // Prevent overlapping polling loops
+  if ((window as any)._detectIsRunning) {
+    throw new Error("Detect is already in progress");
   }
+  (window as any)._detectIsRunning = true;
 
-  // Extract job_id from the response
-  const { job_id } = (await res.json()) as { job_id: string };
-
-  // Poll the job status with exponential backoff
-  let delay = 2000; // Start at 2 seconds
-  const maxDelay = 30000; // Cap at 30 seconds
-
-  while (true) {
-    const poll = await fetch(`${API_BASE}/detect_inventory/${job_id}`, {
-      method: "GET",
-      headers: { ...authHeaders() },
+  try {
+    // Send the initial POST to kick off detection, including the JWT
+    const res = await fetch(`${API_BASE}/detect_inventory`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeaders() },
+      body: JSON.stringify({ image: req.image }),
     });
-
-    if (poll.status === 200) {
-      // Job complete: return the parsed result
-      return (await poll.json()) as DetectResponse;
+    if (!res.ok) {
+      throw new Error(`Request failed (${res.status})`);
     }
 
-    if (poll.status !== 202) {
-      // Unexpected status: treat as failure
-      throw new Error(`Job failed (${poll.status})`);
-    }
+    // Extract job_id from the response
+    const { job_id } = (await res.json()) as { job_id: string };
 
-    // Wait for the current delay, then double it (up to maxDelay)
+    // Poll the job status with exponential backoff
+    let delay = 2000; // Start at 2 seconds
+    const maxDelay = 30000; // Cap at 30 seconds
+
+    // Initial wait before sending the first GET
     await new Promise((r) => setTimeout(r, delay));
     delay = Math.min(delay * 2, maxDelay);
+
+    while (true) {
+      const poll = await fetch(`${API_BASE}/detect_inventory/${job_id}`, {
+        method: "GET",
+        headers: { ...authHeaders() },
+      });
+
+      if (poll.status === 200) {
+        // Job complete: return the parsed result
+        return (await poll.json()) as DetectResponse;
+      }
+
+      if (poll.status !== 202) {
+        // Unexpected status: treat as failure
+        throw new Error(`Job failed (${poll.status})`);
+      }
+
+      // Wait for the current delay, then double it (up to maxDelay)
+      await new Promise((r) => setTimeout(r, delay));
+      delay = Math.min(delay * 2, maxDelay);
+    }
+  } finally {
+    delete (window as any)._detectIsRunning;
   }
 }
 
@@ -53,7 +67,7 @@ export async function processDetectQueue(): Promise<void> {
       await setCachedDetect(request.image, result);
       await deletePendingDetect(id);
     } catch {
-      // If an error occurs (offline, rate limit, etc.), stop processing further items
+      // If an error occurs (offline, rate limit, already polling, etc.), stop processing further items
       break;
     }
   }
